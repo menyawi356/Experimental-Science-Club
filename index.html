@@ -1,15 +1,1211 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" dir="ltr" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ScienoAtlas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScienoAtlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EEF0EA; --paper-alt: #E4E7DD; --ink: #161B22; --ink-soft: #52585F; --ink-faint: #8A9088;
+    --indigo: #24345C; --indigo-strong: #1A2745; --indigo-glow: rgba(36, 52, 92, 0.4);
+    --gold: #D4AF37; --gold-glow: rgba(212, 175, 55, 0.45); --red: #A63D2F; --teal: #2E7D6B; --line: #C9CEBD;
+    --card: color-mix(in srgb, #F7F8F3 88%, transparent);
+    --card-shadow: 0 1px 0 rgba(22,27,34,0.04), 0 16px 32px -16px rgba(22,27,34,0.15);
+    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --arabic: 'Tajawal', var(--sans);
+    --radius: 14px; color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    --paper: #0F1319; --paper-alt: #161B22; --ink: #E9ECE3; --ink-soft: #A2AA9C; --ink-faint: #6B7268;
+    --indigo: #8FA3DE; --indigo-strong: #B7C4EA; --indigo-glow: rgba(143, 163, 222, 0.4);
+    --gold: #E5C158; --gold-glow: rgba(229, 193, 88, 0.45); --red: #E2856E; --teal: #5FCBAE; --line: #2B3129;
+    --card: color-mix(in srgb, #151A20 88%, transparent);
+    --card-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 20px 40px -24px rgba(0,0,0,0.6);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html[dir="rtl"] body, html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] .eyebrow,
+  html[dir="rtl"] .tab-btn, html[dir="rtl"] .logo, html[dir="rtl"] .lang-btn,
+  html[dir="rtl"] .btn, html[dir="rtl"] .pub-card h3, html[dir="rtl"] .pub-archive-card h3,
+  html[dir="rtl"] .pub-author, html[dir="rtl"] .opp-cat, html[dir="rtl"] .opp-card h3,
+  html[dir="rtl"] .opp-meta, html[dir="rtl"] .modal-heading, html[dir="rtl"] .modal-success h3,
+  html[dir="rtl"] .form-label, html[dir="rtl"] .partner-feature h3, html[dir="rtl"] .partner-feature .subtitle,
+  html[dir="rtl"] .contact-form input, html[dir="rtl"] .contact-form textarea, html[dir="rtl"] .contact-form select
+  { font-family: var(--arabic); }
+  html[dir="rtl"] .form-label { text-transform: none; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased; transition: background .4s ease, color .4s ease;
+    min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
+  }
+  a { color: inherit; cursor: pointer; }
+  button { font-family: inherit; }
+  ::selection { background: var(--indigo); color: var(--paper); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; width: 100%; position: relative; z-index: 10; }
+  .left-content-zone { max-width: 580px; position: relative; z-index: 10; }
+
+  .bg-symbol-stage {
+    position: absolute; inset: 0; width: 100%; height: 100%; perspective: 1400px; z-index: 5;
+    display: flex; flex-direction: column; justify-content: center; align-items: flex-end;
+    padding-right: 8vw; pointer-events: none; overflow: hidden;
+  }
+  html[dir="rtl"] .bg-symbol-stage { align-items: flex-start; padding-right: 0; padding-left: 8vw; }
+
+  .symbol-3d-container {
+    position: relative; width: clamp(260px, 32vw, 420px); height: clamp(260px, 32vw, 420px);
+    transform-style: preserve-3d; pointer-events: auto; cursor: pointer;
+    animation: phiga3DTumble 22s ease-in-out infinite; transition: filter 0.4s ease, transform 0.4s ease;
+  }
+  .symbol-3d-svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 20px 35px var(--indigo-glow)); transition: filter 0.4s ease; }
+  .symbol-3d-container:hover { filter: drop-shadow(0 30px 50px var(--gold-glow)); transform: scale(1.035); }
+  .symbol-3d-container:active { transform: scale(0.98); }
+  .spin-cw-fast { transform-origin: center; animation: spinCW 14s linear infinite; }
+  .spin-ccw-slow { transform-origin: center; animation: spinCCW 26s linear infinite; }
+  .spin-cw-slow { transform-origin: center; animation: spinCW 36s linear infinite; }
+  .spin-ccw-fast { transform-origin: center; animation: spinCCW 17s linear infinite; }
+  .pulse-core { transform-origin: center; animation: corePulse 3.5s ease-in-out infinite; }
+  .float-slow { transform-origin: center; animation: floatY 5s ease-in-out infinite; }
+  .twinkle-a { animation: twinkle 2.6s ease-in-out infinite; }
+  .twinkle-b { animation: twinkle 3.4s ease-in-out infinite .5s; }
+  .twinkle-c { animation: twinkle 2.1s ease-in-out infinite 1s; }
+  .twinkle-d { animation: twinkle 3.9s ease-in-out infinite 1.4s; }
+  .shimmer-sweep { animation: shimmerSweep 6s linear infinite; }
+  @keyframes spinCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes spinCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+  @keyframes corePulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.08); opacity: 1; } }
+  @keyframes floatY { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+  @keyframes twinkle { 0%, 100% { opacity: 0.25; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.25); } }
+  @keyframes shimmerSweep { 0% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -120; } }
+  @keyframes phiga3DTumble {
+    0% { transform: rotateX(12deg) rotateY(-20deg) rotateZ(-4deg) translate3d(0, 0, 0); }
+    25% { transform: rotateX(-16deg) rotateY(16deg) rotateZ(8deg) translate3d(15px, -20px, 35px); }
+    50% { transform: rotateX(20deg) rotateY(28deg) rotateZ(-10deg) translate3d(-10px, 15px, -15px); }
+    75% { transform: rotateX(-10deg) rotateY(-15deg) rotateZ(12deg) translate3d(20px, 8px, 25px); }
+    100% { transform: rotateX(12deg) rotateY(-20deg) rotateZ(-4deg) translate3d(0, 0, 0); }
+  }
+
+  .sentence-popup {
+    position: relative; margin-top: 18px; width: clamp(260px, 80%, 360px);
+    background: color-mix(in srgb, var(--card) 98%, transparent); backdrop-filter: blur(20px);
+    border: 1px solid var(--gold); border-radius: var(--radius); padding: 14px 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18), 0 0 20px var(--gold-glow);
+    font-family: var(--mono); font-size: 13px; color: var(--ink); opacity: 0; transform: translateY(10px);
+    pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 30; text-align: center; align-self: center;
+  }
+  .sentence-popup.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .sentence-popup::before {
+    content: '✦ SCIENOATLAS INSIGHT'; display: block; font-size: 9.5px; letter-spacing: 0.16em;
+    color: var(--gold); margin-bottom: 6px; font-weight: bold;
+  }
+  .sentence-popup::after {
+    content: attr(data-counter); display: block; font-size: 9px; letter-spacing: 0.1em; color: var(--ink-faint); margin-top: 8px;
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--paper) 82%, transparent); border-bottom: 1px solid var(--line);
+  }
+  nav.wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; max-width: 1200px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-weight: 600; font-size: 18px; letter-spacing: .02em; cursor: pointer; white-space: nowrap; border: none; background: none; padding: 0; color: var(--ink); }
+  .logo .mark { width: 22px; height: 22px; border: 1.6px solid var(--ink); border-radius: 5px; display: grid; place-items: center; font-size: 11px; }
+  .navlinks { display: flex; align-items: center; gap: 20px; font-size: 14.5px; color: var(--ink-soft); font-weight: 500; }
+  .navlinks a { text-decoration: none; padding: 6px 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+  .navlinks a:hover, .navlinks a.active { color: var(--ink); border-color: var(--indigo); }
+  .navright { display: flex; align-items: center; gap: 10px; }
+  @media (min-width: 869px) { .join-btn-mobile { display: none; } }
+  .hamburger { display: none; background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 6px; cursor: pointer; color: var(--ink); align-items: center; justify-content: center; }
+  .hamburger svg { width: 22px; height: 22px; }
+  .theme-btn, .lang-btn { height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); display: grid; place-items: center; cursor: pointer; color: var(--ink); font-family: var(--mono); font-size: 13px; font-weight: bold; }
+  .theme-btn { width: 38px; }
+  .lang-btn { padding: 0 14px; white-space: nowrap; }
+  .theme-btn svg { width: 17px; height: 17px; }
+  .btn { font-family: var(--sans); font-size: 14px; font-weight: 600; padding: 10px 18px; border-radius: 9px; border: 1px solid transparent; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .15s ease, box-shadow .2s ease, background .2s ease; white-space: nowrap; }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--indigo); color: var(--paper); }
+  .btn-primary:hover { background: var(--indigo-strong); box-shadow: 0 8px 20px -10px var(--indigo); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { background: var(--card); }
+
+  .page-view { display: none; position: relative; z-index: 10; flex-grow: 1; padding: 60px 0; min-height: 82vh; }
+  .page-view.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .eyebrow { font-family: var(--mono); font-size: 12.5px; letter-spacing: .14em; color: var(--indigo); display: flex; align-items: center; gap: 10px; margin-bottom: 22px; text-transform: uppercase; }
+  .eyebrow::before { content: ""; width: 7px; height: 7px; background: var(--red); border-radius: 50%; display: inline-block; }
+  h1 { font-family: var(--mono); font-weight: 600; font-size: clamp(32px, 5.2vw, 54px); line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 22px; text-transform: uppercase; }
+  h1 em { font-style: normal; color: var(--indigo); }
+  h2 { font-family: var(--mono); font-size: clamp(24px, 3.4vw, 36px); margin: 0 0 14px; letter-spacing: -.01em; }
+  .lede { font-size: clamp(15.5px, 2vw, 17.5px); color: var(--ink-soft); margin: 0 0 34px; }
+  .sec-head { margin-bottom: 30px; }
+  .hero-btns { display: flex; gap: 14px; margin-bottom: 40px; flex-wrap: wrap; }
+
+  .sub-tabs { display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid var(--line); padding-bottom: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab-btn { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-family: var(--mono); font-size: 12.5px; font-weight: 600; padding: 8px 16px; border-radius: 9px; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; flex-shrink: 0; }
+  .tab-btn:hover { color: var(--ink); background: var(--paper-alt); }
+  .tab-btn.active { background: var(--indigo); color: var(--paper); border-color: var(--indigo); box-shadow: 0 4px 12px var(--indigo-glow); }
+  .pub-subtab-view { display: none; }
+  .pub-subtab-view.active { display: block; animation: fadeIn 0.35s ease; }
+  .pub-grid { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+  .pub-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--card-shadow); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .pub-card h3 { font-family: var(--mono); font-size: 20px; margin: 0 0 6px; }
+  .pub-card p { color: var(--ink-soft); font-size: 13.5px; margin: 0; }
+  .archive-search { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+  .archive-search input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font-family: var(--sans); font-size: 14px; backdrop-filter: blur(10px); outline: none; transition: border-color 0.2s; }
+  .archive-search input:focus { border-color: var(--indigo); }
+  .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: var(--mono); font-size: 11.5px; padding: 5px 14px; border-radius: 16px; border: 1px solid var(--line); background: var(--paper-alt); color: var(--ink-soft); cursor: pointer; transition: all 0.2s ease; font-weight: 500; }
+  .pill.active, .pill:hover { background: var(--indigo); color: var(--paper); border-color: var(--indigo); }
+  .archive-list { display: flex; flex-direction: column; gap: 18px; }
+  .pub-archive-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--card-shadow); backdrop-filter: blur(10px); transition: transform 0.2s ease, border-color 0.2s ease; }
+  .pub-archive-card:hover { transform: translateY(-2px); border-color: var(--indigo); }
+  .pub-meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .pub-date { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); font-weight: bold; }
+  .pub-archive-card h3 { font-size: 18px; margin: 0 0 4px; font-family: var(--sans); line-height: 1.35; }
+  .pub-author { font-size: 13px; color: var(--indigo); font-weight: 600; margin: 0 0 10px; font-family: var(--mono); }
+  .pub-abstract { font-size: 13.5px; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+
+  .chat-box-container { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--card-shadow); backdrop-filter: blur(12px); display: flex; flex-direction: column; height: 500px; max-height: 70vh; overflow: hidden; }
+  .chat-header { padding: 14px 20px; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper-alt) 60%, transparent); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .chat-title { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chat-status { font-family: var(--mono); font-size: 11px; color: var(--teal); display: flex; align-items: center; gap: 6px; font-weight: bold; white-space: nowrap; }
+  .chat-status::before { content: ''; width: 7px; height: 7px; background: var(--teal); border-radius: 50%; display: inline-block; }
+  .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+  .chat-msg { display: flex; flex-direction: column; max-width: 85%; }
+  .chat-msg.incoming { align-self: flex-start; }
+  .chat-msg.outgoing { align-self: flex-end; align-items: flex-end; }
+  .msg-author { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-bottom: 4px; font-weight: 600; }
+  .msg-bubble { padding: 12px 16px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+  .incoming .msg-bubble { background: var(--paper-alt); color: var(--ink); border-bottom-left-radius: 2px; border: 1px solid var(--line); }
+  .outgoing .msg-bubble { background: var(--indigo); color: var(--paper); border-bottom-right-radius: 2px; }
+  .chat-input-row { padding: 12px 16px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--paper-alt) 40%, transparent); display: flex; gap: 10px; }
+  .chat-input-row input { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 13.5px; outline: none; min-width: 0; }
+  .chat-input-row input:focus { border-color: var(--indigo); }
+
+  .opp-grid { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+  .opp-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--card-shadow); position: relative; backdrop-filter: blur(10px); transition: transform .25s ease, box-shadow .25s ease; }
+  .opp-card:hover { transform: translateY(-3px); box-shadow: 0 16px 32px -16px rgba(22,27,34,0.15); }
+  .opp-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .opp-cat { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); font-weight: bold;}
+  .match { font-family: var(--mono); font-size: 11.5px; color: var(--teal); border: 1px solid var(--teal); border-radius: 20px; padding: 3px 10px; font-weight: bold; white-space: nowrap;}
+  .opp-card h3 { font-size: 19px; margin: 0; line-height: 1.3; font-family: var(--sans); }
+  .opp-meta { font-size: 13px; color: var(--ink-soft); display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--mono); font-weight: 500;}
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag { font-size: 11.5px; background: var(--paper-alt); border: 1px solid var(--line); border-radius: 20px; padding: 3px 10px; color: var(--ink-soft); font-weight: 500;}
+  .opp-actions { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .idea-card { border: 1.5px dashed var(--gold); background: color-mix(in srgb, var(--gold-glow) 12%, var(--card)); }
+  .idea-card .opp-cat { color: var(--gold); }
+  .idea-card h3 { color: var(--indigo); }
+
+  .contact-form { display: flex; flex-direction: column; gap: 14px; background: var(--card); padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); backdrop-filter: blur(10px); }
+  .contact-form input, .contact-form textarea, .contact-form select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-color: var(--indigo); }
+  .contact-form textarea { resize: vertical; min-height: 110px; }
+  .form-label { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: -6px; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(10, 12, 16, 0.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; animation: fadeIn 0.25s ease; }
+  .modal-box { width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 30px 60px -20px rgba(0,0,0,0.4); padding: 30px; position: relative; }
+  .modal-close { position: absolute; top: 18px; inset-inline-end: 18px; background: transparent; border: 1px solid var(--line); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; color: var(--ink-soft); display: grid; place-items: center; font-size: 16px; line-height: 1; }
+  .modal-close:hover { color: var(--ink); background: var(--paper-alt); }
+  .modal-heading { font-family: var(--mono); font-size: 22px; margin: 0 0 6px; padding-inline-end: 30px; }
+  .modal-sub { color: var(--ink-soft); font-size: 14px; margin: 0 0 22px; }
+  .modal-success { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 20px 0; }
+  .modal-success .success-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--teal); color: var(--paper); display: grid; place-items: center; font-size: 26px; }
+  .modal-success h3 { font-family: var(--mono); margin: 0; font-size: 19px; }
+  .modal-success p { color: var(--ink-soft); margin: 0; font-size: 14px; }
+
+  .partner-feature { display: flex; flex-direction: column; gap: 20px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; box-shadow: var(--card-shadow); backdrop-filter: blur(10px); }
+  .partner-logo-row { display: flex; align-items: center; gap: 18px; }
+  .partner-feature h3 { font-family: var(--mono); font-size: 22px; margin: 0; }
+  .partner-feature .subtitle { color: var(--ink-faint); font-family: var(--mono); font-size: 12.5px; letter-spacing: .05em; margin-top: 2px; }
+  .partner-feature p.desc { color: var(--ink-soft); font-size: 15px; line-height: 1.7; margin: 0; }
+
+  footer { border-top: 1px solid var(--line); padding: 36px 0; margin-top: auto; position: relative; z-index: 10; background: var(--paper); }
+  .foot-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--ink-faint); flex-wrap: wrap; gap: 12px; }
+
+  @media (max-width: 1024px) {
+    .page-view { padding: 40px 0; }
+    .bg-symbol-stage { position: relative; justify-content: center; align-items: center; padding-right: 0; padding-left: 0; margin-top: 30px; height: auto; inset: auto; }
+    .left-content-zone { max-width: 100%; }
+  }
+  @media (max-width: 868px) {
+    .hamburger { display: flex; }
+    .navlinks { position: absolute; top: 72px; left: 0; right: 0; background: color-mix(in srgb, var(--paper) 98%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); flex-direction: column; padding: 20px 24px; gap: 16px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); align-items: flex-start; }
+    .navlinks.open { display: flex; }
+    .navlinks a { width: 100%; padding: 8px 0; font-size: 16px; }
+    .join-btn-desktop { display: none; }
+  }
+  @media (max-width: 580px) {
+    .wrap { padding: 0 16px; }
+    .pub-card { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .pub-card .btn, .hero-btns .btn { width: 100%; }
+    .hero-btns { flex-direction: column; }
+    .contact-form { padding: 18px; }
+    .chat-msg { max-width: 92%; }
+    .opp-actions .btn { flex: 1; }
+    .partner-logo-row { flex-direction: column; align-items: flex-start; }
+  }
+</style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+
+<header>
+  <nav class="wrap">
+    <button class="logo" onclick="navigate('home')"><span class="mark">S</span><span id="brand-text">ScienoAtlas</span></button>
+    <div class="navlinks" id="navLinks">
+      <a onclick="navigate('home')" class="nav-link active" data-target="home" id="nav-home">Home</a>
+      <a onclick="navigate('about')" class="nav-link" data-target="about" id="nav-about">About Us</a>
+      <a onclick="navigate('competitions')" class="nav-link" data-target="competitions" id="nav-competitions">Competitions</a>
+      <a onclick="navigate('publishing')" class="nav-link" data-target="publishing" id="nav-publishing">Publishing</a>
+      <a onclick="navigate('chat')" class="nav-link" data-target="chat" id="nav-chat">Chat Hub</a>
+      <a onclick="navigate('partners')" class="nav-link" data-target="partners" id="nav-partners">Partners</a>
+      <a onclick="navigate('contact')" class="nav-link" data-target="contact" id="nav-contact">Contact Us</a>
+      <a onclick="openModal('joinModal')" class="nav-link join-btn-mobile" id="nav-join-mobile">Join Club</a>
+    </div>
+    <div class="navright">
+      <button class="lang-btn" id="langToggle" onclick="toggleLang()">AR | EN</button>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+      <a class="btn btn-primary join-btn-desktop" id="nav-join-desktop" onclick="openModal('joinModal')">Join Club</a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- PAGE: HOME -->
+<main id="page-home" class="page-view active">
+  <div class="wrap">
+    <div class="left-content-zone">
+      <div class="eyebrow" id="home-eyebrow">Operating system for scientific talent</div>
+      <h1><span id="home-title1">Scieno</span><br><em id="home-title2">Atlas</em></h1>
+      <p class="lede" id="home-lede">A map for curious minds. ScienoAtlas empowers students through verified research, hands-on projects, and a global scientific network — turning academic curiosity into a lasting scientific identity.</p>
+      <div class="hero-btns">
+        <a onclick="navigate('competitions')" class="btn btn-primary" style="padding:13px 24px;" id="home-explore-btn">Explore Competitions</a>
+        <a onclick="navigate('about')" class="btn btn-ghost" style="padding:13px 24px;" id="home-learn-btn">Learn More</a>
+      </div>
+    </div>
+  </div>
+  <div class="bg-symbol-stage" data-symbol="home">
+    <div class="symbol-3d-container">
+      <svg class="symbol-3d-svg" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F5D77F"/><stop offset="50%" stop-color="#D4AF37"/><stop offset="100%" stop-color="#8C6D13"/></linearGradient>
+          <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#B3C3F0"/><stop offset="50%" stop-color="#3A528C"/><stop offset="100%" stop-color="#141E36"/></linearGradient>
+          <radialGradient id="coreGlowHome" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="45%" stop-color="#F5D77F"/><stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/></radialGradient>
+          <filter id="glowGold" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.5" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+        </defs>
+        <g opacity="0.35">
+          <circle cx="100" cy="100" r="95" fill="none" stroke="url(#indigoGrad)" stroke-width="1"/>
+          <line x1="100" y1="0" x2="100" y2="200" stroke="url(#indigoGrad)" stroke-width="0.75" stroke-dasharray="3,3"/>
+          <line x1="0" y1="100" x2="200" y2="100" stroke="url(#indigoGrad)" stroke-width="0.75" stroke-dasharray="3,3"/>
+        </g>
+        <circle cx="100" cy="100" r="60" fill="url(#coreGlowHome)" opacity="0.35"/>
+        <circle cx="100" cy="100" r="88" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="4,12,18,12" class="spin-cw-slow"/>
+        <circle cx="100" cy="100" r="96" fill="none" stroke="url(#indigoGrad)" stroke-width="1" stroke-dasharray="1,7" class="spin-ccw-fast shimmer-sweep" opacity="0.6"/>
+        <g class="spin-cw-fast">
+          <ellipse cx="100" cy="100" rx="82" ry="24" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" transform="rotate(-35 100 100)"/>
+          <circle cx="32" cy="62" r="5.5" fill="#F5D77F" filter="url(#glowGold)"/>
+          <circle cx="168" cy="138" r="2.4" fill="#FFF8E1" class="twinkle-a"/>
+        </g>
+        <g class="spin-ccw-slow">
+          <ellipse cx="100" cy="100" rx="82" ry="24" fill="none" stroke="url(#indigoGrad)" stroke-width="2.5" transform="rotate(35 100 100)"/>
+          <circle cx="168" cy="138" r="5.5" fill="#B3C3F0"/>
+          <circle cx="32" cy="62" r="2.2" fill="#DCE4FA" class="twinkle-b"/>
+        </g>
+        <g class="spin-cw-slow">
+          <ellipse cx="100" cy="100" rx="82" ry="24" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" transform="rotate(90 100 100)" stroke-dasharray="10,6"/>
+          <circle cx="100" cy="18" r="4" fill="#D4AF37"/>
+          <circle cx="100" cy="182" r="2" fill="#F5D77F" class="twinkle-c"/>
+        </g>
+        <circle cx="46" cy="150" r="1.8" fill="#8FA3DE" class="twinkle-c"/>
+        <circle cx="156" cy="44" r="1.6" fill="#F5D77F" class="twinkle-d"/>
+        <circle cx="60" cy="40" r="1.4" fill="#B3C3F0" class="twinkle-a"/>
+        <g class="pulse-core">
+          <circle cx="100" cy="100" r="26" fill="url(#coreGlowHome)" opacity="0.5"/>
+          <circle cx="100" cy="100" r="22" fill="url(#indigoGrad)" opacity="0.4"/>
+          <circle cx="100" cy="100" r="14" fill="url(#goldGrad)" filter="url(#glowGold)"/>
+          <circle cx="100" cy="100" r="6" fill="#FFFFFF"/>
+        </g>
+      </svg>
+    </div>
+    <div class="sentence-popup"></div>
+  </div>
+</main>
+
+<!-- PAGE: ABOUT US -->
+<main id="page-about" class="page-view">
+  <div class="wrap">
+    <div class="left-content-zone">
+      <div class="sec-head">
+        <h2 id="about-title">About Us</h2>
+        <p class="lede" id="about-lede">ScienoAtlas is a nonprofit organization built to discover science through alternative, non-traditional ways of learning.</p>
+      </div>
+      <p style="color: var(--ink-soft); font-size: 16px; line-height: 1.7; margin-bottom:30px;" id="about-body">We exist to give every curious mind a space to think, question, and build — not just a place to memorize facts. ScienoAtlas moves learning away from rote memorization and toward experimentation, discussion, and real projects with real goals. Everything we do is nonprofit and built for the benefit of the whole community: students, mentors, and institutions alike. We believe science should be experienced, not just stored in a notebook — so we create room for ideas to be argued, tested, prototyped, and shared with the world.</p>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div style="background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--card-shadow); backdrop-filter: blur(10px);">
+          <h3 style="margin:0 0 6px; font-size:16px;" id="about-point1-title">Alternative learning</h3>
+          <p style="margin:0; color:var(--ink-soft); font-size:13.5px;" id="about-point1-body">We favor experimentation, dialogue, and projects over rote memorization.</p>
+        </div>
+        <div style="background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--card-shadow); backdrop-filter: blur(10px);">
+          <h3 style="margin:0 0 6px; font-size:16px;" id="about-point2-title">Nonprofit, for everyone</h3>
+          <p style="margin:0; color:var(--ink-soft); font-size:13.5px;" id="about-point2-body">Every resource we build is meant to create benefit for the whole community, not a select few.</p>
+        </div>
+        <div style="background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--card-shadow); backdrop-filter: blur(10px);">
+          <h3 style="margin:0 0 6px; font-size:16px;" id="about-point3-title">Space to think</h3>
+          <p style="margin:0; color:var(--ink-soft); font-size:13.5px;" id="about-point3-body">We give ideas room to be debated, tested, and turned into real goals and projects.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-symbol-stage" data-symbol="about">
+    <div class="symbol-3d-container">
+      <svg class="symbol-3d-svg" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="deltaGrad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F5D77F"/><stop offset="100%" stop-color="#24345C"/></linearGradient>
+          <linearGradient id="deltaGrad2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#8FA3DE"/><stop offset="100%" stop-color="#10182B"/></linearGradient>
+          <radialGradient id="coreGlowAbout" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/><stop offset="100%" stop-color="#8FA3DE" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="105" r="90" fill="none" stroke="url(#deltaGrad1)" stroke-width="1" stroke-dasharray="2,6" class="spin-cw-slow" opacity="0.5"/>
+        <circle cx="100" cy="105" r="74" fill="none" stroke="url(#deltaGrad2)" stroke-width="1.5" stroke-dasharray="12,6" class="spin-ccw-slow"/>
+        <circle cx="100" cy="105" r="100" fill="none" stroke="#D4AF37" stroke-width="0.75" stroke-dasharray="1,9" class="spin-cw-fast" opacity="0.4"/>
+        <ellipse cx="100" cy="100" rx="55" ry="45" fill="url(#coreGlowAbout)" opacity="0.4"/>
+        <g class="float-slow">
+          <polygon points="100,18 18,168 100,138" fill="url(#deltaGrad1)" opacity="0.82"/>
+          <polygon points="100,18 182,168 100,138" fill="url(#deltaGrad2)" opacity="0.92"/>
+          <polygon points="18,168 182,168 100,138" fill="#D4AF37" opacity="0.35"/>
+          <line x1="100" y1="18" x2="100" y2="138" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
+          <line x1="100" y1="18" x2="18" y2="168" stroke="#F5D77F" stroke-width="1.5" opacity="0.7"/>
+          <line x1="100" y1="18" x2="182" y2="168" stroke="#8FA3DE" stroke-width="1.5" opacity="0.7"/>
+          <circle cx="100" cy="18" r="5" fill="#F5D77F"/>
+          <circle cx="18" cy="168" r="4.5" fill="#8FA3DE"/>
+          <circle cx="182" cy="168" r="4.5" fill="#8FA3DE"/>
+          <circle cx="100" cy="138" r="4" fill="#D4AF37"/>
+          <circle cx="60" cy="90" r="1.8" fill="#FFFFFF" class="twinkle-a"/>
+          <circle cx="140" cy="90" r="1.6" fill="#F5D77F" class="twinkle-b"/>
+          <circle cx="100" cy="60" r="1.5" fill="#DCE4FA" class="twinkle-c"/>
+        </g>
+      </svg>
+    </div>
+    <div class="sentence-popup"></div>
+  </div>
+</main>
+
+<!-- PAGE: COMPETITIONS -->
+<main id="page-competitions" class="page-view">
+  <div class="wrap">
+    <div class="left-content-zone">
+      <div class="sec-head">
+        <h2 id="comp-title">Competitions & Hackathons</h2>
+        <p class="lede" id="comp-lede">Discover global challenges to test your skills, build your scientific identity, and compete with the brightest minds.</p>
+      </div>
+      <div class="opp-grid">
+        <div class="opp-card">
+          <div class="opp-top"><span class="opp-cat" id="chemx-cat">Chemistry Competition</span><span class="match" id="chemx-badge">Top Tier</span></div>
+          <h3 id="chemx-title">ChemX</h3>
+          <p style="font-size: 13.5px; color: var(--ink-soft); margin: 0;" id="chemx-desc">Organized by the STEM October Chemistry Club, ChemX is a premier global chemistry competition designed to challenge high school students worldwide.</p>
+          <div class="opp-meta"><span id="chemx-meta1">Online & Hybrid</span><span id="chemx-meta2">Global Eligibility</span></div>
+          <div class="tag-row"><span class="tag">Chemistry</span><span class="tag">STEM October</span></div>
+          <div class="opp-actions">
+            <a href="https://chemx.octchemistryclub.com/" target="_blank" class="btn btn-primary" id="chemx-visit">Visit Website</a>
+            <a class="btn btn-ghost" id="chemx-save">Save</a>
+          </div>
+        </div>
+        <div class="opp-card">
+          <div class="opp-top"><span class="opp-cat" id="pharaohs-cat">Physics League</span><span class="match" id="pharaohs-badge">Featured</span></div>
+          <h3 id="pharaohs-title">Pharaohs' Fragments League</h3>
+          <p style="font-size: 13.5px; color: var(--ink-soft); margin: 0;" id="pharaohs-desc">An elite, globally recognized physics and interdisciplinary science competition inviting students to tackle complex physical phenomena.</p>
+          <div class="opp-meta"><span id="pharaohs-meta1">2 Rounds</span><span id="pharaohs-meta2">Multiple Categories</span></div>
+          <div class="tag-row"><span class="tag">Physics</span><span class="tag">Mechanics</span></div>
+          <div class="opp-actions">
+            <a href="#" class="btn btn-primary" id="pharaohs-apply">Apply Now</a>
+            <a class="btn btn-ghost" id="pharaohs-save">Save</a>
+          </div>
+        </div>
+        <div class="opp-card idea-card">
+          <div class="opp-top"><span class="opp-cat" id="idea-cat">Have Something in Mind?</span></div>
+          <h3 id="idea-title">Do you have an idea to make it real?</h3>
+          <p style="font-size: 13.5px; color: var(--ink-soft); margin: 0;" id="idea-desc">Pitch an event, hackathon, or competition idea to the ScienoAtlas team. If it has real potential, we will help you build it and bring it to life.</p>
+          <div class="opp-actions">
+            <a class="btn btn-primary" id="idea-cta" onclick="openModal('ideaModal')">Submit Your Idea</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-symbol-stage" data-symbol="competitions">
+    <div class="symbol-3d-container">
+      <svg class="symbol-3d-svg" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="intGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F5D77F"/><stop offset="50%" stop-color="#2E7D6B"/><stop offset="100%" stop-color="#142C25"/></linearGradient>
+          <radialGradient id="coreGlowComp" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/><stop offset="100%" stop-color="#2E7D6B" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="90" fill="none" stroke="url(#intGrad)" stroke-width="1.5" stroke-dasharray="16,8,4,8" class="spin-cw-fast"/>
+        <circle cx="100" cy="100" r="68" fill="none" stroke="#2E7D6B" stroke-width="1" stroke-dasharray="2,6" opacity="0.6"/>
+        <circle cx="100" cy="100" r="98" fill="none" stroke="#F5D77F" stroke-width="0.75" stroke-dasharray="1,10" class="spin-ccw-slow" opacity="0.5"/>
+        <line x1="20" y1="100" x2="180" y2="100" stroke="#8FA3DE" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.5"/>
+        <line x1="100" y1="20" x2="100" y2="180" stroke="#8FA3DE" stroke-width="1.2" stroke-dasharray="4,4" opacity="0.5"/>
+        <ellipse cx="105" cy="100" rx="50" ry="60" fill="url(#coreGlowComp)" opacity="0.35"/>
+        <path d="M25,100 Q60,40 100,100 T175,100" fill="none" stroke="#8FA3DE" stroke-width="2" opacity="0.45"/>
+        <path d="M25,120 Q60,170 100,120 T175,120" fill="none" stroke="#F5D77F" stroke-width="1.3" opacity="0.35" class="float-slow"/>
+        <circle cx="60" cy="55" r="2" fill="#8FA3DE" class="twinkle-a"/>
+        <circle cx="140" cy="145" r="2" fill="#F5D77F" class="twinkle-b"/>
+        <circle cx="175" cy="100" r="2.2" fill="#FFFFFF" class="twinkle-c"/>
+        <g class="pulse-core">
+          <path d="M126,28 C152,28 142,68 112,100 C82,132 62,162 88,172 C103,177 118,167 122,157" fill="none" stroke="url(#intGrad)" stroke-width="14" stroke-linecap="round"/>
+          <path d="M126,28 C152,28 142,68 112,100 C82,132 62,162 88,172" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.8"/>
+        </g>
+      </svg>
+    </div>
+    <div class="sentence-popup"></div>
+  </div>
+</main>
+
+<!-- PAGE: PUBLISHING -->
+<main id="page-publishing" class="page-view">
+  <div class="wrap">
+    <div class="left-content-zone">
+      <div class="sec-head">
+        <h2 id="pub-title">Publishing Hub</h2>
+        <p class="lede" id="pub-lede">Submit your scientific discoveries or explore peer-reviewed research published by our club community.</p>
+      </div>
+      <div class="sub-tabs">
+        <button class="tab-btn active" id="tab-btn-submit" onclick="switchPubTab('submit')">✦ <span id="pub-tab-submit-label">Submit Work</span></button>
+        <button class="tab-btn" id="tab-btn-explore" onclick="switchPubTab('explore')">🔍 <span id="pub-tab-explore-label">Explore Published</span></button>
+      </div>
+      <div id="pub-tab-submit" class="pub-subtab-view active">
+        <div class="pub-grid">
+          <div class="pub-card">
+            <div><h3 id="pub-articles-title">Articles</h3><p id="pub-articles-desc">Short-form scientific observations and theoretical essays.</p></div>
+            <a class="btn btn-primary" id="pub-articles-btn">Publish</a>
+          </div>
+          <div class="pub-card">
+            <div><h3 id="pub-pdfs-title">PDFs</h3><p id="pub-pdfs-desc">Detailed lab notes and technical documentation files.</p></div>
+            <a class="btn btn-primary" id="pub-pdfs-btn">Publish</a>
+          </div>
+          <div class="pub-card">
+            <div><h3 id="pub-papers-title">Research Papers</h3><p id="pub-papers-desc">Full-length peer-reviewed academic manuscripts.</p></div>
+            <a class="btn btn-primary" id="pub-papers-btn">Publish</a>
+          </div>
+        </div>
+      </div>
+      <div id="pub-tab-explore" class="pub-subtab-view">
+        <div class="archive-search">
+          <input type="text" id="pubSearch" placeholder="Search title, author, or keyword..." onkeyup="filterPublications()">
+          <div class="filter-pills">
+            <span class="pill active" onclick="filterCategory('all', this)" id="filter-all">All</span>
+            <span class="pill" onclick="filterCategory('paper', this)" id="filter-paper">Research Papers</span>
+            <span class="pill" onclick="filterCategory('article', this)" id="filter-article">Articles</span>
+            <span class="pill" onclick="filterCategory('pdf', this)" id="filter-pdf">PDFs</span>
+          </div>
+        </div>
+        <div class="archive-list" id="archiveList"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-symbol-stage" data-symbol="publishing">
+    <div class="symbol-3d-container">
+      <svg class="symbol-3d-svg" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8FA3DE"/><stop offset="50%" stop-color="#D4AF37"/><stop offset="100%" stop-color="#1A2745"/></linearGradient>
+          <radialGradient id="coreGlowPub" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/><stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="92" fill="none" stroke="url(#hexGrad)" stroke-width="1.2" stroke-dasharray="6,6" class="spin-ccw-slow" opacity="0.6"/>
+        <circle cx="100" cy="100" r="100" fill="none" stroke="#8FA3DE" stroke-width="0.75" stroke-dasharray="1,9" class="spin-cw-fast" opacity="0.4"/>
+        <circle cx="100" cy="94" r="50" fill="url(#coreGlowPub)" opacity="0.4"/>
+        <g class="spin-cw-slow">
+          <polygon points="100,16 168,55 168,133 100,172 32,133 32,55" fill="none" stroke="url(#hexGrad)" stroke-width="3.5"/>
+          <polygon points="100,26 158,60 158,128 100,162 42,128 42,60" fill="none" stroke="#D4AF37" stroke-width="1" stroke-dasharray="8,4" opacity="0.7"/>
+          <circle cx="100" cy="16" r="6" fill="#D4AF37"/><circle cx="168" cy="55" r="6" fill="#D4AF37"/><circle cx="168" cy="133" r="6" fill="#D4AF37"/>
+          <circle cx="100" cy="172" r="6" fill="#D4AF37"/><circle cx="32" cy="133" r="6" fill="#D4AF37"/><circle cx="32" cy="55" r="6" fill="#D4AF37"/>
+          <circle cx="134" cy="35" r="1.8" fill="#FFFFFF" class="twinkle-a"/><circle cx="134" cy="153" r="1.8" fill="#FFFFFF" class="twinkle-b"/>
+          <circle cx="66" cy="153" r="1.8" fill="#FFFFFF" class="twinkle-c"/><circle cx="66" cy="35" r="1.8" fill="#FFFFFF" class="twinkle-d"/>
+        </g>
+        <circle cx="100" cy="94" r="44" fill="none" stroke="url(#hexGrad)" stroke-width="2.5" stroke-dasharray="12,8" class="spin-ccw-slow"/>
+        <polygon points="100,46 138,68 138,112 100,134 62,112 62,68" fill="url(#hexGrad)" opacity="0.3" class="pulse-core"/>
+      </svg>
+    </div>
+    <div class="sentence-popup"></div>
+  </div>
+</main>
+
+<!-- PAGE: SCIENTIFIC CHAT HUB -->
+<main id="page-chat" class="page-view">
+  <div class="wrap">
+    <div class="left-content-zone">
+      <div class="sec-head">
+        <h2 id="chat-title">Scientific Chat Hub</h2>
+        <p class="lede" id="chat-lede">Engage in peer-to-peer discussions, theoretical debates, and experimental Q&As categorized by core scientific fields.</p>
+      </div>
+      <div class="sub-tabs" id="chatRoomTabs">
+        <button class="tab-btn active" onclick="switchChatRoom('physics', this)" data-room="physics">⚛️ Physics</button>
+        <button class="tab-btn" onclick="switchChatRoom('chemistry', this)" data-room="chemistry">🧪 Chemistry</button>
+        <button class="tab-btn" onclick="switchChatRoom('biology', this)" data-room="biology">🧬 Biology</button>
+        <button class="tab-btn" onclick="switchChatRoom('astronomy', this)" data-room="astronomy">🌌 Astronomy</button>
+        <button class="tab-btn" onclick="switchChatRoom('math_cs', this)" data-room="math_cs">📐 Math & CS</button>
+      </div>
+      <div class="chat-box-container">
+        <div class="chat-header">
+          <div class="chat-title" id="chatChannelTitle">⚛️ # physics-and-quantum</div>
+          <div class="chat-status"><span id="activeUserCount">18 Online</span></div>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Ask a question or share a discovery..." onkeydown="if(event.key === 'Enter') handleSendMessage()">
+          <button class="btn btn-primary" onclick="handleSendMessage()" style="padding: 8px 18px;" id="chat-send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-symbol-stage" data-symbol="chat">
+    <div class="symbol-3d-container">
+      <svg class="symbol-3d-svg" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="chatGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E7D6B"/><stop offset="50%" stop-color="#8FA3DE"/><stop offset="100%" stop-color="#F5D77F"/></linearGradient>
+          <radialGradient id="coreGlowChat" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/><stop offset="100%" stop-color="#8FA3DE" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="90" fill="none" stroke="url(#chatGrad)" stroke-width="1.5" stroke-dasharray="10,6" class="spin-cw-fast"/>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="#D4AF37" stroke-width="1" stroke-dasharray="4,6" class="spin-ccw-slow"/>
+        <circle cx="100" cy="100" r="98" fill="none" stroke="#2E7D6B" stroke-width="0.75" stroke-dasharray="1,10" class="spin-ccw-fast" opacity="0.4"/>
+        <circle cx="100" cy="100" r="55" fill="url(#coreGlowChat)" opacity="0.35"/>
+        <circle cx="184" cy="100" r="2.2" fill="#F5D77F" class="twinkle-a"/>
+        <circle cx="16" cy="100" r="2" fill="#2E7D6B" class="twinkle-c"/>
+        <g class="pulse-core">
+          <polygon points="100,28 162,68 142,152 58,152 38,68" fill="none" stroke="url(#chatGrad)" stroke-width="3"/>
+          <line x1="100" y1="28" x2="142" y2="152" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6"/>
+          <line x1="162" y1="68" x2="58" y2="152" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6"/>
+          <line x1="38" y1="68" x2="142" y2="152" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6"/>
+          <line x1="100" y1="28" x2="58" y2="152" stroke="#FFFFFF" stroke-width="1.2" opacity="0.6"/>
+          <circle cx="100" cy="28" r="6" fill="#2E7D6B"/><circle cx="162" cy="68" r="6" fill="#8FA3DE"/><circle cx="142" cy="152" r="6" fill="#F5D77F"/>
+          <circle cx="58" cy="152" r="6" fill="#8FA3DE"/><circle cx="38" cy="68" r="6" fill="#2E7D6B"/><circle cx="100" cy="98" r="8" fill="url(#chatGrad)"/>
+          <circle cx="121" cy="90" r="1.6" fill="#FFFFFF" class="twinkle-b"/><circle cx="79" cy="90" r="1.6" fill="#FFFFFF" class="twinkle-d"/>
+        </g>
+      </svg>
+    </div>
+    <div class="sentence-popup"></div>
+  </div>
+</main>
+
+<!-- PAGE: PARTNERS -->
+<main id="page-partners" class="page-view">
+  <div class="wrap">
+    <div class="left-content-zone">
+      <div class="sec-head">
+        <h2 id="partners-title">Our Partner</h2>
+        <p class="lede" id="partners-lede">ScienoAtlas is proud to work alongside institutions that share our belief in alternative, hands-on scientific learning.</p>
+      </div>
+      <div class="partner-feature">
+        <div class="partner-logo-row">
+          <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="70" height="70" rx="16" fill="var(--indigo)"/>
+            <rect x="1" y="1" width="70" height="70" rx="16" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+            <text x="36" y="43" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="700" font-size="20" fill="var(--paper)">AoPS</text>
+          </svg>
+          <div>
+            <h3 id="aops-name">AoPS</h3>
+            <div class="subtitle" id="aops-full">Art of Problem Solving</div>
+          </div>
+        </div>
+        <p class="desc" id="aops-desc">Art of Problem Solving (AoPS) builds resources and a community for avid math students, sharing our mission of learning through challenge, exploration, and problem solving rather than rote memorization.</p>
+        <div><a href="https://artofproblemsolving.com/" target="_blank" class="btn btn-primary" id="aops-visit">Visit AoPS</a></div>
+      </div>
+      <p style="margin-top:16px; font-size:12px; color:var(--ink-faint);">Logo shown is a placeholder mark — replace with the official AoPS logo asset if you have usage rights.</p>
+    </div>
+  </div>
+  <div class="bg-symbol-stage" data-symbol="partners">
+    <div class="symbol-3d-container">
+      <svg class="symbol-3d-svg" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="magGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#A63D2F"/><stop offset="50%" stop-color="#D4AF37"/><stop offset="100%" stop-color="#24345C"/></linearGradient>
+          <radialGradient id="coreGlowPart" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/><stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="105" r="94" fill="none" stroke="#8FA3DE" stroke-width="0.75" stroke-dasharray="1,9" class="spin-cw-slow" opacity="0.4"/>
+        <circle cx="100" cy="90" r="45" fill="url(#coreGlowPart)" opacity="0.4"/>
+        <path d="M30,118 C10,58 190,58 170,118" fill="none" stroke="#D4AF37" stroke-width="2" stroke-dasharray="6,4" class="spin-cw-fast"/>
+        <path d="M20,108 C-10,38 210,38 180,108" fill="none" stroke="#8FA3DE" stroke-width="1.5" stroke-dasharray="4,4" class="spin-ccw-slow"/>
+        <path d="M40,128 C25,78 175,78 160,128" fill="none" stroke="#F5D77F" stroke-width="1.2" stroke-dasharray="3,5" class="spin-ccw-fast" opacity="0.55"/>
+        <circle cx="45" cy="70" r="1.8" fill="#F5D77F" class="twinkle-a"/><circle cx="155" cy="70" r="1.8" fill="#8FA3DE" class="twinkle-b"/><circle cx="100" cy="42" r="1.6" fill="#FFFFFF" class="twinkle-c"/>
+        <path d="M48,138 A62,62 0 1,1 152,138" fill="none" stroke="url(#magGrad)" stroke-width="18" stroke-linecap="round"/>
+        <path d="M48,138 A62,62 0 1,1 152,138" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.75"/>
+        <rect x="36" y="128" width="24" height="20" rx="4" fill="#A63D2F"/>
+        <rect x="140" y="128" width="24" height="20" rx="4" fill="#24345C"/>
+        <text x="48" y="143" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">N</text>
+        <text x="152" y="143" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">S</text>
+        <circle cx="100" cy="76" r="10" fill="#D4AF37" class="pulse-core"/>
+      </svg>
+    </div>
+    <div class="sentence-popup"></div>
+  </div>
+</main>
+
+<!-- PAGE: CONTACT US -->
+<main id="page-contact" class="page-view">
+  <div class="wrap">
+    <div class="left-content-zone">
+      <div class="sec-head">
+        <h2 id="contact-title">Contact Us</h2>
+        <p class="lede" id="contact-lede">Have questions about membership, partnerships, or publishing? Reach out to us.</p>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert(t().contact.sentAlert);">
+        <input type="text" id="contact-name" placeholder="Your Name" required>
+        <input type="email" id="contact-email" placeholder="Your Email" required>
+        <input type="text" id="contact-subject" placeholder="Subject">
+        <textarea id="contact-message" placeholder="Your Message..." required></textarea>
+        <button type="submit" class="btn btn-primary" style="justify-content: center;" id="contact-send">Send Message</button>
+      </form>
+    </div>
+  </div>
+  <div class="bg-symbol-stage" data-symbol="contact">
+    <div class="symbol-3d-container">
+      <svg class="symbol-3d-svg" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F5D77F"/><stop offset="50%" stop-color="#D4AF37"/><stop offset="100%" stop-color="#A63D2F"/></linearGradient>
+          <radialGradient id="coreGlowContact" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/><stop offset="100%" stop-color="#F5D77F" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="100" r="88" fill="none" stroke="url(#boltGrad)" stroke-width="2" stroke-dasharray="16,6,4,6" class="spin-cw-fast"/>
+        <circle cx="100" cy="100" r="96" fill="none" stroke="#8FA3DE" stroke-width="1.2" stroke-dasharray="4,8" class="spin-ccw-slow"/>
+        <circle cx="100" cy="100" r="104" fill="none" stroke="#A63D2F" stroke-width="0.75" stroke-dasharray="1,11" class="spin-cw-slow" opacity="0.4"/>
+        <circle cx="100" cy="100" r="60" fill="url(#coreGlowContact)" opacity="0.4"/>
+        <circle cx="55" cy="60" r="2" fill="#F5D77F" class="twinkle-a"/><circle cx="150" cy="55" r="1.8" fill="#8FA3DE" class="twinkle-b"/>
+        <circle cx="55" cy="150" r="1.6" fill="#A63D2F" class="twinkle-c"/><circle cx="150" cy="150" r="1.8" fill="#F5D77F" class="twinkle-d"/>
+        <g class="pulse-core">
+          <polygon points="118,12 52,108 98,108 82,188 152,82 106,82" fill="url(#boltGrad)"/>
+          <polygon points="118,12 52,108 98,108 82,188 152,82 106,82" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.85"/>
+        </g>
+      </svg>
+    </div>
+    <div class="sentence-popup"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-bottom">
+      <span class="logo" style="font-size: 14px; font-weight: bold;" id="footer-brand">SCIENOATLAS</span>
+      <span id="footer-rights">© 2026 ScienoAtlas. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- JOIN CLUB MODAL -->
+<div class="modal-overlay" id="joinModal" style="display:none" onclick="if(event.target===this) closeModal('joinModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('joinModal')">✕</button>
+    <div id="joinFormView">
+      <h3 class="modal-heading" id="join-heading">Join ScienoAtlas</h3>
+      <p class="modal-sub" id="join-subheading">Become part of a nonprofit community exploring science beyond the classroom.</p>
+      <form class="contact-form" onsubmit="handleJoinSubmit(event)">
+        <input type="text" id="join-name" placeholder="Full Name" required>
+        <input type="email" id="join-email" placeholder="Email Address" required>
+        <input type="text" id="join-age" placeholder="Age / Grade">
+        <input type="text" id="join-field" placeholder="e.g. Physics, Chemistry, Biology, Math & CS">
+        <textarea id="join-message" placeholder="Why do you want to join? (optional)"></textarea>
+        <button type="submit" class="btn btn-primary" style="justify-content:center;" id="join-submit">Submit Application</button>
+      </form>
+    </div>
+    <div id="joinSuccessView" class="modal-success" style="display:none">
+      <div class="success-icon">✓</div>
+      <h3 id="join-success-title">Welcome Aboard!</h3>
+      <p id="join-success-body">Your application has been received. Our team will be in touch soon.</p>
+      <a class="btn btn-primary" onclick="closeModal('joinModal')" id="join-close">Close</a>
+    </div>
+  </div>
+</div>
+
+<!-- IDEA SUBMISSION MODAL -->
+<div class="modal-overlay" id="ideaModal" style="display:none" onclick="if(event.target===this) closeModal('ideaModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('ideaModal')">✕</button>
+    <div id="ideaFormView">
+      <h3 class="modal-heading" id="idea-form-heading">Submit Your Idea</h3>
+      <p class="modal-sub" id="idea-form-subheading">Tell us about the event, hackathon, or competition you want to see happen.</p>
+      <form class="contact-form" onsubmit="handleIdeaSubmit(event)">
+        <input type="text" id="idea-name" placeholder="Your Name" required>
+        <input type="email" id="idea-email" placeholder="Your Email" required>
+        <span class="form-label" id="idea-type-label">Type of Idea</span>
+        <select id="idea-type">
+          <option value="event" id="idea-type-event">Event</option>
+          <option value="hackathon" id="idea-type-hackathon">Hackathon</option>
+          <option value="competition" id="idea-type-competition">Competition</option>
+        </select>
+        <input type="text" id="idea-idea-title" placeholder="Idea Title" required>
+        <textarea id="idea-description" placeholder="Describe Your Idea" required></textarea>
+        <button type="submit" class="btn btn-primary" style="justify-content:center;" id="idea-submit">Submit Idea</button>
+      </form>
+    </div>
+    <div id="ideaSuccessView" class="modal-success" style="display:none">
+      <div class="success-icon">✓</div>
+      <h3 id="idea-success-title">Idea Received!</h3>
+      <p id="idea-success-body">Thank you for sharing your idea. Our team will review it and reach out soon.</p>
+      <a class="btn btn-primary" onclick="closeModal('ideaModal')" id="idea-close">Close</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ================= TRANSLATIONS ================= */
+  const translations = {
+    en: {
+      dir: 'ltr', brand: 'ScienoAtlas',
+      nav: { home:'Home', about:'About Us', competitions:'Competitions', publishing:'Publishing', chat:'Chat Hub', partners:'Partners', contact:'Contact Us', join:'Join Club' },
+      home: { eyebrow:'Operating system for scientific talent', title1:'Scieno', title2:'Atlas',
+        lede:'A map for curious minds. ScienoAtlas empowers students through verified research, hands-on projects, and a global scientific network — turning academic curiosity into a lasting scientific identity.',
+        explore:'Explore Competitions', learn:'Learn More' },
+      about: { title:'About Us', lede:'ScienoAtlas is a nonprofit organization built to discover science through alternative, non-traditional ways of learning.',
+        body:'We exist to give every curious mind a space to think, question, and build — not just a place to memorize facts. ScienoAtlas moves learning away from rote memorization and toward experimentation, discussion, and real projects with real goals. Everything we do is nonprofit and built for the benefit of the whole community: students, mentors, and institutions alike. We believe science should be experienced, not just stored in a notebook — so we create room for ideas to be argued, tested, prototyped, and shared with the world.',
+        p1t:'Alternative learning', p1b:'We favor experimentation, dialogue, and projects over rote memorization.',
+        p2t:'Nonprofit, for everyone', p2b:'Every resource we build is meant to create benefit for the whole community, not a select few.',
+        p3t:'Space to think', p3b:'We give ideas room to be debated, tested, and turned into real goals and projects.' },
+      competitions: { title:'Competitions & Hackathons', lede:'Discover global challenges to test your skills, build your scientific identity, and compete with the brightest minds.',
+        visit:'Visit Website', apply:'Apply Now', save:'Save',
+        chemxCat:'Chemistry Competition', chemxBadge:'Top Tier', chemxDesc:'Organized by the STEM October Chemistry Club, ChemX is a premier global chemistry competition designed to challenge high school students worldwide.', chemxMeta1:'Online & Hybrid', chemxMeta2:'Global Eligibility',
+        pharCat:'Physics League', pharBadge:'Featured', pharDesc:"An elite, globally recognized physics and interdisciplinary science competition inviting students to tackle complex physical phenomena.", pharMeta1:'2 Rounds', pharMeta2:'Multiple Categories',
+        ideaCat:'Have Something in Mind?', ideaTitle:'Do you have an idea to make it real?', ideaDesc:'Pitch an event, hackathon, or competition idea to the ScienoAtlas team. If it has real potential, we will help you build it and bring it to life.', ideaCta:'Submit Your Idea' },
+      ideaForm: { heading:'Submit Your Idea', sub:'Tell us about the event, hackathon, or competition you want to see happen.', typeLabel:'Type of Idea', event:'Event', hackathon:'Hackathon', competition:'Competition', submit:'Submit Idea', close:'Close', successTitle:'Idea Received!', successBody:'Thank you for sharing your idea. Our team will review it and reach out soon.' },
+      publishing: { title:'Publishing Hub', lede:'Submit your scientific discoveries or explore peer-reviewed research published by our club community.',
+        submitTab:'Submit Work', exploreTab:'Explore Published',
+        articlesTitle:'Articles', articlesDesc:'Short-form scientific observations and theoretical essays.',
+        pdfsTitle:'PDFs', pdfsDesc:'Detailed lab notes and technical documentation files.',
+        papersTitle:'Research Papers', papersDesc:'Full-length peer-reviewed academic manuscripts.', publish:'Publish',
+        search:'Search title, author, or keyword...', all:'All', paper:'Research Papers', article:'Articles', pdf:'PDFs',
+        readPaper:'Read Paper', download:'Download PDF', readArticle:'Read Article', viewPdf:'View PDF',
+        items: {
+          paper1: { cat:'Research Paper', date:'MAR 2026', title:'Quantum Field Interactions in Low-Temperature Synthetic Polymers', author:'By Dr. A. Vance & E. Rahimi • ScienoAtlas Vol. 14', abstract:'An empirical analysis of spin wave excitations and anomalous conduction states in organized polymer lattices near absolute zero.', tags:['Quantum Physics','Polymers'] },
+          article1: { cat:'Article', date:'FEB 2026', title:'Thermodynamic Efficiency in Multi-Junction Photovoltaic Cells', author:'By Sarah M. Hassan', abstract:'Observation on passive heat dissolution techniques aimed at preventing power degradation during peak solar irradiance.', tags:['Solar Energy','Thermodynamics'] },
+          pdf1: { cat:'PDF / Lab Notes', date:'JAN 2026', title:'ChemX Experimental Protocols & Reaction Kinetics Guide', author:'By ScienoAtlas Research Division', abstract:'Full documentation package including lab procedures, titration formulas, error margin tables, and safety guidelines.', tags:['Chemistry','Lab Guide'] }
+        } },
+      chat: { title:'Scientific Chat Hub', lede:'Engage in peer-to-peer discussions, theoretical debates, and experimental Q&As categorized by core scientific fields.',
+        rooms: { physics:'⚛️ Physics', chemistry:'🧪 Chemistry', biology:'🧬 Biology', astronomy:'🌌 Astronomy', math_cs:'📐 Math & CS' },
+        channelTitles: { physics:'⚛️ # physics-and-quantum', chemistry:'🧪 # chemistry-and-kinetics', biology:'🧬 # biology-and-genetics', astronomy:'🌌 # astronomy-and-cosmology', math_cs:'📐 # mathematics-and-cs' },
+        placeholder:'Ask a question or share a discovery...', send:'Send', online:'Online', you:'You (ScienoAtlas Researcher)', bot:'ScienoAtlas Science Bot', insight:'Insight regarding' },
+      partners: { title:'Our Partner', lede:'ScienoAtlas is proud to work alongside institutions that share our belief in alternative, hands-on scientific learning.',
+        name:'AoPS', full:'Art of Problem Solving', desc:'Art of Problem Solving (AoPS) builds resources and a community for avid math students, sharing our mission of learning through challenge, exploration, and problem solving rather than rote memorization.', visit:'Visit AoPS' },
+      contact: { title:'Contact Us', lede:'Have questions about membership, partnerships, or publishing? Reach out to us.', name:'Your Name', email:'Your Email', subject:'Subject', message:'Your Message...', send:'Send Message', sentAlert:'Message sent!' },
+      joinForm: { heading:'Join ScienoAtlas', sub:'Become part of a nonprofit community exploring science beyond the classroom.', name:'Full Name', email:'Email Address', age:'Age / Grade', fieldPh:'e.g. Physics, Chemistry, Biology, Math & CS', message:'Why do you want to join? (optional)', submit:'Submit Application', close:'Close', successTitle:'Welcome Aboard!', successBody:'Your application has been received. Our team will be in touch soon.' },
+      footer: { rights:'© 2026 ScienoAtlas. All rights reserved.' },
+      symbolKnowledge: {
+        home: ['Energy equals mass times the speed of light squared: E = mc².','A single electron behaves as both a particle and a wave.','Quantum entanglement enables instant state sharing across distances.','The Heisenberg uncertainty principle limits how precisely we know position and momentum.','Nuclear fusion powers the sun by fusing hydrogen into helium.','Superconductors carry electric current with zero resistance below critical temperature.','Dark matter is estimated to make up roughly 27% of the universe.','Every scientific breakthrough begins as a testable, falsifiable hypothesis.'],
+        about: ['Delta (Δ) signifies finite difference, flux, or radical transformation.','Every rigorous experiment begins with a clearly falsifiable hypothesis.','Peer review strengthens research by exposing it to expert scrutiny.','Reproducibility is the cornerstone that separates real science from anecdote.','The scientific method cycles through observation, hypothesis, experiment, and analysis.','Interdisciplinary collaboration often sparks the most transformative discoveries.','Curiosity-driven inquiry has historically preceded most major technological leaps.','A supportive scientific community multiplies individual research potential.'],
+        competitions: ['Mathematics is the precise language in which nature is written.','The Fibonacci sequence appears throughout natural growth patterns.',"Euler's identity elegantly links five fundamental mathematical constants.",'Prime numbers underpin the security of modern cryptographic systems.','Differential equations model everything from planetary orbits to population growth.','Statistical significance helps competitors validate experimental claims.','A well-posed problem has a solution that is unique and stable.','Competitive science hones speed, precision, and creative reasoning under pressure.'],
+        publishing: ['The benzene ring features delocalized resonance structures.','Covalent bonds form when atoms share electron pairs to gain stability.','A catalyst speeds up a reaction without being consumed itself.','Stoichiometry ensures chemical equations remain perfectly balanced.','Titration precisely determines the concentration of an unknown solution.','Chromatography separates mixtures based on differential compound migration.','A well-cited paper builds a verifiable chain of scientific evidence.','Peer-reviewed publication transforms a lab result into shared scientific record.'],
+        chat: ['Real-time information exchange accelerates scientific discovery.','Peer collaboration refines hypotheses into validated theories.','Interdisciplinary discussion bridges gaps across core scientific fields.','Open dialogue exposes blind spots that solitary research often misses.','Clear scientific communication is as vital as the discovery itself.','Collaborative networks spread new findings faster than any single lab.','Debate sharpens arguments long before they reach formal publication.','Community-driven Q&A accelerates learning for early-career scientists.'],
+        partners: ['Magnetic fields exert force perpendicular to charge velocity.','Opposite magnetic poles attract to reach maximum energetic balance.','Collaborative scientific networks amplify discovery exponentially.',"Maxwell's equations unify electricity, magnetism, and light into one framework.",'Strategic partnerships pool resources that no single institution could muster alone.','Joint research consortia often unlock funding unavailable to solo teams.','Shared infrastructure between partner institutions reduces duplicate research costs.','Cross-institution mentorship programs multiply opportunities for young researchers.'],
+        contact: ['Electric potential difference drives electron currents forward.',"Ohm's law relates voltage, current, and resistance in any circuit.",'A capacitor stores electrical energy in an electric field between plates.','Reaching out early often shortens a research project timeline dramatically.','Clear, concise messages transmit ideas with minimal information loss.','Fiber optic cables transmit data as pulses of light rather than electrons.','Every great collaboration starts with a single well-timed conversation.','Networking amplifies a single idea into a distributed scientific effort.']
+      }
+    },
+    ar: {
+      dir: 'rtl', brand: 'سِينو أطلس',
+      nav: { home:'الرئيسية', about:'من نحن', competitions:'المسابقات', publishing:'النشر العلمي', chat:'مركز الدردشة', partners:'الشركاء', contact:'تواصل معنا', join:'انضم للنادي' },
+      home: { eyebrow:'نظام تشغيل للمواهب العلمية', title1:'سِينو', title2:'أطلس',
+        lede:'خريطة للعقول الفضولية. سِينو أطلس يمكّن الطلاب من خلال أبحاث موثقة، ومشاريع عملية، وشبكة علمية عالمية — لتحويل الفضول الأكاديمي إلى هوية علمية دائمة.',
+        explore:'استكشف المسابقات', learn:'اعرف المزيد' },
+      about: { title:'من نحن', lede:'سِينو أطلس منظمة غير ربحية أُسِّست لاكتشاف العلوم بطرق تعلّم بديلة وغير تقليدية.',
+        body:'نحن نمنح كل عقل فضولي مساحة للتفكير والتساؤل والبناء — لا مجرد مكان لحفظ المعلومات. يبتعد سِينو أطلس عن الحفظ التقليدي نحو التجربة والنقاش والمشاريع الحقيقية ذات الأهداف الواضحة. كل ما نقوم به غير ربحي ويهدف لتحقيق فائدة للمجتمع بأكمله: الطلاب والموجّهون والمؤسسات على حد سواء. نؤمن أن العلم يجب أن يُعاش لا أن يُخزَّن في دفتر فقط — لذلك نخلق مساحة لطرح الأفكار ومناقشتها واختبارها وتحويلها إلى نماذج ومشاركتها مع العالم.',
+        p1t:'تعلّم بديل', p1b:'نفضّل التجربة والحوار والمشاريع على الحفظ التقليدي.',
+        p2t:'غير ربحي، للجميع', p2b:'كل مورد نبنيه يهدف لتحقيق فائدة للمجتمع كافة، لا لفئة محددة فقط.',
+        p3t:'مساحة للتفكير', p3b:'نمنح الأفكار مساحة للنقاش والاختبار وتحويلها إلى أهداف ومشاريع حقيقية.' },
+      competitions: { title:'المسابقات والهاكاثونات', lede:'اكتشف تحديات عالمية لاختبار مهاراتك، وبناء هويتك العلمية، والتنافس مع ألمع العقول.',
+        visit:'زيارة الموقع', apply:'قدّم الآن', save:'حفظ',
+        chemxCat:'مسابقة كيمياء', chemxBadge:'المستوى الأعلى', chemxDesc:'تنظمها نادي STEM October للكيمياء، وهي مسابقة كيمياء عالمية رائدة مصممة لتحدي طلاب المرحلة الثانوية حول العالم.', chemxMeta1:'عبر الإنترنت وحضوري', chemxMeta2:'مؤهّلة عالميًا',
+        pharCat:'دوري الفيزياء', pharBadge:'مميّز', pharDesc:'مسابقة فيزياء وعلوم متعددة التخصصات معترف بها عالميًا، تدعو الطلاب لمعالجة ظواهر فيزيائية معقّدة.', pharMeta1:'جولتان', pharMeta2:'فئات متعددة',
+        ideaCat:'لديك فكرة؟', ideaTitle:'هل لديك فكرة لتحويلها إلى واقع؟', ideaDesc:'اقترح فكرة فعالية، أو هاكاثون، أو مسابقة على فريق سِينو أطلس. إذا كانت الفكرة واعدة، سنساعدك على تطويرها وتحقيقها.', ideaCta:'أرسل فكرتك' },
+      ideaForm: { heading:'أرسل فكرتك', sub:'أخبرنا عن الفعالية أو الهاكاثون أو المسابقة التي تتمنى تحقيقها.', typeLabel:'نوع الفكرة', event:'فعالية', hackathon:'هاكاثون', competition:'مسابقة', submit:'إرسال الفكرة', close:'إغلاق', successTitle:'تم استلام فكرتك!', successBody:'شكرًا لمشاركتك فكرتك. سيراجعها فريقنا ويتواصل معك قريبًا.' },
+      publishing: { title:'مركز النشر', lede:'انشر اكتشافاتك العلمية أو استكشف الأبحاث المحكّمة التي نشرها مجتمع النادي.',
+        submitTab:'انشر عملك', exploreTab:'استكشف المنشور',
+        articlesTitle:'مقالات', articlesDesc:'ملاحظات علمية مختصرة ومقالات نظرية.',
+        pdfsTitle:'ملفات PDF', pdfsDesc:'ملاحظات مخبرية مفصّلة ووثائق تقنية.',
+        papersTitle:'أبحاث علمية', papersDesc:'أبحاث أكاديمية كاملة محكّمة.', publish:'نشر',
+        search:'ابحث بالعنوان أو المؤلف أو كلمة مفتاحية...', all:'الكل', paper:'أبحاث علمية', article:'مقالات', pdf:'ملفات PDF',
+        readPaper:'قراءة البحث', download:'تحميل PDF', readArticle:'قراءة المقال', viewPdf:'عرض PDF',
+        items: {
+          paper1: { cat:'بحث علمي', date:'مارس ٢٠٢٦', title:'التفاعلات الكمومية في البوليمرات الاصطناعية منخفضة الحرارة', author:'د. أ. فانس و إ. رحيمي • مجلد سِينو أطلس ١٤', abstract:'تحليل تجريبي لإثارات الموجات المغزلية وحالات التوصيل الشاذة في شبكات بوليمر منظمة قرب الصفر المطلق.', tags:['فيزياء كمّية','بوليمرات'] },
+          article1: { cat:'مقال', date:'فبراير ٢٠٢٦', title:'الكفاءة الحرارية في الخلايا الكهروضوئية متعددة الوصلات', author:'سارة م. حسن', abstract:'ملاحظات حول تقنيات التبديد الحراري السلبي لمنع تدهور الطاقة أثناء ذروة الإشعاع الشمسي.', tags:['الطاقة الشمسية','الديناميكا الحرارية'] },
+          pdf1: { cat:'PDF / ملاحظات مخبرية', date:'يناير ٢٠٢٦', title:'دليل بروتوكولات ChemX التجريبية وحركية التفاعلات', author:'قسم الأبحاث بسِينو أطلس', abstract:'حزمة توثيق كاملة تشمل إجراءات المختبر، ومعادلات المعايرة، وجداول هامش الخطأ، وإرشادات السلامة.', tags:['كيمياء','دليل مخبري'] }
+        } },
+      chat: { title:'مركز الدردشة العلمية', lede:'شارك في نقاشات بين الأقران، ومناظرات نظرية، وأسئلة تجريبية مصنّفة حسب المجالات العلمية الأساسية.',
+        rooms: { physics:'⚛️ الفيزياء', chemistry:'🧪 الكيمياء', biology:'🧬 الأحياء', astronomy:'🌌 الفلك', math_cs:'📐 الرياضيات والحاسوب' },
+        channelTitles: { physics:'⚛️ # الفيزياء-والكم', chemistry:'🧪 # الكيمياء-والحركية', biology:'🧬 # الأحياء-والوراثة', astronomy:'🌌 # الفلك-وعلم-الكون', math_cs:'📐 # الرياضيات-والحاسوب' },
+        placeholder:'اطرح سؤالاً أو شارك اكتشافًا...', send:'إرسال', online:'متصل', you:'أنت (باحث سِينو أطلس)', bot:'روبوت سِينو أطلس العلمي', insight:'ملاحظة حول' },
+      partners: { title:'شريكنا', lede:'يفخر سِينو أطلس بالعمل جنبًا إلى جنب مع مؤسسات تشاركنا الإيمان بالتعلّم العلمي البديل والعملي.',
+        name:'AoPS', full:'فن حل المسائل', desc:'منظمة Art of Problem Solving (AoPS) تبني موارد ومجتمعًا لعشّاق الرياضيات، وتشاركنا رسالتنا في التعلّم عبر التحدي والاستكشاف وحل المسائل بدلاً من الحفظ التقليدي.', visit:'زيارة AoPS' },
+      contact: { title:'تواصل معنا', lede:'هل لديك أسئلة حول العضوية أو الشراكات أو النشر؟ تواصل معنا.', name:'اسمك', email:'بريدك الإلكتروني', subject:'الموضوع', message:'رسالتك...', send:'إرسال الرسالة', sentAlert:'تم إرسال الرسالة!' },
+      joinForm: { heading:'انضم إلى سِينو أطلس', sub:'كن جزءًا من مجتمع غير ربحي يستكشف العلوم خارج حدود الصف الدراسي.', name:'الاسم الكامل', email:'البريد الإلكتروني', age:'العمر / الصف الدراسي', fieldPh:'مثال: فيزياء، كيمياء، أحياء، رياضيات وحاسوب', message:'لماذا تريد الانضمام؟ (اختياري)', submit:'إرسال الطلب', close:'إغلاق', successTitle:'أهلاً بك معنا!', successBody:'تم استلام طلبك. سيتواصل معك فريقنا قريبًا.' },
+      footer: { rights:'© 2026 سِينو أطلس. جميع الحقوق محفوظة.' },
+      symbolKnowledge: {
+        home: ['الطاقة تساوي الكتلة مضروبة في مربع سرعة الضوء: E = mc².','الإلكترون الواحد يتصرف كجسيم وكموجة في آن واحد.','التشابك الكمومي يتيح مشاركة الحالة لحظيًا عبر مسافات شاسعة.','مبدأ الريبة لهايزنبرغ يحدّ من دقة معرفتنا للموقع والزخم معًا.','الاندماج النووي هو ما يمنح الشمس طاقتها بدمج الهيدروجين إلى هيليوم.','الموصلات الفائقة تنقل التيار الكهربائي بلا مقاومة تحت درجة حرارة حرجة.','تُقدَّر المادة المظلمة بنحو ٢٧٪ من مكونات الكون.','كل اكتشاف علمي يبدأ كفرضية قابلة للاختبار والدحض.'],
+        about: ['الرمز دلتا (Δ) يشير إلى الفرق المحدود أو التدفق أو التحول الجذري.','كل تجربة علمية صارمة تبدأ بفرضية واضحة قابلة للدحض.','مراجعة الأقران تقوّي البحث بتعريضه لتدقيق الخبراء.','قابلية التكرار هي ما يفصل العلم الحقيقي عن الحكايات.','المنهج العلمي يمر بدورة الملاحظة والفرضية والتجربة والتحليل.','التعاون بين التخصصات غالبًا ما يشعل أعظم الاكتشافات.','الفضول هو ما سبق تاريخيًا أغلب القفزات التقنية الكبرى.','مجتمع علمي داعم يضاعف إمكانات الباحث الفردي.'],
+        competitions: ['الرياضيات هي اللغة الدقيقة التي كُتبت بها الطبيعة.','متتالية فيبوناتشي تظهر في أنماط النمو الطبيعية.','متطابقة أويلر تربط بأناقة خمسة ثوابت رياضية أساسية.','الأعداد الأولية هي أساس أمان أنظمة التشفير الحديثة.','المعادلات التفاضلية تُنمذج كل شيء من مدارات الكواكب إلى نمو السكان.','الدلالة الإحصائية تساعد المتنافسين على التحقق من ادعاءاتهم التجريبية.','المسألة جيدة الصياغة لها حل فريد ومستقر.','العلوم التنافسية تصقل السرعة والدقة والتفكير الإبداعي تحت الضغط.'],
+        publishing: ['حلقة البنزين تتميز ببنى رنين غير موضعية.','الروابط التساهمية تتكون عند مشاركة الذرات لأزواج الإلكترونات لتحقيق الاستقرار.','المحفّز يسرّع التفاعل دون أن يُستهلك بنفسه.','الحسابات الكيميائية تضمن توازن المعادلات الكيميائية تمامًا.','المعايرة تحدد بدقة تركيز محلول مجهول.','الكروماتوغرافيا تفصل الخلائط بناءً على اختلاف حركة المركبات.','البحث الموثّق جيدًا يبني سلسلة أدلة علمية يمكن التحقق منها.','النشر المحكّم يحوّل نتيجة مخبرية إلى سجل علمي مشترك.'],
+        chat: ['تبادل المعلومات الفوري يسرّع الاكتشاف العلمي.','التعاون بين الأقران يهذّب الفرضيات لتصبح نظريات مثبتة.','النقاش بين التخصصات يسدّ الفجوات بين المجالات العلمية الأساسية.','الحوار المفتوح يكشف الثغرات التي يغفلها البحث الفردي غالبًا.','التواصل العلمي الواضح لا يقل أهمية عن الاكتشاف نفسه.','الشبكات التعاونية تنشر النتائج الجديدة أسرع من أي مختبر منفرد.','النقاش يشحذ الحجج قبل وصولها للنشر الرسمي بوقت طويل.','الأسئلة والأجوبة المجتمعية تسرّع تعلّم الباحثين الناشئين.'],
+        partners: ['المجالات المغناطيسية تؤثر بقوة عمودية على سرعة الشحنة.','الأقطاب المغناطيسية المتضادة تتجاذب لتحقيق أقصى توازن للطاقة.','الشبكات العلمية التعاونية تضاعف الاكتشاف بشكل كبير.','معادلات ماكسويل توحّد الكهرباء والمغناطيسية والضوء في إطار واحد.','الشراكات الاستراتيجية تجمع موارد لا تستطيع مؤسسة واحدة توفيرها بمفردها.','التحالفات البحثية المشتركة غالبًا ما تفتح تمويلًا غير متاح للفرق المنفردة.','البنية التحتية المشتركة بين المؤسسات الشريكة تقلل تكاليف البحث المكررة.','برامج الإرشاد بين المؤسسات تضاعف الفرص أمام الباحثين الشباب.'],
+        contact: ['فرق الجهد الكهربائي هو ما يدفع تيار الإلكترونات إلى الأمام.','قانون أوم يربط الجهد والتيار والمقاومة في أي دارة.','المكثّف يخزّن الطاقة الكهربائية في مجال كهربائي بين لوحين.','التواصل المبكر غالبًا ما يختصر الجدول الزمني لمشروع بحثي بشكل كبير.','الرسائل الواضحة والمختصرة تنقل الأفكار بأقل قدر من الفقد.','كابلات الألياف الضوئية تنقل البيانات كنبضات ضوئية بدلًا من الإلكترونات.','كل تعاون عظيم يبدأ بمحادثة واحدة في التوقيت المناسب.','التواصل الشبكي يحوّل فكرة واحدة إلى جهد علمي موزّع.']
+      }
+    }
+  };
+
+  let currentLang = 'en';
+  function t() { return translations[currentLang]; }
+
+  /* ================= NAVIGATION ================= */
+  const navLinks = document.getElementById('navLinks');
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  hamburgerBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  function navigate(pageId) {
+    document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const activeNav = document.querySelector(`.nav-link[data-target="${pageId}"]`);
+    if (activeNav) activeNav.classList.add('active');
+    navLinks.classList.remove('open');
+    window.scrollTo(0,0);
+  }
+
+  /* ================= THEME TOGGLE ================= */
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('themeToggle');
+  const sun = document.getElementById('iconSun');
+  const moon = document.getElementById('iconMoon');
+  themeBtn.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    sun.style.display = isDark ? 'block' : 'none';
+    moon.style.display = isDark ? 'none' : 'block';
+  });
+
+  /* ================= LANGUAGE TOGGLE ================= */
+  function toggleLang() {
+    currentLang = currentLang === 'en' ? 'ar' : 'en';
+    applyLanguage();
+  }
+
+  function applyLanguage() {
+    const d = translations[currentLang];
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = d.dir;
+    document.body.dir = d.dir;
+    document.getElementById('langToggle').innerText = currentLang === 'en' ? 'AR | EN' : 'EN | AR';
+
+    document.getElementById('brand-text').innerText = d.brand;
+    document.getElementById('footer-brand').innerText = d.brand.toUpperCase();
+    document.getElementById('footer-rights').innerText = d.footer.rights;
+
+    document.getElementById('nav-home').innerText = d.nav.home;
+    document.getElementById('nav-about').innerText = d.nav.about;
+    document.getElementById('nav-competitions').innerText = d.nav.competitions;
+    document.getElementById('nav-publishing').innerText = d.nav.publishing;
+    document.getElementById('nav-chat').innerText = d.nav.chat;
+    document.getElementById('nav-partners').innerText = d.nav.partners;
+    document.getElementById('nav-contact').innerText = d.nav.contact;
+    document.getElementById('nav-join-mobile').innerText = d.nav.join;
+    document.getElementById('nav-join-desktop').innerText = d.nav.join;
+
+    document.getElementById('home-eyebrow').innerText = d.home.eyebrow;
+    document.getElementById('home-title1').innerText = d.home.title1;
+    document.getElementById('home-title2').innerText = d.home.title2;
+    document.getElementById('home-lede').innerText = d.home.lede;
+    document.getElementById('home-explore-btn').innerText = d.home.explore;
+    document.getElementById('home-learn-btn').innerText = d.home.learn;
+
+    document.getElementById('about-title').innerText = d.about.title;
+    document.getElementById('about-lede').innerText = d.about.lede;
+    document.getElementById('about-body').innerText = d.about.body;
+    document.getElementById('about-point1-title').innerText = d.about.p1t;
+    document.getElementById('about-point1-body').innerText = d.about.p1b;
+    document.getElementById('about-point2-title').innerText = d.about.p2t;
+    document.getElementById('about-point2-body').innerText = d.about.p2b;
+    document.getElementById('about-point3-title').innerText = d.about.p3t;
+    document.getElementById('about-point3-body').innerText = d.about.p3b;
+
+    document.getElementById('comp-title').innerText = d.competitions.title;
+    document.getElementById('comp-lede').innerText = d.competitions.lede;
+    document.getElementById('chemx-cat').innerText = d.competitions.chemxCat;
+    document.getElementById('chemx-badge').innerText = d.competitions.chemxBadge;
+    document.getElementById('chemx-desc').innerText = d.competitions.chemxDesc;
+    document.getElementById('chemx-meta1').innerText = d.competitions.chemxMeta1;
+    document.getElementById('chemx-meta2').innerText = d.competitions.chemxMeta2;
+    document.getElementById('chemx-visit').innerText = d.competitions.visit;
+    document.getElementById('chemx-save').innerText = d.competitions.save;
+    document.getElementById('pharaohs-cat').innerText = d.competitions.pharCat;
+    document.getElementById('pharaohs-badge').innerText = d.competitions.pharBadge;
+    document.getElementById('pharaohs-desc').innerText = d.competitions.pharDesc;
+    document.getElementById('pharaohs-meta1').innerText = d.competitions.pharMeta1;
+    document.getElementById('pharaohs-meta2').innerText = d.competitions.pharMeta2;
+    document.getElementById('pharaohs-apply').innerText = d.competitions.apply;
+    document.getElementById('pharaohs-save').innerText = d.competitions.save;
+    document.getElementById('idea-cat').innerText = d.competitions.ideaCat;
+    document.getElementById('idea-title').innerText = d.competitions.ideaTitle;
+    document.getElementById('idea-desc').innerText = d.competitions.ideaDesc;
+    document.getElementById('idea-cta').innerText = d.competitions.ideaCta;
+
+    document.getElementById('pub-title').innerText = d.publishing.title;
+    document.getElementById('pub-lede').innerText = d.publishing.lede;
+    document.getElementById('pub-tab-submit-label').innerText = d.publishing.submitTab;
+    document.getElementById('pub-tab-explore-label').innerText = d.publishing.exploreTab;
+    document.getElementById('pub-articles-title').innerText = d.publishing.articlesTitle;
+    document.getElementById('pub-articles-desc').innerText = d.publishing.articlesDesc;
+    document.getElementById('pub-articles-btn').innerText = d.publishing.publish;
+    document.getElementById('pub-pdfs-title').innerText = d.publishing.pdfsTitle;
+    document.getElementById('pub-pdfs-desc').innerText = d.publishing.pdfsDesc;
+    document.getElementById('pub-pdfs-btn').innerText = d.publishing.publish;
+    document.getElementById('pub-papers-title').innerText = d.publishing.papersTitle;
+    document.getElementById('pub-papers-desc').innerText = d.publishing.papersDesc;
+    document.getElementById('pub-papers-btn').innerText = d.publishing.publish;
+    document.getElementById('pubSearch').placeholder = d.publishing.search;
+    document.getElementById('filter-all').innerText = d.publishing.all;
+    document.getElementById('filter-paper').innerText = d.publishing.paper;
+    document.getElementById('filter-article').innerText = d.publishing.article;
+    document.getElementById('filter-pdf').innerText = d.publishing.pdf;
+
+    document.getElementById('chat-title').innerText = d.chat.title;
+    document.getElementById('chat-lede').innerText = d.chat.lede;
+    document.querySelectorAll('#chatRoomTabs .tab-btn').forEach(btn => {
+      const key = btn.getAttribute('data-room');
+      btn.innerText = d.chat.rooms[key];
+    });
+    document.getElementById('chatChannelTitle').innerText = d.chat.channelTitles[activeChatRoom];
+    document.getElementById('activeUserCount').innerText = ROOM_ONLINE[activeChatRoom] + ' ' + d.chat.online;
+    document.getElementById('chatInput').placeholder = d.chat.placeholder;
+    document.getElementById('chat-send-btn').innerText = d.chat.send;
+
+    document.getElementById('partners-title').innerText = d.partners.title;
+    document.getElementById('partners-lede').innerText = d.partners.lede;
+    document.getElementById('aops-name').innerText = d.partners.name;
+    document.getElementById('aops-full').innerText = d.partners.full;
+    document.getElementById('aops-desc').innerText = d.partners.desc;
+    document.getElementById('aops-visit').innerText = d.partners.visit;
+
+    document.getElementById('contact-title').innerText = d.contact.title;
+    document.getElementById('contact-lede').innerText = d.contact.lede;
+    document.getElementById('contact-name').placeholder = d.contact.name;
+    document.getElementById('contact-email').placeholder = d.contact.email;
+    document.getElementById('contact-subject').placeholder = d.contact.subject;
+    document.getElementById('contact-message').placeholder = d.contact.message;
+    document.getElementById('contact-send').innerText = d.contact.send;
+
+    document.getElementById('join-heading').innerText = d.joinForm.heading;
+    document.getElementById('join-subheading').innerText = d.joinForm.sub;
+    document.getElementById('join-name').placeholder = d.joinForm.name;
+    document.getElementById('join-email').placeholder = d.joinForm.email;
+    document.getElementById('join-age').placeholder = d.joinForm.age;
+    document.getElementById('join-field').placeholder = d.joinForm.fieldPh;
+    document.getElementById('join-message').placeholder = d.joinForm.message;
+    document.getElementById('join-submit').innerText = d.joinForm.submit;
+    document.getElementById('join-close').innerText = d.joinForm.close;
+    document.getElementById('join-success-title').innerText = d.joinForm.successTitle;
+    document.getElementById('join-success-body').innerText = d.joinForm.successBody;
+
+    document.getElementById('idea-form-heading').innerText = d.ideaForm.heading;
+    document.getElementById('idea-form-subheading').innerText = d.ideaForm.sub;
+    document.getElementById('idea-name').placeholder = d.contact.name;
+    document.getElementById('idea-email').placeholder = d.contact.email;
+    document.getElementById('idea-type-label').innerText = d.ideaForm.typeLabel;
+    document.getElementById('idea-type-event').innerText = d.ideaForm.event;
+    document.getElementById('idea-type-hackathon').innerText = d.ideaForm.hackathon;
+    document.getElementById('idea-type-competition').innerText = d.ideaForm.competition;
+    document.getElementById('idea-idea-title').placeholder = d.competitions.ideaTitle;
+    document.getElementById('idea-description').placeholder = d.ideaForm.heading;
+    document.getElementById('idea-submit').innerText = d.ideaForm.submit;
+    document.getElementById('idea-close').innerText = d.ideaForm.close;
+    document.getElementById('idea-success-title').innerText = d.ideaForm.successTitle;
+    document.getElementById('idea-success-body').innerText = d.ideaForm.successBody;
+
+    renderPublicationArchive();
+    renderChatMessages();
+  }
+
+  /* ================= PUBLISHING SUB-TABS ================= */
+  function switchPubTab(tabName) {
+    document.querySelectorAll('#page-publishing .tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.pub-subtab-view').forEach(view => view.classList.remove('active'));
+    if (tabName === 'submit') {
+      document.getElementById('tab-btn-submit').classList.add('active');
+      document.getElementById('pub-tab-submit').classList.add('active');
+    } else {
+      document.getElementById('tab-btn-explore').classList.add('active');
+      document.getElementById('pub-tab-explore').classList.add('active');
+    }
+  }
+
+  let activePubCategory = 'all';
+  let pubQuery = '';
+
+  function filterCategory(cat, element) {
+    activePubCategory = cat;
+    document.querySelectorAll('.filter-pills .pill').forEach(pill => pill.classList.remove('active'));
+    element.classList.add('active');
+    renderPublicationArchive();
+  }
+
+  function filterPublications() {
+    pubQuery = document.getElementById('pubSearch').value.toLowerCase();
+    renderPublicationArchive();
+  }
+
+  function renderPublicationArchive() {
+    const d = translations[currentLang];
+    const items = [
+      { cat: 'paper', data: d.publishing.items.paper1, actions: [d.publishing.readPaper, d.publishing.download] },
+      { cat: 'article', data: d.publishing.items.article1, actions: [d.publishing.readArticle] },
+      { cat: 'pdf', data: d.publishing.items.pdf1, actions: [d.publishing.viewPdf] },
+    ];
+    const container = document.getElementById('archiveList');
+    container.innerHTML = '';
+    items.forEach(item => {
+      const it = item.data;
+      const text = (it.title + ' ' + it.author + ' ' + it.abstract).toLowerCase();
+      const matchesCat = activePubCategory === 'all' || item.cat === activePubCategory;
+      const matchesSearch = text.includes(pubQuery);
+      if (!matchesCat || !matchesSearch) return;
+
+      const card = document.createElement('div');
+      card.className = 'pub-archive-card';
+      card.setAttribute('data-cat', item.cat);
+      const tagsHtml = it.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+      const actionsHtml = item.actions.map((a, i) =>
+        `<a href="#" class="${i === 0 ? 'btn btn-primary' : 'btn btn-ghost'}" style="padding: 8px 14px; font-size: 12.5px;">${a}</a>`
+      ).join('');
+      card.innerHTML = `
+        <div class="pub-meta-top"><span class="opp-cat">${it.cat}</span><span class="pub-date">${it.date}</span></div>
+        <h3>${it.title}</h3>
+        <div class="pub-author">${it.author}</div>
+        <p class="pub-abstract">${it.abstract}</p>
+        <div class="tag-row" style="margin-top: 12px;">${tagsHtml}</div>
+        <div class="opp-actions" style="margin-top: 14px;">${actionsHtml}</div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  /* ================= CHAT HUB ================= */
+  const ROOM_ONLINE = { physics: 18, chemistry: 12, biology: 15, astronomy: 22, math_cs: 11 };
+  const ROOM_BOT_REPLY = {
+    physics: 'In quantum mechanics, particle behavior depends heavily on state measurement!',
+    chemistry: 'Reaction kinetics depend directly on activation energy and thermal collisions.',
+    biology: 'CRISPR-Cas9 enables precise gene modifications at specific DNA sequences.',
+    astronomy: 'Gravitational lensing allows us to observe distant galaxies obscured by massive clusters.',
+    math_cs: 'Graph theory algorithms like Dijkstra optimize routing across complex network structures.'
+  };
+  const chatMessages = {
+    physics: [
+      { author: 'E. Fermi', text: 'Has anyone verified the latest superconductivity parameters at 120K?', type: 'incoming', time: '10:14 AM' },
+      { author: 'Dr. Hassan', text: 'Yes, we observed zero resistance in the YBCO ceramic compound under liquid nitrogen cooling.', type: 'incoming', time: '10:16 AM' }
+    ],
+    chemistry: [
+      { author: 'ChemX Lead', text: 'Reminder: ChemX submission deadline for the reaction kinetics paper is fast approaching!', type: 'incoming', time: '09:30 AM' },
+      { author: 'S. Malik', text: 'Does anyone have the molar absorption coefficients for the cobalt chloride experiment?', type: 'incoming', time: '09:42 AM' }
+    ],
+    biology: [
+      { author: 'BioLab_Student', text: 'We successfully isolated plasmid DNA using standard alkaline lysis methods today.', type: 'incoming', time: '11:05 AM' },
+      { author: 'Elena R.', text: 'Awesome! What was your gel electrophoresis recovery percentage?', type: 'incoming', time: '11:12 AM' }
+    ],
+    astronomy: [
+      { author: 'CosmoObserver', text: 'The new orbital spectral data from James Webb shows clear water vapor signatures!', type: 'incoming', time: '08:20 AM' },
+      { author: 'Astro_Ahmad', text: 'Incredible, is that targeting exoplanet K2-18b?', type: 'incoming', time: '08:25 AM' }
+    ],
+    math_cs: [
+      { author: 'AlgoGeek', text: 'Is O(N log N) the theoretical lower bound for comparison-based sorting algorithms?', type: 'incoming', time: '01:15 PM' },
+      { author: 'Prof. Turing', text: 'Correct, proved by decision tree height lower bounds.', type: 'incoming', time: '01:22 PM' }
+    ]
+  };
+  let activeChatRoom = 'physics';
+
+  function switchChatRoom(roomKey, element) {
+    activeChatRoom = roomKey;
+    if (element) {
+      document.querySelectorAll('#page-chat .tab-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+    }
+    const d = translations[currentLang];
+    document.getElementById('chatChannelTitle').innerText = d.chat.channelTitles[roomKey];
+    document.getElementById('activeUserCount').innerText = ROOM_ONLINE[roomKey] + ' ' + d.chat.online;
+    renderChatMessages();
+  }
+
+  function renderChatMessages() {
+    const container = document.getElementById('chatMessages');
+    container.innerHTML = '';
+    chatMessages[activeChatRoom].forEach(msg => {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-msg ${msg.type}`;
+      msgDiv.innerHTML = `<div class="msg-author">${msg.author} • ${msg.time}</div><div class="msg-bubble">${msg.text}</div>`;
+      container.appendChild(msgDiv);
+    });
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function handleSendMessage() {
+    const input = document.getElementById('chatInput');
+    const val = input.value.trim();
+    if (!val) return;
+    const d = translations[currentLang];
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    chatMessages[activeChatRoom].push({ author: d.chat.you, text: val, type: 'outgoing', time: currentTime });
+    input.value = '';
+    renderChatMessages();
+    setTimeout(() => {
+      chatMessages[activeChatRoom].push({
+        author: d.chat.bot,
+        text: `${d.chat.insight} "${val}": ${ROOM_BOT_REPLY[activeChatRoom]}`,
+        type: 'incoming',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      renderChatMessages();
+    }, 1000);
+  }
+
+  /* ================= MODALS ================= */
+  function openModal(id) {
+    document.getElementById(id).style.display = 'flex';
+  }
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  function handleJoinSubmit(e) {
+    e.preventDefault();
+    document.getElementById('joinFormView').style.display = 'none';
+    document.getElementById('joinSuccessView').style.display = 'flex';
+  }
+
+  function handleIdeaSubmit(e) {
+    e.preventDefault();
+    document.getElementById('ideaFormView').style.display = 'none';
+    document.getElementById('ideaSuccessView').style.display = 'flex';
+  }
+
+  /* ================= SYMBOL INSIGHT POPUPS ================= */
+  document.querySelectorAll('.bg-symbol-stage').forEach(stage => {
+    const symbolContainer = stage.querySelector('.symbol-3d-container');
+    const popup = stage.querySelector('.sentence-popup');
+    const symbolKey = stage.getAttribute('data-symbol');
+    let sentenceIndex = 0;
+
+    function showNextSentence() {
+      const sentences = translations[currentLang].symbolKnowledge[symbolKey];
+      if (!sentences) return;
+      popup.innerText = sentences[sentenceIndex];
+      popup.setAttribute('data-counter', `${sentenceIndex + 1} / ${sentences.length}`);
+      popup.classList.add('visible');
+      sentenceIndex = (sentenceIndex + 1) % sentences.length;
+    }
+    function hideSentence() { popup.classList.remove('visible'); }
+
+    symbolContainer.addEventListener('mouseenter', showNextSentence);
+    symbolContainer.addEventListener('mouseleave', hideSentence);
+    symbolContainer.addEventListener('click', (e) => { e.stopPropagation(); showNextSentence(); });
+    symbolContainer.addEventListener('touchstart', (e) => { e.stopPropagation(); showNextSentence(); }, { passive: true });
+  });
+
+  /* ================= INIT ================= */
+  renderChatMessages();
+  applyLanguage();
+</script>
 </body>
 </html>
