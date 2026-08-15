@@ -113,7 +113,7 @@
   .logo { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-weight: 600; font-size: 18px; letter-spacing: .02em; cursor: pointer; white-space: nowrap; border: none; background: none; padding: 0; color: var(--ink); }
   .logo .mark { width: 22px; height: 22px; border: 1.6px solid var(--ink); border-radius: 5px; display: grid; place-items: center; font-size: 11px; }
   .navlinks { display: flex; align-items: center; gap: 20px; font-size: 14.5px; color: var(--ink-soft); font-weight: 500; }
-  .navlinks a { text-decoration: none; padding: 6px 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+  .navlinks a { text-decoration: none; padding: 6px 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; cursor: pointer; }
   .navlinks a:hover, .navlinks a.active { color: var(--ink); border-color: var(--indigo); }
   .navright { display: flex; align-items: center; gap: 10px; }
   @media (min-width: 869px) { .join-btn-mobile { display: none; } }
@@ -129,6 +129,10 @@
   .btn-primary:hover { background: var(--indigo-strong); box-shadow: 0 8px 20px -10px var(--indigo); }
   .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
   .btn-ghost:hover { background: var(--card); }
+  .btn-success { background: var(--teal); color: var(--paper); }
+  .btn-success:hover { background: #1f5f52; }
+  .btn-danger { background: var(--red); color: var(--paper); }
+  .btn-danger:hover { background: #8a3226; }
 
   .page-view { display: none; position: relative; z-index: 10; flex-grow: 1; padding: 60px 0; min-height: 82vh; }
   .page-view.active { display: block; animation: fadeIn 0.4s ease; }
@@ -227,6 +231,17 @@
   footer { border-top: 1px solid var(--line); padding: 36px 0; margin-top: auto; position: relative; z-index: 10; background: var(--paper); }
   .foot-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--ink-faint); flex-wrap: wrap; gap: 12px; }
 
+  /* Admin Panel Styles */
+  .admin-paper-item { background: var(--paper-alt); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .admin-paper-item .info { flex: 1; min-width: 200px; }
+  .admin-paper-item h4 { margin: 0 0 4px; }
+  .admin-paper-item .meta { font-size: 13px; color: var(--ink-soft); }
+  .admin-paper-item .sub { font-size: 12px; color: var(--ink-faint); }
+
+  /* Admin Button in header */
+  .admin-btn { height: 38px; border-radius: 10px; border: 1px solid var(--gold); background: transparent; padding: 0 14px; cursor: pointer; color: var(--gold); font-family: var(--mono); font-size: 12px; font-weight: bold; transition: all 0.2s; }
+  .admin-btn:hover { background: var(--gold); color: var(--paper); }
+
   @media (max-width: 1024px) {
     .page-view { padding: 40px 0; }
     .bg-symbol-stage { position: relative; justify-content: center; align-items: center; padding-right: 0; padding-left: 0; margin-top: 30px; height: auto; inset: auto; }
@@ -238,6 +253,7 @@
     .navlinks.open { display: flex; }
     .navlinks a { width: 100%; padding: 8px 0; font-size: 16px; }
     .join-btn-desktop { display: none; }
+    .admin-btn { font-size: 11px; padding: 0 10px; }
   }
   @media (max-width: 580px) {
     .wrap { padding: 0 16px; }
@@ -248,6 +264,8 @@
     .chat-msg { max-width: 92%; }
     .opp-actions .btn { flex: 1; }
     .partner-logo-row { flex-direction: column; align-items: flex-start; }
+    .admin-paper-item { flex-direction: column; align-items: stretch; }
+    .admin-paper-item .actions { display: flex; gap: 8px; }
   }
 </style>
 </head>
@@ -268,6 +286,7 @@
     </div>
     <div class="navright">
       <button class="lang-btn" id="langToggle" onclick="toggleLang()">AR | EN</button>
+      <button class="admin-btn" onclick="openModal('adminLoginModal')" title="لوحة التحكم">🔐 Admin</button>
       <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
         <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
@@ -485,15 +504,15 @@
         <div class="pub-grid">
           <div class="pub-card">
             <div><h3 id="pub-articles-title">Articles</h3><p id="pub-articles-desc">Short-form scientific observations and theoretical essays.</p></div>
-            <a class="btn btn-primary" id="pub-articles-btn">Publish</a>
+            <a class="btn btn-primary" id="pub-articles-btn" onclick="openModal('publishModal')">Publish</a>
           </div>
           <div class="pub-card">
             <div><h3 id="pub-pdfs-title">PDFs</h3><p id="pub-pdfs-desc">Detailed lab notes and technical documentation files.</p></div>
-            <a class="btn btn-primary" id="pub-pdfs-btn">Publish</a>
+            <a class="btn btn-primary" id="pub-pdfs-btn" onclick="openModal('publishModal')">Publish</a>
           </div>
           <div class="pub-card">
             <div><h3 id="pub-papers-title">Research Papers</h3><p id="pub-papers-desc">Full-length peer-reviewed academic manuscripts.</p></div>
-            <a class="btn btn-primary" id="pub-papers-btn">Publish</a>
+            <a class="btn btn-primary" id="pub-papers-btn" onclick="openModal('publishModal')">Publish</a>
           </div>
         </div>
       </div>
@@ -695,7 +714,7 @@
   </div>
 </footer>
 
-<!-- JOIN CLUB MODAL -->
+<!-- ====== JOIN CLUB MODAL ====== -->
 <div class="modal-overlay" id="joinModal" style="display:none" onclick="if(event.target===this) closeModal('joinModal')">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('joinModal')">✕</button>
@@ -720,7 +739,7 @@
   </div>
 </div>
 
-<!-- IDEA SUBMISSION MODAL -->
+<!-- ====== IDEA SUBMISSION MODAL ====== -->
 <div class="modal-overlay" id="ideaModal" style="display:none" onclick="if(event.target===this) closeModal('ideaModal')">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('ideaModal')">✕</button>
@@ -747,6 +766,62 @@
       <p id="idea-success-body">Thank you for sharing your idea. Our team will review it and reach out soon.</p>
       <a class="btn btn-primary" onclick="closeModal('ideaModal')" id="idea-close">Close</a>
     </div>
+  </div>
+</div>
+
+<!-- ====== PUBLISH MODAL ====== -->
+<div class="modal-overlay" id="publishModal" style="display:none" onclick="if(event.target===this) closeModal('publishModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('publishModal')">✕</button>
+    <div id="publishFormView">
+      <h3 class="modal-heading">📄 نشر بحث جديد</h3>
+      <p class="modal-sub">املأ البيانات أدناه لإرسال بحثك للمراجعة</p>
+      <form class="contact-form" onsubmit="handlePublishSubmit(event)">
+        <input type="text" id="pubTitle" placeholder="عنوان البحث" required>
+        <input type="text" id="pubAuthor" placeholder="اسم المؤلف" required>
+        <textarea id="pubAbstract" placeholder="الملخص" rows="4" required></textarea>
+        <input type="file" id="pubFile" accept=".pdf,.docx,.doc">
+        <span style="font-size:12px; color:var(--ink-faint);">الملف اختياري (PDF أو DOCX)</span>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button type="submit" class="btn btn-primary" style="flex:1; justify-content:center;">إرسال للنشر</button>
+          <button type="button" class="btn btn-ghost" onclick="closeModal('publishModal')">إلغاء</button>
+        </div>
+      </form>
+    </div>
+    <div id="publishSuccessView" class="modal-success" style="display:none">
+      <div class="success-icon">✓</div>
+      <h3>تم الإرسال!</h3>
+      <p>بحثك في انتظار الموافقة من فريق الإدارة</p>
+      <a class="btn btn-primary" onclick="closeModal('publishModal')">حسناً</a>
+    </div>
+  </div>
+</div>
+
+<!-- ====== ADMIN LOGIN MODAL ====== -->
+<div class="modal-overlay" id="adminLoginModal" style="display:none" onclick="if(event.target===this) closeModal('adminLoginModal')">
+  <div class="modal-box" style="max-width:400px;">
+    <button class="modal-close" onclick="closeModal('adminLoginModal')">✕</button>
+    <h3 class="modal-heading">🔐 دخول المشرف</h3>
+    <p class="modal-sub">أدخل كلمة المرور للوصول للوحة التحكم</p>
+    <form onsubmit="adminLogin(event)">
+      <input type="password" id="adminPasswordInput" placeholder="كلمة المرور" required style="width:100%; padding:12px; border:2px solid var(--line); border-radius:8px; background:var(--paper); color:var(--ink); font-size:16px;">
+      <div style="display:flex; gap:10px; margin-top:15px;">
+        <button type="submit" class="btn btn-primary" style="flex:1; justify-content:center;">دخول</button>
+        <button type="button" class="btn btn-ghost" onclick="closeModal('adminLoginModal')">إلغاء</button>
+      </div>
+      <div id="adminLoginError" style="color:var(--red); margin-top:10px; display:none;">❌ كلمة المرور غير صحيحة</div>
+    </form>
+  </div>
+</div>
+
+<!-- ====== ADMIN PANEL ====== -->
+<div id="adminPanel" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:999; padding:30px; overflow-y:auto;">
+  <div style="max-width:800px; margin:auto; background:var(--paper); border-radius:var(--radius); padding:30px; border:1px solid var(--line); position:relative;">
+    <button onclick="closeAdminPanel()" style="position:absolute; top:15px; right:20px; background:transparent; border:none; font-size:24px; cursor:pointer; color:var(--ink);">✕</button>
+    <h2 style="font-family:var(--mono); margin-bottom:10px;">⚙️ لوحة التحكم - الطلبات المعلقة</h2>
+    <p style="color:var(--ink-soft); margin-bottom:20px;">وافق أو ارفض على الأبحاث قبل نشرها</p>
+    <div id="adminPendingList"></div>
+    <button onclick="closeAdminPanel()" class="btn btn-ghost" style="margin-top:20px;">إغلاق</button>
   </div>
 </div>
 
@@ -1051,39 +1126,233 @@
     renderPublicationArchive();
   }
 
+  /* ================= PUBLISHING SYSTEM ================= */
+  const ADMIN_PASSWORD = 'scieno2026';
+
+  function getPapers() {
+    return JSON.parse(localStorage.getItem('scieno_papers')) || [];
+  }
+
+  function getPending() {
+    return JSON.parse(localStorage.getItem('scieno_pending')) || [];
+  }
+
+  function savePapers(papers) {
+    localStorage.setItem('scieno_papers', JSON.stringify(papers));
+  }
+
+  function savePending(pending) {
+    localStorage.setItem('scieno_pending', JSON.stringify(pending));
+  }
+
   function renderPublicationArchive() {
     const d = translations[currentLang];
-    const items = [
-      { cat: 'paper', data: d.publishing.items.paper1, actions: [d.publishing.readPaper, d.publishing.download] },
-      { cat: 'article', data: d.publishing.items.article1, actions: [d.publishing.readArticle] },
-      { cat: 'pdf', data: d.publishing.items.pdf1, actions: [d.publishing.viewPdf] },
-    ];
     const container = document.getElementById('archiveList');
-    container.innerHTML = '';
-    items.forEach(item => {
-      const it = item.data;
-      const text = (it.title + ' ' + it.author + ' ' + it.abstract).toLowerCase();
-      const matchesCat = activePubCategory === 'all' || item.cat === activePubCategory;
-      const matchesSearch = text.includes(pubQuery);
-      if (!matchesCat || !matchesSearch) return;
+    if (!container) return;
+    
+    const papers = getPapers();
+    if (papers.length === 0) {
+      container.innerHTML = `<p style="color:var(--ink-faint); text-align:center; padding:40px 0;">📭 لا توجد أبحاث منشورة حالياً</p>`;
+      return;
+    }
 
-      const card = document.createElement('div');
-      card.className = 'pub-archive-card';
-      card.setAttribute('data-cat', item.cat);
-      const tagsHtml = it.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-      const actionsHtml = item.actions.map((a, i) =>
-        `<a href="#" class="${i === 0 ? 'btn btn-primary' : 'btn btn-ghost'}" style="padding: 8px 14px; font-size: 12.5px;">${a}</a>`
-      ).join('');
-      card.innerHTML = `
-        <div class="pub-meta-top"><span class="opp-cat">${it.cat}</span><span class="pub-date">${it.date}</span></div>
-        <h3>${it.title}</h3>
-        <div class="pub-author">${it.author}</div>
-        <p class="pub-abstract">${it.abstract}</p>
-        <div class="tag-row" style="margin-top: 12px;">${tagsHtml}</div>
-        <div class="opp-actions" style="margin-top: 14px;">${actionsHtml}</div>
-      `;
-      container.appendChild(card);
-    });
+    // فلتر
+    let filtered = papers;
+    if (activePubCategory !== 'all') {
+      filtered = papers.filter(p => p.cat === activePubCategory);
+    }
+    if (pubQuery) {
+      filtered = filtered.filter(p => 
+        p.title.toLowerCase().includes(pubQuery) || 
+        p.author.toLowerCase().includes(pubQuery) ||
+        p.abstract.toLowerCase().includes(pubQuery)
+      );
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = `<p style="color:var(--ink-faint); text-align:center; padding:40px 0;">🔍 لا توجد نتائج مطابقة</p>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(p => `
+      <div class="pub-archive-card">
+        <div class="pub-meta-top">
+          <span class="opp-cat">${p.cat || 'بحث علمي'}</span>
+          <span class="pub-date">${p.date || new Date().toLocaleDateString('ar-EG')}</span>
+        </div>
+        <h3>${p.title}</h3>
+        <div class="pub-author">${p.author}</div>
+        <p class="pub-abstract">${p.abstract}</p>
+        <div class="tag-row" style="margin-top:12px;">
+          ${p.tags ? p.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}
+        </div>
+        <div class="opp-actions" style="margin-top:14px;">
+          ${p.file ? `<a href="${p.file}" target="_blank" class="btn btn-primary" style="padding:8px 14px; font-size:12.5px;">📎 تحميل PDF</a>` : ''}
+          <a href="#" class="btn btn-ghost" style="padding:8px 14px; font-size:12.5px;">قراءة البحث</a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderPendingInAdmin() {
+    const container = document.getElementById('adminPendingList');
+    const pending = getPending();
+    
+    if (pending.length === 0) {
+      container.innerHTML = `<p style="color:var(--ink-faint); text-align:center; padding:20px 0;">🎉 لا توجد طلبات معلقة</p>`;
+      return;
+    }
+
+    container.innerHTML = pending.map((p, index) => `
+      <div class="admin-paper-item">
+        <div class="info">
+          <h4>${p.title}</h4>
+          <div class="meta">✍️ ${p.author}</div>
+          <div class="sub">${p.abstract ? p.abstract.substring(0,80)+'...' : ''}</div>
+          ${p.file ? `<a href="${p.file}" target="_blank" style="font-size:12px; color:var(--indigo);">📎 تحميل الملف</a>` : ''}
+        </div>
+        <div class="actions">
+          <button onclick="approvePaper(${index})" class="btn btn-success" style="padding:6px 16px; font-size:13px;">✅ موافقة</button>
+          <button onclick="rejectPaper(${index})" class="btn btn-danger" style="padding:6px 16px; font-size:13px;">❌ رفض</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function approvePaper(index) {
+    if (!confirm('هل أنت متأكد من الموافقة على هذا البحث؟')) return;
+    
+    const pending = getPending();
+    const papers = getPapers();
+    
+    if (pending[index]) {
+      const approved = pending[index];
+      approved.status = 'approved';
+      approved.date = new Date().toLocaleDateString('ar-EG');
+      approved.cat = 'بحث علمي';
+      approved.tags = ['بحث محكّم', 'علمي'];
+      papers.push(approved);
+      pending.splice(index, 1);
+      
+      savePapers(papers);
+      savePending(pending);
+      
+      renderPendingInAdmin();
+      renderPublicationArchive();
+      alert('✅ تمت الموافقة ونشر البحث!');
+    }
+  }
+
+  function rejectPaper(index) {
+    if (!confirm('هل أنت متأكد من رفض هذا البحث؟')) return;
+    
+    const pending = getPending();
+    pending.splice(index, 1);
+    savePending(pending);
+    
+    renderPendingInAdmin();
+    alert('❌ تم رفض البحث');
+  }
+
+  function handlePublishSubmit(e) {
+    e.preventDefault();
+    
+    const title = document.getElementById('pubTitle').value.trim();
+    const author = document.getElementById('pubAuthor').value.trim();
+    const abstract = document.getElementById('pubAbstract').value.trim();
+    const fileInput = document.getElementById('pubFile');
+    
+    if (!title || !author || !abstract) {
+      alert('الرجاء ملء جميع الحقول المطلوبة');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const newPaper = {
+        id: Date.now(),
+        title: title,
+        author: author,
+        abstract: abstract,
+        file: event.target.result || '',
+        status: 'pending',
+        created_at: new Date().toLocaleString('ar-EG')
+      };
+      
+      const pending = getPending();
+      pending.push(newPaper);
+      savePending(pending);
+      
+      document.getElementById('publishFormView').style.display = 'none';
+      document.getElementById('publishSuccessView').style.display = 'flex';
+      
+      document.getElementById('pubTitle').value = '';
+      document.getElementById('pubAuthor').value = '';
+      document.getElementById('pubAbstract').value = '';
+      document.getElementById('pubFile').value = '';
+      
+      setTimeout(() => {
+        closeModal('publishModal');
+        document.getElementById('publishFormView').style.display = 'block';
+        document.getElementById('publishSuccessView').style.display = 'none';
+      }, 2000);
+    };
+    
+    if (fileInput.files.length > 0) {
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      const newPaper = {
+        id: Date.now(),
+        title: title,
+        author: author,
+        abstract: abstract,
+        file: '',
+        status: 'pending',
+        created_at: new Date().toLocaleString('ar-EG')
+      };
+      const pending = getPending();
+      pending.push(newPaper);
+      savePending(pending);
+      
+      document.getElementById('publishFormView').style.display = 'none';
+      document.getElementById('publishSuccessView').style.display = 'flex';
+      
+      document.getElementById('pubTitle').value = '';
+      document.getElementById('pubAuthor').value = '';
+      document.getElementById('pubAbstract').value = '';
+      
+      setTimeout(() => {
+        closeModal('publishModal');
+        document.getElementById('publishFormView').style.display = 'block';
+        document.getElementById('publishSuccessView').style.display = 'none';
+      }, 2000);
+    }
+  }
+
+  /* ================= ADMIN ================= */
+  function adminLogin(e) {
+    e.preventDefault();
+    const password = document.getElementById('adminPasswordInput').value;
+    const error = document.getElementById('adminLoginError');
+    
+    if (password === ADMIN_PASSWORD) {
+      closeModal('adminLoginModal');
+      openAdminPanel();
+      document.getElementById('adminPasswordInput').value = '';
+      error.style.display = 'none';
+    } else {
+      error.style.display = 'block';
+    }
+  }
+
+  function openAdminPanel() {
+    const panel = document.getElementById('adminPanel');
+    panel.style.display = 'block';
+    renderPendingInAdmin();
+  }
+
+  function closeAdminPanel() {
+    document.getElementById('adminPanel').style.display = 'none';
   }
 
   /* ================= CHAT HUB ================= */
@@ -1206,9 +1475,55 @@
     symbolContainer.addEventListener('touchstart', (e) => { e.stopPropagation(); showNextSentence(); }, { passive: true });
   });
 
+  /* ================= SAMPLE DATA ================= */
+  function addSampleData() {
+    const papers = getPapers();
+    if (papers.length === 0) {
+      const d = translations[currentLang];
+      const samplePapers = [
+        {
+          id: 1,
+          title: d.publishing.items.paper1.title,
+          author: d.publishing.items.paper1.author,
+          abstract: d.publishing.items.paper1.abstract,
+          file: '',
+          status: 'approved',
+          date: 'MAR 2026',
+          cat: 'paper',
+          tags: d.publishing.items.paper1.tags
+        },
+        {
+          id: 2,
+          title: d.publishing.items.article1.title,
+          author: d.publishing.items.article1.author,
+          abstract: d.publishing.items.article1.abstract,
+          file: '',
+          status: 'approved',
+          date: 'FEB 2026',
+          cat: 'article',
+          tags: d.publishing.items.article1.tags
+        },
+        {
+          id: 3,
+          title: d.publishing.items.pdf1.title,
+          author: d.publishing.items.pdf1.author,
+          abstract: d.publishing.items.pdf1.abstract,
+          file: '',
+          status: 'approved',
+          date: 'JAN 2026',
+          cat: 'pdf',
+          tags: d.publishing.items.pdf1.tags
+        }
+      ];
+      savePapers(samplePapers);
+    }
+  }
+
   /* ================= INIT ================= */
   renderChatMessages();
+  addSampleData();
   applyLanguage();
+  renderPublicationArchive();
 </script>
 </body>
 </html>
