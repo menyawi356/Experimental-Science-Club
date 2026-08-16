@@ -35,16 +35,17 @@ const Header = () => {
   return (
     <header>
       <nav className="wrap">
-        <button className="logo">
+        <button
+          className="logo"
+          onClick={() => {
+            handleChangePage("Home");
+          }}
+        >
           <span className="mark">S</span>
           <span id="brand-text">ScienoAtlas</span>
         </button>
 
         <div className="navlinks" id="navLinks">
-          {/* <a className="nav-link active">
-            Home
-          </a> */}
-
           {Links}
           <a className="nav-link join-btn-mobile" id="nav-join-mobile">
             Join Club
