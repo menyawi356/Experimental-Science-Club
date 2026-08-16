@@ -1,6 +1,6 @@
 export default function About() {
   return (
-    <main id="page-about" className="page-view">
+    <main id="page-about" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">

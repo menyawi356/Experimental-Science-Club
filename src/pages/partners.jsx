@@ -1,6 +1,6 @@
 export default function Partners() {
   return (
-    <main id="page-partners" className="page-view">
+    <main id="page-partners" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">

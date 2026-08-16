@@ -1,6 +1,6 @@
 export default function Chat() {
   return (
-    <main id="page-chat" className="page-view">
+    <main id="page-chat" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">

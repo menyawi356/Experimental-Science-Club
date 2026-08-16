@@ -1,6 +1,6 @@
 export default function Publishing() {
   return (
-    <main id="page-publishing" className="page-view">
+    <main id="page-publishing" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">

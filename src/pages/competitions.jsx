@@ -1,6 +1,6 @@
 export default function Competitions() {
   return (
-    <main id="page-competitions" className="page-view">
+    <main id="page-competitions" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">
