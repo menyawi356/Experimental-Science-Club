@@ -1,4 +1,37 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+  const Pages = [
+    "Home",
+    "About Us",
+    "Competitions",
+    "Publishing",
+    "Chat Hub",
+    "Partners",
+    "Contact Us",
+  ];
+  const [page, setPage] = useState("Home");
+  const handleChangePage = (pageName) => {
+    setPage(pageName);
+  };
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate(page);
+  }, [page]);
+  const Links = Pages.map((pageName) => {
+    const PageWithOutSpaces = pageName.replace(" ", "-");
+    return (
+      <a
+        className={`nav-link ${PageWithOutSpaces === page && "active"}`}
+        onClick={() => {
+          handleChangePage(PageWithOutSpaces);
+        }}
+      >
+        {pageName}
+      </a>
+    );
+  });
   return (
     <header>
       <nav className="wrap">
@@ -8,38 +41,11 @@ const Header = () => {
         </button>
 
         <div className="navlinks" id="navLinks">
-          <a className="nav-link active" data-target="home" id="nav-home">
+          {/* <a className="nav-link active">
             Home
-          </a>
+          </a> */}
 
-          <a className="nav-link" data-target="about" id="nav-about">
-            About Us
-          </a>
-
-          <a
-            className="nav-link"
-            data-target="competitions"
-            id="nav-competitions"
-          >
-            Competitions
-          </a>
-
-          <a className="nav-link" data-target="publishing" id="nav-publishing">
-            Publishing
-          </a>
-
-          <a className="nav-link" data-target="chat" id="nav-chat">
-            Chat Hub
-          </a>
-
-          <a className="nav-link" data-target="partners" id="nav-partners">
-            Partners
-          </a>
-
-          <a className="nav-link" data-target="contact" id="nav-contact">
-            Contact Us
-          </a>
-
+          {Links}
           <a className="nav-link join-btn-mobile" id="nav-join-mobile">
             Join Club
           </a>
