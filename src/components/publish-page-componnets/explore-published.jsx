@@ -26,6 +26,7 @@ export default function ExplorePublished() {
       authors: ["Omar Hassan", "Youssef Adel"],
       abstract:
         "An introductory article explaining black holes, event horizons, and how scientists detect these fascinating cosmic objects.",
+      tags: ["Astronomy", "Black Holes", "Astrophysics", "Space"],
     },
 
     {
@@ -37,7 +38,7 @@ export default function ExplorePublished() {
       authors: ["Mariam Ali", "Ahmed Khaled", "Salma Hassan"],
       abstract:
         "Exploring the applications of machine learning techniques in scientific research and data analysis.",
-      tags: ["AI", "Machine Learning", "Research"],
+      tags: ["AI", "Machine Learning", "Research", "Data Science"],
       file: "/pdfs/ml-science.pdf",
     },
 
@@ -50,7 +51,7 @@ export default function ExplorePublished() {
       authors: ["Youssef Adel"],
       abstract:
         "A beginner-friendly introduction to the fundamental concepts of quantum mechanics and the behavior of particles at microscopic scales.",
-      tags: ["Physics", "Quantum Mechanics"],
+      tags: ["Physics", "Quantum Mechanics", "Quantum Physics", "Particles"],
       file: "/pdfs/quantum-mechanics.pdf",
     },
 
@@ -63,7 +64,7 @@ export default function ExplorePublished() {
       authors: ["Salma Khaled", "Nour Ahmed"],
       abstract:
         "A simple explanation of nuclear fusion inside stars and how it produces the enormous amounts of energy we observe.",
-      tags: ["Astronomy", "Stars", "Nuclear Physics"],
+      tags: ["Astronomy", "Stars", "Nuclear Physics", "Fusion"],
     },
 
     {
@@ -75,13 +76,14 @@ export default function ExplorePublished() {
       authors: ["Mahmoud Samir", "Mariam Ali"],
       abstract:
         "An investigation into the major causes of water pollution and its effects on aquatic ecosystems and human communities.",
-      tags: ["Environment", "Biology", "Pollution"],
+      tags: ["Environment", "Biology", "Pollution", "Ecosystems"],
       file: "/pdfs/water-pollution.pdf",
     },
   ];
   const { t } = useLanguage();
   const [filter, setFilter] = useSearchParams();
   const choosedFilter = filter.get("filter") || "all";
+  const [search, setSearch] = useState("");
   useEffect(() => {
     if (!filter.has("filter")) {
       setFilter({ filter: "all" });
@@ -90,18 +92,34 @@ export default function ExplorePublished() {
   const handleChangeFilter = (filter) => {
     setFilter({ filter });
   };
-  const filteredPublications = publications.filter(
-    (p) => p.type === choosedFilter || choosedFilter === "all",
-  );
+  const filteredPublications = publications
+    .filter((p) => p.type === choosedFilter || choosedFilter === "all")
+    .filter((p) => {
+      const query = search.toLowerCase().trim();
+
+      if (!query) return true;
+
+      return (
+        p.title.toLowerCase().includes(query) ||
+        p.tags.some((tag) => tag.toLowerCase().includes(query)) ||
+        p.authors.some((author) => author.toLowerCase().includes(query))
+      );
+    });
   const publishedPapersList = filteredPublications.map((p) => {
     return <PublicationCard p={p} key={p.id} />;
   });
+
   const publishText = t.publishing;
   return (
     <div id="pub-tab-explore" className="pub-subtab-view active">
       <div className="archive-search">
-        <input type="text" id="pubSearch" placeholder={publishText.search} />
-
+        <input
+          type="text"
+          id="pubSearch"
+          placeholder={publishText.search}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <div className="filter-pills">
           <span
             className={`pill ${choosedFilter === "all" && "active"}`}
