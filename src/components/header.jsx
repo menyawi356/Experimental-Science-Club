@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useLanguage } from "../global/languageProvider";
-const Header = () => {
+const Header = ({ setShowedModal }) => {
   const { language, changeLanguage, t } = useLanguage();
   const Pages = [
     { name: t.nav.home, path: "/Home" },
@@ -15,6 +15,9 @@ const Header = () => {
   const [isOpened, setIsOpned] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const html = useRef(document.querySelector("html"));
+  const handlePage = (page) => {
+    setShowedModal(page);
+  };
   const handleIsOpned = () => {
     setIsOpned((prev) => !prev);
   };
@@ -62,7 +65,22 @@ const Header = () => {
 
         <div className={`navlinks ${isOpened && "open"}`} id="navLinks">
           {Links}
-          <a className="nav-link join-btn-mobile" id="nav-join-mobile">
+          <a
+            className="nav-link join-btn-mobile"
+            title="لوحة التحكم"
+            onClick={() => {
+              handlePage("sign");
+            }}
+          >
+            {t.nav.sign}
+          </a>
+          <a
+            className="nav-link join-btn-mobile"
+            id="nav-join-mobile"
+            onClick={() => {
+              handlePage("join");
+            }}
+          >
             {t.nav.join}
           </a>
         </div>
@@ -105,10 +123,22 @@ const Header = () => {
               </svg>
             )}
           </button>
-          <button className="btn btn-ghost" title="لوحة التحكم">
+          <a
+            className="btn btn-ghost"
+            title="لوحة التحكم"
+            onClick={() => {
+              handlePage("sign");
+            }}
+          >
             {t.nav.sign}
-          </button>
-          <a className="btn btn-primary join-btn-desktop" id="nav-join-desktop">
+          </a>
+          <a
+            className="btn btn-primary join-btn-desktop"
+            id="nav-join-desktop"
+            onClick={() => {
+              handlePage("join");
+            }}
+          >
             {t.nav.join}
           </a>
 

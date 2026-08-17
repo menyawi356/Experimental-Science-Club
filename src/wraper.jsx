@@ -3,11 +3,15 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import "./index.css";
 import { LanguageProvider } from "./global/languageProvider.jsx";
+import ShowedModal from "./components/showed-modal.jsx";
+import { useState } from "react";
 export default function Wraper() {
+  const [showedModal, setShowedModal] = useState("none");
   return (
     <LanguageProvider>
-      <Header />
+      <Header setShowedModal={setShowedModal} />
       <Outlet />
+      <ShowedModal showedModal={showedModal} setShowedModal={setShowedModal} />
       <Footer />
     </LanguageProvider>
   );
