@@ -10,8 +10,7 @@ const ar = {
     partners: "الشركاء",
     contact: "تواصل معنا",
     join: "انضم للنادي",
-    sign: "سجل دخولك"
-
+    sign: "سجل دخولك",
   },
   home: {
     eyebrow: "نظام تشغيل للمواهب العلمية",
@@ -177,6 +176,13 @@ const ar = {
     close: "إغلاق",
     successTitle: "أهلاً بك معنا!",
     successBody: "تم استلام طلبك. سيتواصل معك فريقنا قريبًا.",
+  },
+  signInForm: {
+    heading: "تسجيل الدخول",
+    sub: "مرحبًا بعودتك. سجّل الدخول للمتابعة إلى ScienoAtlas.",
+    email: "البريد الإلكتروني",
+    password: "كلمة المرور",
+    submit: "تسجيل الدخول",
   },
   footer: { rights: "© 2026 الاطلاس العلمي. جميع الحقوق محفوظة." },
   symbolKnowledge: {

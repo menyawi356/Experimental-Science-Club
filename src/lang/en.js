@@ -10,7 +10,7 @@ const en = {
     partners: "Partners",
     contact: "Contact Us",
     join: "Join Club",
-    sign: "Sign In"
+    sign: "Sign In",
   },
   home: {
     eyebrow: "Operating system for scientific talent",
@@ -176,6 +176,13 @@ const en = {
     successTitle: "Welcome Aboard!",
     successBody:
       "Your application has been received. Our team will be in touch soon.",
+  },
+  signInForm: {
+    heading: "Sign In",
+    sub: "Welcome back. Sign in to continue to ScienoAtlas.",
+    email: "Email Address",
+    password: "Password",
+    submit: "Sign In",
   },
   footer: { rights: "© 2026 ScienoAtlas. All rights reserved." },
   symbolKnowledge: {
