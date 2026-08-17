@@ -1,29 +1,29 @@
+import { useLanguage } from "../global/languageProvider.jsx";
 import HomepageSVG from "../Svgs/homapge.svg";
 
 export default function Homepage() {
+  const { t } = useLanguage();
+  const home = t.home;
   return (
     <main id="page-home" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="eyebrow" id="home-eyebrow">
-            Operating system for scientific talent
+            {home.eyebrow}
           </div>
 
           <h1>
-            <span id="home-title1">Scieno</span>
+            <span id="home-title1">{home.title1}</span>
             <br />
-            <em id="home-title2">Atlas</em>
+            <em id="home-title2">{home.title2}</em>
           </h1>
 
           <p className="tagline" id="home-tagline">
-            — your beacon for all sciences
+            {home.tagline}
           </p>
 
           <p className="lede" id="home-lede">
-            A map for curious minds. ScienoAtlas empowers students through
-            verified research, hands-on projects, and a global scientific
-            network — turning academic curiosity into a lasting scientific
-            identity.
+            {home.lede}
           </p>
 
           <div className="hero-btns">
@@ -32,7 +32,7 @@ export default function Homepage() {
               style={{ padding: "13px 24px" }}
               id="home-explore-btn"
             >
-              Explore Competitions
+              {home.explore}
             </a>
 
             <a
@@ -40,7 +40,7 @@ export default function Homepage() {
               style={{ padding: "13px 24px" }}
               id="home-learn-btn"
             >
-              Learn More
+              {home.learn}
             </a>
           </div>
         </div>
