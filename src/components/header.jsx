@@ -23,6 +23,10 @@ const Header = () => {
     html.current.setAttribute("data-theme", theme);
     setIsDark(theme === "dark");
   }, []);
+  useEffect(() => {
+    html.current.dir = t.dir;
+    html.current.lang = language;
+  }, [language]);
   const handleChangeTheme = () => {
     const isDark = html.current.getAttribute("data-theme") === "dark";
     setIsDark(!isDark);

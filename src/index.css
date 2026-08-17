@@ -90,7 +90,8 @@ body #root {
   flex-direction: column;
   overflow-x: hidden;
 }
-a,.a {
+a,
+.a {
   color: inherit;
   cursor: pointer;
 }
@@ -122,22 +123,13 @@ button {
   height: 100%;
   perspective: 1400px;
   z-index: 5;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  padding-right: 8vw;
   pointer-events: none;
   overflow: hidden;
 }
-html[dir="rtl"] .bg-symbol-stage {
-  align-items: flex-start;
-  padding-right: 0;
-  padding-left: 8vw;
-}
 
 .symbol-3d-container {
-  position: relative;
+  box-sizing: content-box;
+  position: absolute;
   z-index: 100;
   width: clamp(260px, 32vw, 420px);
   height: clamp(260px, 32vw, 420px);
@@ -148,8 +140,12 @@ html[dir="rtl"] .bg-symbol-stage {
   transition:
     filter 0.4s ease,
     transform 0.4s ease;
+  inset-inline-end: 8vw;
 }
 .symbol-3d-svg {
+  transform: translateY(50%);
+  position: relative;
+  top: -25%;
   width: 100%;
   height: 100%;
   overflow: visible;
@@ -1189,15 +1185,25 @@ footer {
   .page-view {
     padding: 40px 0;
   }
+
   .bg-symbol-stage {
     position: relative;
-    justify-content: center;
-    align-items: center;
-    padding-right: 0;
-    padding-left: 0;
-    margin-top: 30px;
+    padding: 0;
+    margin-top: 100px;
     height: auto;
     inset: auto;
+    box-sizing: content-box;
+  }
+
+  .symbol-3d-container {
+    position: relative;
+    width: clamp(260px, 50vw, 420px);
+    height: clamp(260px, 50vw, 420px);
+  }
+  .symbol-3d-svg{
+    inset-inline-end: -50%;
+    transform: translateY(50%);
+    top:-50%
   }
   .left-content-zone {
     max-width: 100%;
