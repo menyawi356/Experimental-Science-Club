@@ -1,47 +1,38 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const Pages = [
-    "Home",
-    "About Us",
-    "Competitions",
-    "Publishing",
-    "Chat Hub",
-    "Partners",
-    "Contact Us",
+    { name: "Home", path: "/Home" },
+    { name: "About Us", path: "/About-Us" },
+    { name: "Competitions", path: "/Competitions" },
+    { name: "Publishing", path: "/Publishing" },
+    { name: "Chat Hub", path: "/Chat-Hub" },
+    { name: "Partners", path: "/Partners" },
+    { name: "Contact Us", path: "/Contact-Us" },
   ];
-  const [page, setPage] = useState("Home");
   const [isOpened, setIsOpned] = useState(false);
-  const handleChangePage = (pageName) => {
-    setPage(pageName);
-    setIsOpned(false);
-  };
+  const [isDark, setIsDark] = useState(false);
   const html = useRef(document.querySelector("html"));
   const handleIsOpned = () => {
     setIsOpned((prev) => !prev);
   };
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate(page);
-  }, [page]);
+
   const handleChangeTheme = () => {
     const isDark = html.current.getAttribute("data-theme") === "dark";
-
+    setIsDark(!isDark);
     html.current.setAttribute("data-theme", isDark ? "light" : "dark");
   };
   const Links = Pages.map((pageName, i) => {
-    const PageWithOutSpaces = pageName.replace(" ", "-");
     return (
-      <a
+      <NavLink
         key={i}
-        className={`nav-link ${PageWithOutSpaces === page && "active"}`}
-        onClick={() => {
-          handleChangePage(PageWithOutSpaces);
-        }}
+        className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+        to={pageName.path}
+        onClick={() => setIsOpned(false)}
       >
-        {pageName}
-      </a>
+        {pageName.name}
+      </NavLink>
     );
   });
   return (
@@ -79,27 +70,28 @@ const Header = () => {
             aria-label="Toggle dark mode"
             onClick={handleChangeTheme}
           >
-            <svg
-              id="iconSun"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-            </svg>
-
-            <svg
-              id="iconMoon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              style={{ display: "none" }}
-            >
-              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
-            </svg>
+            {!isDark ? (
+              <svg
+                id="iconSun"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+              </svg>
+            ) : (
+              <svg
+                id="iconMoon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+              </svg>
+            )}
           </button>
 
           <a className="btn btn-primary join-btn-desktop" id="nav-join-desktop">
