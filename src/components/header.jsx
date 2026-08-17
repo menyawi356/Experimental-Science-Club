@@ -12,17 +12,22 @@ const Header = () => {
     "Contact Us",
   ];
   const [page, setPage] = useState("Home");
+  const [isOpened, setIsOpned] = useState(false);
   const handleChangePage = (pageName) => {
     setPage(pageName);
+  };
+  const handleIsOpned = () => {
+    setIsOpned((prev) => !prev);
   };
   const navigate = useNavigate();
   useEffect(() => {
     navigate(page);
   }, [page]);
-  const Links = Pages.map((pageName) => {
+  const Links = Pages.map((pageName, i) => {
     const PageWithOutSpaces = pageName.replace(" ", "-");
     return (
       <a
+        key={i}
         className={`nav-link ${PageWithOutSpaces === page && "active"}`}
         onClick={() => {
           handleChangePage(PageWithOutSpaces);
@@ -45,7 +50,7 @@ const Header = () => {
           <span id="brand-text">ScienoAtlas</span>
         </button>
 
-        <div className="navlinks" id="navLinks">
+        <div className={`navlinks ${isOpened && "open"}`} id="navLinks">
           {Links}
           <a className="nav-link join-btn-mobile" id="nav-join-mobile">
             Join Club
@@ -97,6 +102,7 @@ const Header = () => {
             className="hamburger"
             id="hamburgerBtn"
             aria-label="Toggle navigation menu"
+            onClick={handleIsOpned}
           >
             <svg
               viewBox="0 0 24 24"
