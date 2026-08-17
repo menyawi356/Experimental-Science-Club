@@ -1,4 +1,6 @@
+import { useLanguage } from "../global/languageProvider";
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <footer>
       <div className="wrap">
@@ -8,12 +10,10 @@ export default function Footer() {
             style={{ fontSize: "14px", fontWeight: "bold" }}
             id="footer-brand"
           >
-            SCIENOATLAS
+            {t.brand}
           </span>
 
-          <span id="footer-rights">
-            © 2026 ScienoAtlas. All rights reserved.
-          </span>
+          <span id="footer-rights">{t.footer.rights}</span>
         </div>
       </div>
     </footer>
