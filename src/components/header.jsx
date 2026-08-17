@@ -76,10 +76,6 @@ const Header = () => {
             AR | EN
           </button>
 
-          <button className="admin-btn" title="لوحة التحكم">
-            🔐 Admin
-          </button>
-
           <button
             className="theme-btn"
             id="themeToggle"
@@ -109,7 +105,9 @@ const Header = () => {
               </svg>
             )}
           </button>
-
+          <button className="btn btn-ghost" title="لوحة التحكم">
+            {t.nav.sign}
+          </button>
           <a className="btn btn-primary join-btn-desktop" id="nav-join-desktop">
             {t.nav.join}
           </a>

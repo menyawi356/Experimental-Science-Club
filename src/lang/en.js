@@ -10,6 +10,7 @@ const en = {
     partners: "Partners",
     contact: "Contact Us",
     join: "Join Club",
+    sign: "Sign In"
   },
   home: {
     eyebrow: "Operating system for scientific talent",
