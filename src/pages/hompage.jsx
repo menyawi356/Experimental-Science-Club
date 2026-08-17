@@ -2,9 +2,12 @@ import { NavLink } from "react-router-dom";
 import { useLanguage } from "../global/languageProvider.jsx";
 import HomepageSVG from "../Svgs/homapge.svg";
 
+import SVG from "../components/sentence-popu-svg.jsx";
+
 export default function Homepage() {
   const { t } = useLanguage();
   const home = t.home;
+
   return (
     <main id="page-home" className="page-view active">
       <div className="wrap">
@@ -49,10 +52,9 @@ export default function Homepage() {
         </div>
       </div>
 
-      <div className="bg-symbol-stage" data-symbol="home">
-        <div className="symbol-3d-container">{<HomepageSVG />}</div>
-        <div className="sentence-popup"></div>
-      </div>
+      <SVG page="home">
+        <HomepageSVG />
+      </SVG>
     </main>
   );
 }

@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useLanguage } from "../global/languageProvider.jsx";
 import PublishingSVG from "../Svgs/publishing.svg";
+import SVG from "../components/sentence-popu-svg.jsx";
 
 export default function Publishing() {
   const { t } = useLanguage();
@@ -47,8 +48,10 @@ export default function Publishing() {
 
       <div className="bg-symbol-stage" data-symbol="publishing">
         <div className="symbol-3d-container">{<PublishingSVG />}</div>
-        <div className="sentence-popup"></div>
       </div>
+      <SVG page="publishing">
+        <PublishingSVG/>
+      </SVG>
     </main>
   );
 }

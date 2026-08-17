@@ -2,6 +2,7 @@ import { useLanguage } from "../global/languageProvider";
 import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
 import { useEffect } from "react";
+import SVG from "../components/sentence-popu-svg";
 
 export default function Chat() {
   const { t } = useLanguage();
@@ -78,9 +79,10 @@ export default function Chat() {
 
       <div className="bg-symbol-stage" data-symbol="chat">
         <div className="symbol-3d-container">{<ChatSVG />}</div>
-
-        <div className="sentence-popup"></div>
       </div>
+      <SVG page="chat">
+        <ChatSVG />
+      </SVG>
     </main>
   );
 }

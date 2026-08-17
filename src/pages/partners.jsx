@@ -1,4 +1,5 @@
 import PartnersSVG from "../Svgs/parteners.svg";
+import SVG from "../components/sentence-popu-svg";
 import { useLanguage } from "../global/languageProvider";
 export default function Partners() {
   const { t } = useLanguage();
@@ -81,7 +82,7 @@ export default function Partners() {
             </div>
           </div>
 
-          <p
+          {/* <p
             style={{
               marginTop: "16px",
               fontSize: "12px",
@@ -90,15 +91,12 @@ export default function Partners() {
           >
             Logo shown is a placeholder mark — replace with the official AoPS
             logo asset if you have usage rights.
-          </p>
+          </p> */}
         </div>
       </div>
-
-      <div className="bg-symbol-stage" data-symbol="partners">
-        <div className="symbol-3d-container">{<PartnersSVG />}</div>
-
-        <div className="sentence-popup"></div>
-      </div>
+      <SVG page="partners">
+        <PartnersSVG/>
+      </SVG>
     </main>
   );
 }

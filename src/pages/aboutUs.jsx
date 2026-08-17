@@ -1,3 +1,4 @@
+import SVG from "../components/sentence-popu-svg";
 import { useLanguage } from "../global/languageProvider";
 import AboutSVG from "../Svgs/About.svg";
 
@@ -135,10 +136,11 @@ export default function About() {
       </div>
 
       <div className="bg-symbol-stage" data-symbol="about">
-        <div className="symbol-3d-container">{<AboutSVG />}</div>
-
-        <div className="sentence-popup"></div>
+        <div className="symbol-3d-container">{}</div>
       </div>
+      <SVG page={"about"}>
+        <AboutSVG />
+      </SVG>
     </main>
   );
 }

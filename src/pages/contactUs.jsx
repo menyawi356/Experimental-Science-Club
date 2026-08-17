@@ -1,3 +1,4 @@
+import SVG from "../components/sentence-popu-svg";
 import { useLanguage } from "../global/languageProvider";
 import ContactSVG from "../Svgs/contact.svg";
 
@@ -54,12 +55,9 @@ export default function Contact() {
           </form>
         </div>
       </div>
-
-      <div className="bg-symbol-stage" data-symbol="contact">
-        <div className="symbol-3d-container">{<ContactSVG />}</div>
-
-        <div className="sentence-popup"></div>
-      </div>
+      <SVG page="contact">
+        <ContactSVG />
+      </SVG>
     </main>
   );
 }

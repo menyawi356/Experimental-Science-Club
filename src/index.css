@@ -160,6 +160,46 @@ button {
 .symbol-3d-container:active {
   transform: scale(0.98);
 }
+.sentence-popup {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  margin-top: 18px;
+  width: clamp(260px, 80%, 360px);
+  background: color-mix(in srgb, var(--card) 98%, transparent);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.18),
+    0 0 20px var(--gold-glow);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  z-index: 30;
+  text-align: center;
+  align-self: center;
+}
+.sentence-popup.visible {
+  transform: translateX(-50%);
+  opacity: 1;
+  pointer-events: auto;
+}
+.sentence-popup::before {
+  content: "✦ SCIENOATLAS INSIGHT";
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  margin-bottom: 6px;
+  font-weight: bold;
+}
 .spin-cw-fast {
   transform-origin: center;
   animation: spinCW 14s linear infinite;
@@ -277,53 +317,6 @@ button {
   }
 }
 
-.sentence-popup {
-  position: relative;
-  margin-top: 18px;
-  width: clamp(260px, 80%, 360px);
-  background: color-mix(in srgb, var(--card) 98%, transparent);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--gold);
-  border-radius: var(--radius);
-  padding: 14px 18px;
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.18),
-    0 0 20px var(--gold-glow);
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--ink);
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-  z-index: 30;
-  text-align: center;
-  align-self: center;
-}
-.sentence-popup.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-.sentence-popup::before {
-  content: "✦ SCIENOATLAS INSIGHT";
-  display: block;
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  color: var(--gold);
-  margin-bottom: 6px;
-  font-weight: bold;
-}
-.sentence-popup::after {
-  content: attr(data-counter);
-  display: block;
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--ink-faint);
-  margin-top: 8px;
-}
 
 header {
   position: sticky;
@@ -1189,9 +1182,14 @@ footer {
 
   .bg-symbol-stage {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     padding: 0;
-    margin-top: 100px;
-    height: auto;
+    margin: 0;
+    height: 500px;
+    width: 100%;
     inset: auto;
     box-sizing: content-box;
   }
@@ -1202,12 +1200,20 @@ footer {
     height: clamp(260px, 50vw, 420px);
   }
   .symbol-3d-svg{
-    inset-inline-end: -50%;
-    transform: translateY(50%);
-    top:-50%
+    position: relative;
+    height: 250px;
   }
   .left-content-zone {
     max-width: 100%;
+  }
+  .sentence-popup{
+    position: relative;
+    top: auto;
+    bottom: 0;
+  }
+  .sentence-popup.visible{
+    width: 100%;
+    transform: translateX(-50%);
   }
 }
 @media (max-width: 868px) {

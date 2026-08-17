@@ -1,4 +1,5 @@
 import CompetitionsList from "../components/competitionsList";
+import SVG from "../components/sentence-popu-svg";
 import { useLanguage } from "../global/languageProvider";
 import CompetitionsSVG from "../Svgs/competitions.svg";
 export default function Competitions() {
@@ -49,12 +50,9 @@ export default function Competitions() {
           </div>
         </div>
       </div>
-
-      <div className="bg-symbol-stage" data-symbol="competitions">
-        <div className="symbol-3d-container">{<CompetitionsSVG />}</div>
-
-        <div className="sentence-popup"></div>
-      </div>
+      <SVG page="competitions">
+        <CompetitionsSVG/>
+      </SVG>
     </main>
   );
 }
