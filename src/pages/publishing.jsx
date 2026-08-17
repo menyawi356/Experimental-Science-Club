@@ -1,26 +1,29 @@
+import { useLanguage } from "../global/languageProvider.jsx";
 import PublishingSVG from "../Svgs/publishing.svg";
 
 export default function Publishing() {
+  const { t } = useLanguage();
+  const publishText = t.publishing;
   return (
     <main id="page-publishing" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">
-            <h2 id="pub-title">Publishing Hub</h2>
+            <h2 id="pub-title">{publishText.title}</h2>
 
             <p className="lede" id="pub-lede">
-              Submit your scientific discoveries or explore peer-reviewed
-              research published by our club community.
+              {publishText.lede}
             </p>
           </div>
 
           <div className="sub-tabs">
             <button className="tab-btn active" id="tab-btn-submit">
-              ✦ <span id="pub-tab-submit-label">Submit Work</span>
+              ✦ <span id="pub-tab-submit-label">{publishText.submitTab}</span>
             </button>
 
             <button className="tab-btn" id="tab-btn-explore">
-              🔍 <span id="pub-tab-explore-label">Explore Published</span>
+              🔍{" "}
+              <span id="pub-tab-explore-label">{publishText.exploreTab}</span>
             </button>
           </div>
 
@@ -28,43 +31,37 @@ export default function Publishing() {
             <div className="pub-grid">
               <div className="pub-card">
                 <div>
-                  <h3 id="pub-articles-title">Articles</h3>
+                  <h3 id="pub-articles-title">{publishText.articlesTitle}</h3>
 
-                  <p id="pub-articles-desc">
-                    Short-form scientific observations and theoretical essays.
-                  </p>
+                  <p id="pub-articles-desc">{publishText.articlesDesc}</p>
                 </div>
 
                 <a className="btn btn-primary" id="pub-articles-btn">
-                  Publish
+                  {publishText.publish}
                 </a>
               </div>
 
               <div className="pub-card">
                 <div>
-                  <h3 id="pub-pdfs-title">PDFs</h3>
+                  <h3 id="pub-pdfs-title">{publishText.pdfsTitle}</h3>
 
-                  <p id="pub-pdfs-desc">
-                    Detailed lab notes and technical documentation files.
-                  </p>
+                  <p id="pub-pdfs-desc">{publishText.pdfsDesc}</p>
                 </div>
 
                 <a className="btn btn-primary" id="pub-pdfs-btn">
-                  Publish
+                  {publishText.publish}
                 </a>
               </div>
 
               <div className="pub-card">
                 <div>
-                  <h3 id="pub-papers-title">Research Papers</h3>
+                  <h3 id="pub-papers-title">{publishText.papersTitle}</h3>
 
-                  <p id="pub-papers-desc">
-                    Full-length peer-reviewed academic manuscripts.
-                  </p>
+                  <p id="pub-papers-desc">{publishText.papersDesc}</p>
                 </div>
 
                 <a className="btn btn-primary" id="pub-papers-btn">
-                  Publish
+                  {publishText.publish}
                 </a>
               </div>
             </div>
@@ -75,24 +72,24 @@ export default function Publishing() {
               <input
                 type="text"
                 id="pubSearch"
-                placeholder="Search title, author, or keyword..."
+                placeholder={publishText.search}
               />
 
               <div className="filter-pills">
                 <span className="pill active" id="filter-all">
-                  All
+                  {publishText.all}
                 </span>
 
                 <span className="pill" id="filter-paper">
-                  Research Papers
+                  {publishText.paper}
                 </span>
 
                 <span className="pill" id="filter-article">
-                  Articles
+                  {publishText.article}
                 </span>
 
                 <span className="pill" id="filter-pdf">
-                  PDFs
+                  {publishText.pdf}
                 </span>
               </div>
             </div>
@@ -104,7 +101,6 @@ export default function Publishing() {
 
       <div className="bg-symbol-stage" data-symbol="publishing">
         <div className="symbol-3d-container">{<PublishingSVG />}</div>
-
         <div className="sentence-popup"></div>
       </div>
     </main>
