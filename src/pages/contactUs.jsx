@@ -1,16 +1,18 @@
+import { useLanguage } from "../global/languageProvider";
 import ContactSVG from "../Svgs/contact.svg";
 
 export default function Contact() {
+  const { t } = useLanguage();
+  const contactText = t.contact;
   return (
     <main id="page-contact" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">
-            <h2 id="contact-title">Contact Us</h2>
+            <h2 id="contact-title">{contactText.title}</h2>
 
             <p className="lede" id="contact-lede">
-              Have questions about membership, partnerships, or publishing?
-              Reach out to us.
+              {contactText.lede}
             </p>
           </div>
 
@@ -18,22 +20,26 @@ export default function Contact() {
             <input
               type="text"
               id="contact-name"
-              placeholder="Your Name"
+              placeholder={contactText.name}
               required
             />
 
             <input
               type="email"
               id="contact-email"
-              placeholder="Your Email"
+              placeholder={contactText.email}
               required
             />
 
-            <input type="text" id="contact-subject" placeholder="Subject" />
+            <input
+              type="text"
+              id="contact-subject"
+              placeholder={contactText.subject}
+            />
 
             <textarea
               id="contact-message"
-              placeholder="Your Message..."
+              placeholder={contactText.message}
               required
             ></textarea>
 
@@ -43,7 +49,7 @@ export default function Contact() {
               style={{ justifyContent: "center" }}
               id="contact-send"
             >
-              Send Message
+              {contactText.send}
             </button>
           </form>
         </div>
