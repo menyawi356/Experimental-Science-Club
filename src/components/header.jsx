@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
-
+import { useLanguage } from "../global/languageProvider";
 const Header = () => {
+  const { language, changeLanguage, t } = useLanguage();
   const Pages = [
-    { name: "Home", path: "/Home" },
-    { name: "About Us", path: "/About-Us" },
-    { name: "Competitions", path: "/Competitions" },
-    { name: "Publishing", path: "/Publishing" },
-    { name: "Chat Hub", path: "/Chat-Hub" },
-    { name: "Partners", path: "/Partners" },
-    { name: "Contact Us", path: "/Contact-Us" },
+    { name: t.nav.home, path: "/Home" },
+    { name: t.nav.about, path: "/About-Us" },
+    { name: t.nav.competitions, path: "/Competitions" },
+    { name: t.nav.publishing, path: "/Publishing" },
+    { name: t.nav.chat, path: "/Chat-Hub" },
+    { name: t.nav.partners, path: "/Partners" },
+    { name: t.nav.contact, path: "/Contact-Us" },
   ];
   const [isOpened, setIsOpned] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -40,23 +41,34 @@ const Header = () => {
       </NavLink>
     );
   });
+  const handleChangeLanguage = () => {
+    if (language === "en") {
+      changeLanguage("ar");
+    } else {
+      changeLanguage("en");
+    }
+  };
   return (
     <header>
       <nav className="wrap">
         <NavLink className="logo" to={"/Home"}>
           <span className="mark">S</span>
-          <span id="brand-text">ScienoAtlas</span>
+          <span id="brand-text">{t.brand}</span>
         </NavLink>
 
         <div className={`navlinks ${isOpened && "open"}`} id="navLinks">
           {Links}
           <a className="nav-link join-btn-mobile" id="nav-join-mobile">
-            Join Club
+            {t.nav.join}
           </a>
         </div>
 
         <div className="navright">
-          <button className="lang-btn" id="langToggle">
+          <button
+            className="lang-btn"
+            id="langToggle"
+            onClick={handleChangeLanguage}
+          >
             AR | EN
           </button>
 
@@ -95,7 +107,7 @@ const Header = () => {
           </button>
 
           <a className="btn btn-primary join-btn-desktop" id="nav-join-desktop">
-            Join Club
+            {t.nav.join}
           </a>
 
           <button
