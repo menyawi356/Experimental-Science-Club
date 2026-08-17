@@ -1,19 +1,19 @@
 import PartnersSVG from "../Svgs/parteners.svg";
-
+import { useLanguage } from "../global/languageProvider";
 export default function Partners() {
+  const { t } = useLanguage();
+  const partnersText = t.partners;
   return (
     <main id="page-partners" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">
-            <h2 id="partners-title">Our Partner</h2>
+            <h2 id="partners-title">{partnersText.title}</h2>
 
             <p className="lede" id="partners-lede">
-              ScienoAtlas is proud to work alongside institutions that share our
-              belief in alternative, hands-on scientific learning.
+              {partnersText.lede}
             </p>
           </div>
-
           <div className="partner-feature">
             <div className="partner-logo-row">
               <svg
@@ -51,24 +51,21 @@ export default function Partners() {
                   fontSize="20"
                   fill="var(--paper)"
                 >
-                  AoPS
+                  {partnersText.name}
                 </text>
               </svg>
 
               <div>
-                <h3 id="aops-name">AoPS</h3>
+                <h3 id="aops-name">{partnersText.name}</h3>
 
                 <div className="subtitle" id="aops-full">
-                  Art of Problem Solving
+                  {partnersText.full}
                 </div>
               </div>
             </div>
 
             <p className="desc" id="aops-desc">
-              Art of Problem Solving (AoPS) builds resources and a community for
-              avid math students, sharing our mission of learning through
-              challenge, exploration, and problem solving rather than rote
-              memorization.
+              {partnersText.desc}
             </p>
 
             <div>
@@ -79,7 +76,7 @@ export default function Partners() {
                 className="btn btn-primary"
                 id="aops-visit"
               >
-                Visit AoPS
+                {partnersText.visit}
               </a>
             </div>
           </div>
