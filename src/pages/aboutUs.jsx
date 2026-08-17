@@ -1,16 +1,18 @@
+import { useLanguage } from "../global/languageProvider";
 import AboutSVG from "../Svgs/About.svg";
 
 export default function About() {
+  const { t } = useLanguage();
+  const aboutText = t.about;
   return (
     <main id="page-about" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">
-            <h2 id="about-title">About Us</h2>
+            <h2 id="about-title">{aboutText.title}</h2>
 
             <p className="lede" id="about-lede">
-              ScienoAtlas is a nonprofit organization built to discover science
-              through alternative, non-traditional ways of learning.
+              {aboutText.lede}
             </p>
           </div>
 
@@ -23,15 +25,7 @@ export default function About() {
             }}
             id="about-body"
           >
-            We exist to give every curious mind a space to think, question, and
-            build — not just a place to memorize facts. ScienoAtlas moves
-            learning away from rote memorization and toward experimentation,
-            discussion, and real projects with real goals. Everything we do is
-            nonprofit and built for the benefit of the whole community:
-            students, mentors, and institutions alike. We believe science should
-            be experienced, not just stored in a notebook — so we create room
-            for ideas to be argued, tested, prototyped, and shared with the
-            world.
+            {aboutText.body}
           </p>
 
           <div
@@ -58,7 +52,7 @@ export default function About() {
                 }}
                 id="about-point1-title"
               >
-                Alternative learning
+                {aboutText.p1t}
               </h3>
 
               <p
@@ -69,8 +63,7 @@ export default function About() {
                 }}
                 id="about-point1-body"
               >
-                We favor experimentation, dialogue, and projects over rote
-                memorization.
+                {aboutText.p1b}
               </p>
             </div>
 
@@ -91,7 +84,7 @@ export default function About() {
                 }}
                 id="about-point2-title"
               >
-                Nonprofit, for everyone
+                {aboutText.p2t}
               </h3>
 
               <p
@@ -102,8 +95,7 @@ export default function About() {
                 }}
                 id="about-point2-body"
               >
-                Every resource we build is meant to create benefit for the whole
-                community, not a select few.
+                {aboutText.p2b}
               </p>
             </div>
 
@@ -124,7 +116,7 @@ export default function About() {
                 }}
                 id="about-point3-title"
               >
-                Space to think
+                {aboutText.p3t}
               </h3>
 
               <p
@@ -135,8 +127,7 @@ export default function About() {
                 }}
                 id="about-point3-body"
               >
-                We give ideas room to be debated, tested, and turned into real
-                goals and projects.
+                {aboutText.p3b}
               </p>
             </div>
           </div>
