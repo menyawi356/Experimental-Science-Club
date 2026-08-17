@@ -107,7 +107,7 @@ button {
   padding: 0 24px;
   width: 100%;
   position: relative;
-  z-index: 10;
+  z-index: 0;
 }
 .left-content-zone {
   max-width: 580px;
@@ -138,6 +138,7 @@ html[dir="rtl"] .bg-symbol-stage {
 
 .symbol-3d-container {
   position: relative;
+  z-index: 100;
   width: clamp(260px, 32vw, 420px);
   height: clamp(260px, 32vw, 420px);
   transform-style: preserve-3d;

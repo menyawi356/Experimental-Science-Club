@@ -1,16 +1,18 @@
+import { useLanguage } from "../global/languageProvider";
 import ChatSVG from "../Svgs/chat.svg";
 
 export default function Chat() {
+  const { t } = useLanguage();
+  const chatText = t.chat
   return (
     <main id="page-chat" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">
-            <h2 id="chat-title">Scientific Chat Hub</h2>
+            <h2 id="chat-title">{chatText.title}</h2>
 
             <p className="lede" id="chat-lede">
-              Engage in peer-to-peer discussions, theoretical debates, and
-              experimental Q&As categorized by core scientific fields.
+              {chatText.lede}
             </p>
           </div>
 
