@@ -1,7 +1,10 @@
+import { useLanguage } from "../../global/languageProvider";
 export default function JoinModal({ setShowedModal }) {
   const handleModal = (newModal) => {
     setShowedModal(newModal);
   };
+  const { t } = useLanguage();
+  const joinForm = t.joinForm;
   return (
     <div
       className="modal-overlay"
@@ -24,40 +27,35 @@ export default function JoinModal({ setShowedModal }) {
 
         <div id="joinFormView">
           <h3 className="modal-heading" id="join-heading">
-            Join ScienoAtlas
+            {joinForm.heading}
           </h3>
 
           <p className="modal-sub" id="join-subheading">
-            Become part of a nonprofit community exploring science beyond the
-            classroom.
+            {joinForm.sub}
           </p>
 
           <form className="contact-form">
             <input
               type="text"
               id="join-name"
-              placeholder="Full Name"
+              placeholder={joinForm.name}
               required
             />
 
             <input
               type="email"
               id="join-email"
-              placeholder="Email Address"
+              placeholder={joinForm.email}
               required
             />
 
-            <input type="text" id="join-age" placeholder="Age / Grade" />
+            <input type="text" id="join-age" placeholder={joinForm.age} />
 
-            <input
-              type="text"
-              id="join-field"
-              placeholder="e.g. Physics, Chemistry, Biology, Math & CS"
-            />
+            <input type="text" id="join-field" placeholder={joinForm.fieldPh} />
 
             <textarea
               id="join-message"
-              placeholder="Why do you want to join? (optional)"
+              placeholder={joinForm.message}
             ></textarea>
 
             <button
@@ -66,12 +64,12 @@ export default function JoinModal({ setShowedModal }) {
               style={{ justifyContent: "center" }}
               id="join-submit"
             >
-              Submit Application
+              {joinForm.message}
             </button>
           </form>
         </div>
 
-        <div
+        {/* <div
           id="joinSuccessView"
           className="modal-success"
           style={{ display: "none" }}
@@ -87,7 +85,7 @@ export default function JoinModal({ setShowedModal }) {
           <a className="btn btn-primary" id="join-close">
             Close
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );
