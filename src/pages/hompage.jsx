@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { useLanguage } from "../global/languageProvider.jsx";
 import HomepageSVG from "../Svgs/homapge.svg";
 
@@ -27,21 +28,23 @@ export default function Homepage() {
           </p>
 
           <div className="hero-btns">
-            <a
-              className="btn btn-primary"
+            <NavLink
+              to="/Competitions"
+              className="btn btn-primary "
               style={{ padding: "13px 24px" }}
               id="home-explore-btn"
             >
               {home.explore}
-            </a>
+            </NavLink>
 
-            <a
+            <NavLink
               className="btn btn-ghost"
               style={{ padding: "13px 24px" }}
               id="home-learn-btn"
+              to="/About-Us"
             >
               {home.learn}
-            </a>
+            </NavLink>
           </div>
         </div>
       </div>
