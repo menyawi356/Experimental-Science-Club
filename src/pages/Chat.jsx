@@ -1,9 +1,33 @@
 import { useLanguage } from "../global/languageProvider";
+import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
+import { useEffect } from "react";
 
 export default function Chat() {
   const { t } = useLanguage();
-  const chatText = t.chat
+  const chatText = t.chat;
+  const [slectedChat, setChat] = useSearchParams();
+  const chatLable = chatText.channelTitles[slectedChat.get("chat")];
+  useEffect(() => {
+    setChat({ chat: "physics" });
+  }, []);
+  const handleChangeChat = (chat) => {
+    setChat({ chat });
+  };
+  const rooms = Object.keys(chatText.rooms).map((key, i) => {
+    return (
+      <button
+        onClick={() => {
+          handleChangeChat(key);
+        }}
+        className={`tab-btn ${slectedChat.get("chat") == key && "active"}`}
+        data-room={key}
+        key={i}
+      >
+        {chatText.rooms[key]}
+      </button>
+    );
+  });
   return (
     <main id="page-chat" className="page-view active">
       <div className="wrap">
@@ -17,35 +41,17 @@ export default function Chat() {
           </div>
 
           <div className="sub-tabs" id="chatRoomTabs">
-            <button className="tab-btn active" data-room="physics">
-              ⚛️ Physics
-            </button>
-
-            <button className="tab-btn" data-room="chemistry">
-              🧪 Chemistry
-            </button>
-
-            <button className="tab-btn" data-room="biology">
-              🧬 Biology
-            </button>
-
-            <button className="tab-btn" data-room="astronomy">
-              🌌 Astronomy
-            </button>
-
-            <button className="tab-btn" data-room="math_cs">
-              📐 Math & CS
-            </button>
+            {rooms}
           </div>
 
           <div className="chat-box-container">
             <div className="chat-header">
               <div className="chat-title" id="chatChannelTitle">
-                ⚛️ # physics-and-quantum
+                {chatLable}
               </div>
 
               <div className="chat-status">
-                <span id="activeUserCount">18 Online</span>
+                <span id="activeUserCount">18 {chatText.online}</span>
               </div>
             </div>
 
@@ -55,7 +61,7 @@ export default function Chat() {
               <input
                 type="text"
                 id="chatInput"
-                placeholder="Ask a question or share a discovery..."
+                placeholder={chatText.placeholder}
               />
 
               <button
@@ -63,7 +69,7 @@ export default function Chat() {
                 style={{ padding: "8px 18px" }}
                 id="chat-send-btn"
               >
-                Send
+                {chatText.send}
               </button>
             </div>
           </div>
