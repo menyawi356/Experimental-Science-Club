@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const Pages = [
@@ -17,10 +17,15 @@ const Header = () => {
   const handleIsOpned = () => {
     setIsOpned((prev) => !prev);
   };
-
+  useEffect(() => {
+    const theme = localStorage.getItem("theme") || "ligh";
+    html.current.setAttribute("data-theme", theme);
+    setIsDark(theme === "dark");
+  }, []);
   const handleChangeTheme = () => {
     const isDark = html.current.getAttribute("data-theme") === "dark";
     setIsDark(!isDark);
+    localStorage.setItem("theme", isDark ? "light" : "dark");
     html.current.setAttribute("data-theme", isDark ? "light" : "dark");
   };
   const Links = Pages.map((pageName, i) => {
@@ -38,15 +43,10 @@ const Header = () => {
   return (
     <header>
       <nav className="wrap">
-        <button
-          className="logo"
-          onClick={() => {
-            handleChangePage("Home");
-          }}
-        >
+        <NavLink className="logo" to={"/Home"}>
           <span className="mark">S</span>
           <span id="brand-text">ScienoAtlas</span>
-        </button>
+        </NavLink>
 
         <div className={`navlinks ${isOpened && "open"}`} id="navLinks">
           {Links}
