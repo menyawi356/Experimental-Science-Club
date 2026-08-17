@@ -7,6 +7,8 @@ import Publishing from "./pages/publishing";
 import Chat from "./pages/Chat";
 import Partners from "./pages/partners";
 import Contact from "./pages/contactUs";
+import SubmitWork from "./components/publish-page-componnets/sumbit-work";
+import ExplorePublished from "./components/publish-page-componnets/explore-published";
 
 export default function App() {
   return (
@@ -17,7 +19,11 @@ export default function App() {
           <Route path="Home" element={<Homepage />} />
           <Route path="About-Us" element={<About />} />
           <Route path="Competitions" element={<Competitions />} />
-          <Route path="Publishing" element={<Publishing />} />
+          <Route path="Publishing" element={<Publishing />}>
+            <Route index element={<Navigate to="submit-work" replace />} />
+            <Route path="submit-work" element={<SubmitWork />} />
+            <Route path="explore-published" element={<ExplorePublished />} />
+          </Route>
           <Route path="Chat-Hub" element={<Chat />} />
           <Route path="Partners" element={<Partners />} />
           <Route path="Contact-Us" element={<Contact />} />
