@@ -1,16 +1,17 @@
+import { useLanguage } from "../global/languageProvider";
 import CompetitionsSVG from "../Svgs/competitions.svg";
-
 export default function Competitions() {
+  const { t } = useLanguage();
+  const competitionsText = t.competitions;
   return (
     <main id="page-competitions" className="page-view active">
       <div className="wrap">
         <div className="left-content-zone">
           <div className="sec-head">
-            <h2 id="comp-title">Competitions & Hackathons</h2>
+            <h2 id="comp-title">{competitionsText.title}</h2>
 
             <p className="lede" id="comp-lede">
-              Discover global challenges to test your skills, build your
-              scientific identity, and compete with the brightest minds.
+              {competitionsText.lede}
             </p>
           </div>
 
