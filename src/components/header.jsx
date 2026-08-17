@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -15,7 +15,9 @@ const Header = () => {
   const [isOpened, setIsOpned] = useState(false);
   const handleChangePage = (pageName) => {
     setPage(pageName);
+    setIsOpned(false);
   };
+  const html = useRef(document.querySelector("html"));
   const handleIsOpned = () => {
     setIsOpned((prev) => !prev);
   };
@@ -23,6 +25,11 @@ const Header = () => {
   useEffect(() => {
     navigate(page);
   }, [page]);
+  const handleChangeTheme = () => {
+    const isDark = html.current.getAttribute("data-theme") === "dark";
+
+    html.current.setAttribute("data-theme", isDark ? "light" : "dark");
+  };
   const Links = Pages.map((pageName, i) => {
     const PageWithOutSpaces = pageName.replace(" ", "-");
     return (
@@ -70,6 +77,7 @@ const Header = () => {
             className="theme-btn"
             id="themeToggle"
             aria-label="Toggle dark mode"
+            onClick={handleChangeTheme}
           >
             <svg
               id="iconSun"
