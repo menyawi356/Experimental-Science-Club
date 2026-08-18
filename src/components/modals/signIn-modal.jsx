@@ -2,7 +2,7 @@ import { useState } from "react";
 import useLanguage from "../../hooks/useLanguage.js";
 import signIn from "../../API/sign-in";
 import useAuth from "../../hooks/useAuth.js";
-
+import updateData from "../../utils/uppdat-data.js";
 export default function SignInModal({ setShowedModal }) {
   const [disabled, setDisabled] = useState(false);
   const handleModal = (newModal) => {
@@ -13,18 +13,6 @@ export default function SignInModal({ setShowedModal }) {
     email: "",
     password: "",
   });
-  const updateData = (e, dataType) => {
-    if (dataType !== "password" && dataType !== "email") {
-      return;
-    }
-    setData((prev) => {
-      const newValue = e.target.value;
-      return {
-        ...prev,
-        [dataType]: newValue,
-      };
-    });
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await signIn(data.email, data.password);
@@ -89,7 +77,7 @@ export default function SignInModal({ setShowedModal }) {
               placeholder={signInForm.email}
               value={data.email}
               onChange={(e) => {
-                updateData(e, "email");
+                updateData(e, "email", setData);
               }}
               disabled={disabled}
               required
@@ -101,7 +89,7 @@ export default function SignInModal({ setShowedModal }) {
               placeholder={signInForm.password}
               value={data.password}
               onChange={(e) => {
-                updateData(e, "password");
+                updateData(e, "password", setData);
               }}
               required
               disabled={disabled}
