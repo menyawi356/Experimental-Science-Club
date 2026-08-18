@@ -168,6 +168,7 @@ const en = {
     sub: "Become part of a nonprofit community exploring science beyond the classroom.",
     name: "Full Name",
     email: "Email Address",
+    password:"password",
     age: "Age / Grade",
     fieldPh: "e.g. Physics, Chemistry, Biology, Math & CS",
     message: "Why do you want to join? (optional)",
