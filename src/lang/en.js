@@ -266,5 +266,13 @@ const en = {
       "Networking amplifies a single idea into a distributed scientific effort.",
     ],
   },
+  userModal: {
+    heading: "Your Account",
+    sub: "Here is your account information.",
+    name: "Name",
+    email: "Email",
+    age: "Age",
+    signOut: "Sign Out",
+  },
 };
 export default en;

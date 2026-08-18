@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import useLanguage from "../hooks/useLanguage.js";
 import useAuth from "../hooks/useAuth.js";
 import useChangeModal from "../hooks/useChangeModal.js";
+import UserButton from "./user-profiel-btn.jsx";
 const Header = () => {
   const { language, changeLanguage, t } = useLanguage();
   const Pages = [
@@ -69,7 +70,7 @@ const Header = () => {
 
         <div className={`navlinks ${isOpened && "open"}`} id="navLinks">
           {Links}
-          {!auth.isAuth && (
+          {!auth.isAuth ? (
             <>
               <a
                 className="nav-link join-btn-mobile"
@@ -90,6 +91,8 @@ const Header = () => {
                 {t.nav.join}
               </a>
             </>
+          ) : (
+            ""
           )}
         </div>
 
@@ -131,7 +134,7 @@ const Header = () => {
               </svg>
             )}
           </button>
-          {!auth.isAuth && (
+          {!auth.isAuth ? (
             <>
               <a
                 className="btn btn-ghost join-btn-desktop"
@@ -152,6 +155,8 @@ const Header = () => {
                 {t.nav.join}
               </a>
             </>
+          ) : (
+            <UserButton />
           )}
 
           <button
