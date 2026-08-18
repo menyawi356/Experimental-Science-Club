@@ -1,10 +1,20 @@
 import SVG from "../components/sentence-popu-svg";
 import useLanguage from "../hooks/useLanguage.js";
 import ContactSVG from "../Svgs/contact.svg";
+import useAuth from "../hooks/useAuth.js";
+import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
 
 export default function Contact() {
   const { t } = useLanguage();
   const contactText = t.contact;
+  const openJoinModal = useOpenJoinModal();
+  const { auth } = useAuth();
+  const handleSend = (e) => {
+    e.preventDefault()
+    if (!auth.isAuth) {
+      openJoinModal();
+    }
+  };
   return (
     <main id="page-contact" className="page-view active">
       <div className="wrap">
@@ -17,7 +27,7 @@ export default function Contact() {
             </p>
           </div>
 
-          <form className="contact-form">
+          <form className="contact-form" onSubmit={handleSend}>
             <input
               type="text"
               id="contact-name"

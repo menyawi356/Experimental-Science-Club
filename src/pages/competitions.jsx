@@ -1,11 +1,19 @@
 import CompetitionsList from "../components/competitionsList";
 import SVG from "../components/sentence-popu-svg";
+import useAuth from "../hooks/useAuth.js";
 import useLanguage from "../hooks/useLanguage.js";
+import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
 import CompetitionsSVG from "../Svgs/competitions.svg";
 export default function Competitions() {
   const { t } = useLanguage();
   const competitionsText = t.competitions;
-
+  const openJoinModal = useOpenJoinModal();
+  const { auth } = useAuth();
+  const handleSuggest = () => {
+    if (!auth.isAuth) {
+      openJoinModal();
+    }
+  };
   return (
     <main id="page-competitions" className="page-view active">
       <div className="wrap">
@@ -42,7 +50,11 @@ export default function Competitions() {
               </p>
 
               <div className="opp-actions">
-                <a className="btn btn-primary" id="idea-cta">
+                <a
+                  className="btn btn-primary"
+                  id="idea-cta"
+                  onClick={handleSuggest}
+                >
                   {competitionsText.ideaCta}
                 </a>
               </div>
@@ -51,7 +63,7 @@ export default function Competitions() {
         </div>
       </div>
       <SVG page="competitions">
-        <CompetitionsSVG/>
+        <CompetitionsSVG />
       </SVG>
     </main>
   );

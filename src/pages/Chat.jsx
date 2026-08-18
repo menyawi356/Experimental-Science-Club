@@ -3,12 +3,21 @@ import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
 import { useEffect } from "react";
 import SVG from "../components/sentence-popu-svg";
-
+import useAuth from "../hooks/useAuth.js";
+import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
 export default function Chat() {
   const { t } = useLanguage();
   const chatText = t.chat;
   const [slectedChat, setChat] = useSearchParams();
   const chatLable = chatText.channelTitles[slectedChat.get("chat")];
+  const contactText = t.contact;
+  const openJoinModal = useOpenJoinModal();
+  const { auth } = useAuth();
+  const handleSend = () => {
+    if (!auth.isAuth) {
+      openJoinModal();
+    }
+  };
   useEffect(() => {
     setChat({ chat: "physics" });
   }, []);
@@ -69,6 +78,7 @@ export default function Chat() {
                 className="btn btn-primary"
                 style={{ padding: "8px 18px" }}
                 id="chat-send-btn"
+                onClick={handleSend}
               >
                 {chatText.send}
               </button>

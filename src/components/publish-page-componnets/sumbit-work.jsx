@@ -1,8 +1,18 @@
 import useLanguage from "../../hooks/useLanguage.js";
+import useOpenJoinModal from "../../hooks/useOpenJoinModal.js";
+import useAuth from "../../hooks/useAuth.js";
 
 export default function SubmitWork() {
+  const openJoinModal = useOpenJoinModal();
+  const { auth } = useAuth();
+
   const { t } = useLanguage();
   const publishText = t.publishing;
+  const handlePublish = () => {
+    if (!auth.isAuth) {
+      openJoinModal();
+    }
+  };
   return (
     <div id="pub-tab-submit" className="pub-subtab-view active">
       <div className="pub-grid">
@@ -13,7 +23,11 @@ export default function SubmitWork() {
             <p id="pub-articles-desc">{publishText.articlesDesc}</p>
           </div>
 
-          <a className="btn btn-primary" id="pub-articles-btn">
+          <a
+            className="btn btn-primary"
+            id="pub-articles-btn"
+            onClick={handlePublish}
+          >
             {publishText.publish}
           </a>
         </div>
@@ -25,7 +39,11 @@ export default function SubmitWork() {
             <p id="pub-pdfs-desc">{publishText.pdfsDesc}</p>
           </div>
 
-          <a className="btn btn-primary" id="pub-pdfs-btn">
+          <a
+            className="btn btn-primary"
+            id="pub-pdfs-btn"
+            onClick={handlePublish}
+          >
             {publishText.publish}
           </a>
         </div>
@@ -37,7 +55,11 @@ export default function SubmitWork() {
             <p id="pub-papers-desc">{publishText.papersDesc}</p>
           </div>
 
-          <a className="btn btn-primary" id="pub-papers-btn">
+          <a
+            className="btn btn-primary"
+            id="pub-papers-btn"
+            onClick={handlePublish}
+          >
             {publishText.publish}
           </a>
         </div>
