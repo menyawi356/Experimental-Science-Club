@@ -168,7 +168,7 @@ const en = {
     sub: "Become part of a nonprofit community exploring science beyond the classroom.",
     name: "Full Name",
     email: "Email Address",
-    password:"password",
+    password: "password",
     age: "Age / Grade",
     fieldPh: "e.g. Physics, Chemistry, Biology, Math & CS",
     message: "Why do you want to join? (optional)",
@@ -177,6 +177,10 @@ const en = {
     successTitle: "Welcome Aboard!",
     successBody:
       "Your application has been received. Our team will be in touch soon.",
+    alreadyAccount: {
+      text: "Already have an account?",
+      button: "Sign In",
+    },
   },
   signInForm: {
     heading: "Sign In",
@@ -184,6 +188,10 @@ const en = {
     email: "Email Address",
     password: "Password",
     submit: "Sign In",
+    dontHaveAccount: {
+      text: "Don't have an account?",
+      button: "Join Us",
+    },
   },
   footer: { rights: "© 2026 ScienoAtlas. All rights reserved." },
   symbolKnowledge: {

@@ -90,6 +90,80 @@ body #root {
   flex-direction: column;
   overflow-x: hidden;
 }
+.already-account {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-family: var(--sans);
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.already-account__text {
+  color: var(--ink-soft);
+}
+
+.already-account__button {
+  border: none;
+  background: transparent;
+  padding: 4px 6px;
+  margin: 0;
+
+  color: var(--indigo);
+  font-family: var(--sans);
+  font-size: inherit;
+  font-weight: 600;
+
+  cursor: pointer;
+  border-radius: 6px;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.already-account__button:hover {
+  color: var(--indigo-strong);
+  background: color-mix(
+    in srgb,
+    var(--indigo) 8%,
+    transparent
+  );
+}
+
+.already-account__button:active {
+  transform: scale(0.96);
+}
+
+.already-account__button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .already-account {
+    gap: 6px;
+    font-size: 0.84rem;
+    margin-top: 16px;
+  }
+
+  .already-account__button {
+    padding: 4px 5px;
+  }
+}
+
+@media (max-width: 340px) {
+  .already-account {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
 a,
 .a {
   color: inherit;

@@ -105,6 +105,19 @@ export default function SignInModal({ setShowedModal }) {
               {signInForm.submit}
             </button>
           </form>
+          <div className="already-account">
+            <span className="already-account__text">
+              {signInForm.dontHaveAccount.text}
+            </span>
+
+            <button
+              type="button"
+              className="already-account__button"
+              onClick={() => handleModal("join")}
+            >
+              {signInForm.dontHaveAccount.button}
+            </button>
+          </div>
         </div>
       </div>
     </div>

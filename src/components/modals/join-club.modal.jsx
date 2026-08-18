@@ -128,6 +128,21 @@ export default function JoinModal({ setShowedModal }) {
               {joinForm.submit}
             </button>
           </form>
+          <div className="already-account">
+            <span className="already-account__text">
+              {joinForm.alreadyAccount.text}
+            </span>
+
+            <button
+              type="button"
+              className="already-account__button"
+              onClick={() => {
+                handleModal("sign");
+              }}
+            >
+              {joinForm.alreadyAccount.button}
+            </button>
+          </div>
         </div>
 
         {/* <div
