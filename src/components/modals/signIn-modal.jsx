@@ -1,10 +1,32 @@
+import { useState } from "react";
 import { useLanguage } from "../../global/languageProvider";
+import signIn from "../../API/sign-in";
 
 export default function SignInModal({ setShowedModal }) {
   const handleModal = (newModal) => {
     setShowedModal(newModal);
   };
-
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const updateData = (e, dataType) => {
+    if (dataType !== "password" && dataType !== "email") {
+      return;
+    }
+    setData((prev) => {
+      const newValue = e.target.value;
+      return {
+        ...prev,
+        [dataType]: newValue,
+      };
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await signIn(data.email, data.password);
+    console.log(response);
+  };
   const { t } = useLanguage();
   const signInForm = t.signInForm;
 
@@ -37,11 +59,15 @@ export default function SignInModal({ setShowedModal }) {
             {signInForm.sub}
           </p>
 
-          <form className="contact-form">
+          <form className="contact-form" onSubmit={handleSubmit}>
             <input
               type="email"
               id="sign-in-email"
               placeholder={signInForm.email}
+              value={data.email}
+              onChange={(e) => {
+                updateData(e, "email");
+              }}
               required
             />
 
@@ -49,6 +75,10 @@ export default function SignInModal({ setShowedModal }) {
               type="password"
               id="sign-in-password"
               placeholder={signInForm.password}
+              value={data.password}
+              onChange={(e) => {
+                updateData(e, "password");
+              }}
               required
             />
 
