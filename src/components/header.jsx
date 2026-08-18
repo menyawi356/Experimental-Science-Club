@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import useLanguage from "../hooks/useLanguage.js";
 import useAuth from "../hooks/useAuth.js";
-const Header = ({ setShowedModal }) => {
+import useChangeModal from "../hooks/useChangeModal.js";
+const Header = () => {
   const { language, changeLanguage, t } = useLanguage();
   const Pages = [
     { name: t.nav.home, path: "/Home" },
@@ -13,6 +14,7 @@ const Header = ({ setShowedModal }) => {
     { name: t.nav.partners, path: "/Partners" },
     { name: t.nav.contact, path: "/Contact-Us" },
   ];
+  const { setShowedModal } = useChangeModal();
   const [isOpened, setIsOpned] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const html = useRef(document.querySelector("html"));
