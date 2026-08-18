@@ -1,11 +1,14 @@
 import { useState } from "react";
 import useLanguage from "../../hooks/useLanguage.js";
 import signIn from "../../API/sign-in";
+import useAuth from "../../hooks/useAuth.js";
 
 export default function SignInModal({ setShowedModal }) {
+  const [disabled, setDisabled] = useState(false);
   const handleModal = (newModal) => {
     setShowedModal(newModal);
   };
+  const { setAuth } = useAuth();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -25,6 +28,20 @@ export default function SignInModal({ setShowedModal }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await signIn(data.email, data.password);
+    if (response.ok) {
+      setAuth({
+        isAuth: true,
+        user: response.data,
+      });
+      setShowedModal("none");
+    } else {
+      setDisabled(false);
+      setData({
+        email: "",
+        password: "",
+      });
+    }
+
     console.log(response);
   };
   const { t } = useLanguage();
@@ -59,7 +76,13 @@ export default function SignInModal({ setShowedModal }) {
             {signInForm.sub}
           </p>
 
-          <form className="contact-form" onSubmit={handleSubmit}>
+          <form
+            className="contact-form"
+            onSubmit={(e) => {
+              setDisabled(true);
+              handleSubmit(e);
+            }}
+          >
             <input
               type="email"
               id="sign-in-email"
@@ -68,6 +91,7 @@ export default function SignInModal({ setShowedModal }) {
               onChange={(e) => {
                 updateData(e, "email");
               }}
+              disabled={disabled}
               required
             />
 
@@ -80,6 +104,7 @@ export default function SignInModal({ setShowedModal }) {
                 updateData(e, "password");
               }}
               required
+              disabled={disabled}
             />
 
             <button
@@ -87,6 +112,7 @@ export default function SignInModal({ setShowedModal }) {
               className="btn btn-primary"
               style={{ justifyContent: "center" }}
               id="sign-in-submit"
+              disabled={disabled}
             >
               {signInForm.submit}
             </button>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import useLanguage from "../hooks/useLanguage.js";
+import useAuth from "../hooks/useAuth.js";
 const Header = ({ setShowedModal }) => {
   const { language, changeLanguage, t } = useLanguage();
   const Pages = [
@@ -15,6 +16,7 @@ const Header = ({ setShowedModal }) => {
   const [isOpened, setIsOpned] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const html = useRef(document.querySelector("html"));
+  const { auth } = useAuth();
   const handlePage = (page) => {
     setShowedModal(page);
   };
@@ -65,24 +67,28 @@ const Header = ({ setShowedModal }) => {
 
         <div className={`navlinks ${isOpened && "open"}`} id="navLinks">
           {Links}
-          <a
-            className="nav-link join-btn-mobile"
-            title="لوحة التحكم"
-            onClick={() => {
-              handlePage("sign");
-            }}
-          >
-            {t.nav.sign}
-          </a>
-          <a
-            className="nav-link join-btn-mobile"
-            id="nav-join-mobile"
-            onClick={() => {
-              handlePage("join");
-            }}
-          >
-            {t.nav.join}
-          </a>
+          {!auth.isAuth && (
+            <>
+              <a
+                className="nav-link join-btn-mobile"
+                title="لوحة التحكم"
+                onClick={() => {
+                  handlePage("sign");
+                }}
+              >
+                {t.nav.sign}
+              </a>
+              <a
+                className="nav-link join-btn-mobile"
+                id="nav-join-mobile"
+                onClick={() => {
+                  handlePage("join");
+                }}
+              >
+                {t.nav.join}
+              </a>
+            </>
+          )}
         </div>
 
         <div className="navright">
@@ -123,24 +129,28 @@ const Header = ({ setShowedModal }) => {
               </svg>
             )}
           </button>
-          <a
-            className="btn btn-ghost join-btn-desktop"
-            title="لوحة التحكم"
-            onClick={() => {
-              handlePage("sign");
-            }}
-          >
-            {t.nav.sign}
-          </a>
-          <a
-            className="btn btn-primary join-btn-desktop"
-            id="nav-join-desktop"
-            onClick={() => {
-              handlePage("join");
-            }}
-          >
-            {t.nav.join}
-          </a>
+          {!auth.isAuth && (
+            <>
+              <a
+                className="btn btn-ghost join-btn-desktop"
+                title="لوحة التحكم"
+                onClick={() => {
+                  handlePage("sign");
+                }}
+              >
+                {t.nav.sign}
+              </a>
+              <a
+                className="btn btn-primary join-btn-desktop"
+                id="nav-join-desktop"
+                onClick={() => {
+                  handlePage("join");
+                }}
+              >
+                {t.nav.join}
+              </a>
+            </>
+          )}
 
           <button
             className="hamburger"
