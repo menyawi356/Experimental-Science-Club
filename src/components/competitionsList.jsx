@@ -1,4 +1,4 @@
-import { useLanguage } from "../global/languageProvider";
+import useLanguage from "../hooks/useLanguage.js";
 export default function CompetitionsList() {
   const { language, t } = useLanguage();
   const competitions = [

@@ -1,5 +1,5 @@
 import SVG from "../components/sentence-popu-svg";
-import { useLanguage } from "../global/languageProvider";
+import useLanguage from "../hooks/useLanguage.js";
 import AboutSVG from "../Svgs/About.svg";
 
 export default function About() {

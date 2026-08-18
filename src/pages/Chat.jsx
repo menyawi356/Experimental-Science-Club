@@ -1,4 +1,4 @@
-import { useLanguage } from "../global/languageProvider";
+import useLanguage from "../hooks/useLanguage.js";
 import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
 import { useEffect } from "react";

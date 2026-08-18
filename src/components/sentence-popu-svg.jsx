@@ -1,4 +1,4 @@
-import { useLanguage } from "../global/languageProvider.jsx";
+import useLanguage from "../hooks/useLanguage.js";
 import { useState } from "react";
 export default function SVG({ children, page }) {
   const [index, setIndex] = useState(0);

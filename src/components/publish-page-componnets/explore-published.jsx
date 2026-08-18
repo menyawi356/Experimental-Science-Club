@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { useLanguage } from "../../global/languageProvider.jsx";
+import useLanguage from "../../hooks/useLanguage.js";
 import { useEffect, useState } from "react";
 import PublicationCard from "./published-paper.jsx";
 export default function ExplorePublished() {

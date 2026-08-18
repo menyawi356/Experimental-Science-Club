@@ -1,4 +1,4 @@
-import { useLanguage } from "../global/languageProvider";
+import useLanguage from "../hooks/useLanguage.js";
 export default function Footer() {
   const { t } = useLanguage();
   return (

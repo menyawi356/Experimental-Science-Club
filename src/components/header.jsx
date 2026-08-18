@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useLanguage } from "../global/languageProvider";
+import useLanguage from "../hooks/useLanguage.js";
 const Header = ({ setShowedModal }) => {
   const { language, changeLanguage, t } = useLanguage();
   const Pages = [

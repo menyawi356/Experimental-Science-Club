@@ -1,4 +1,4 @@
-import { useLanguage } from "../../global/languageProvider.jsx";
+import useLanguage from "../../hooks/useLanguage.js";
 
 export default function SubmitWork() {
   const { t } = useLanguage();

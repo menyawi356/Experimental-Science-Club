@@ -3,7 +3,7 @@ import en from "../lang/en.js";
 import ar from "../lang/ar.js";
 
 const LanguageContext = createContext();
-
+export default LanguageContext
 export function LanguageProvider({ children }) {
   const [language, setLanguage] = useState(
     localStorage.getItem("language") || "en",
@@ -29,6 +29,4 @@ export function LanguageProvider({ children }) {
   );
 }
 
-export function useLanguage() {
-  return useContext(LanguageContext);
-}
+

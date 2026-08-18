@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLanguage } from "../../global/languageProvider";
+import useLanguage from "../../hooks/useLanguage.js";
 import signIn from "../../API/sign-in";
 
 export default function SignInModal({ setShowedModal }) {

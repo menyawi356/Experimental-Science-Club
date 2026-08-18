@@ -1,6 +1,6 @@
 import CompetitionsList from "../components/competitionsList";
 import SVG from "../components/sentence-popu-svg";
-import { useLanguage } from "../global/languageProvider";
+import useLanguage from "../hooks/useLanguage.js";
 import CompetitionsSVG from "../Svgs/competitions.svg";
 export default function Competitions() {
   const { t } = useLanguage();

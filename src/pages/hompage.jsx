@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useLanguage } from "../global/languageProvider.jsx";
+import useLanguage from "../hooks/useLanguage.js";
 import HomepageSVG from "../Svgs/homapge.svg";
 
 import SVG from "../components/sentence-popu-svg.jsx";

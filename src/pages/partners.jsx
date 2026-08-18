@@ -1,6 +1,6 @@
 import PartnersSVG from "../Svgs/parteners.svg";
 import SVG from "../components/sentence-popu-svg";
-import { useLanguage } from "../global/languageProvider";
+import useLanguage from "../hooks/useLanguage.js";
 export default function Partners() {
   const { t } = useLanguage();
   const partnersText = t.partners;
