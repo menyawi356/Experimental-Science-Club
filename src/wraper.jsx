@@ -5,7 +5,7 @@ import "./index.css";
 import { LanguageProvider } from "./global/languageProvider.jsx";
 import ShowedModal from "./components/showed-modal.jsx";
 import { useState } from "react";
-import { Authprovider } from "./global/authProviser.jsx";
+import { Authprovider } from "./global/authProvider.jsx";
 export default function Wraper() {
   const [showedModal, setShowedModal] = useState("none");
   return (

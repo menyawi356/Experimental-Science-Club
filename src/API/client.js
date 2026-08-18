@@ -2,6 +2,7 @@ import API_URL from "../config/env";
 export default async function client(endpoint, options = {}) {
   const response = await fetch(`${API_URL}/${endpoint}`, {
     ...options,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...options.headers,
