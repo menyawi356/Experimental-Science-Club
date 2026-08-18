@@ -124,7 +124,7 @@ const Header = ({ setShowedModal }) => {
             )}
           </button>
           <a
-            className="btn btn-ghost"
+            className="btn btn-ghost join-btn-desktop"
             title="لوحة التحكم"
             onClick={() => {
               handlePage("sign");
