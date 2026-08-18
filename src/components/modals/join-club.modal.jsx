@@ -2,10 +2,12 @@ import { useState } from "react";
 import useLanguage from "../../hooks/useLanguage.js";
 import updateData from "../../utils/uppdat-data.js";
 import joinUs from "../../API/join-us.js";
+import useAuth from "../../hooks/useAuth.js";
 export default function JoinModal({ setShowedModal }) {
   const handleModal = (newModal) => {
     setShowedModal(newModal);
   };
+  const { setAuth } = useAuth();
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -13,10 +15,30 @@ export default function JoinModal({ setShowedModal }) {
     age: "",
     reasonOfjoining: "",
   });
+  const [disabled, setDisabled] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const recivedData = await joinUs(data);
-    console.log(recivedData);
+
+    setDisabled(true);
+    const response = await joinUs(data);
+
+    if (response.ok) {
+      setAuth({
+        isAuth: true,
+        user: response.data,
+      });
+      setShowedModal("none");
+    } else {
+      setDisabled(false);
+      setData({
+        name: "",
+        email: "",
+        password: "",
+        age: "",
+        reasonOfjoining: "",
+      });
+    }
+    console.log(response);
   };
   const { t } = useLanguage();
   const joinForm = t.joinForm;
@@ -50,6 +72,7 @@ export default function JoinModal({ setShowedModal }) {
               placeholder={joinForm.name}
               required
               value={data.name}
+              disabled={disabled}
               onChange={(e) => {
                 updateData(e, "name", setData);
               }}
@@ -59,6 +82,7 @@ export default function JoinModal({ setShowedModal }) {
               type="email"
               placeholder={joinForm.email}
               value={data.email}
+              disabled={disabled}
               required
               onChange={(e) => {
                 updateData(e, "email", setData);
@@ -68,6 +92,7 @@ export default function JoinModal({ setShowedModal }) {
               type="password"
               placeholder={joinForm.password}
               value={data.password}
+              disabled={disabled}
               required
               onChange={(e) => {
                 updateData(e, "password", setData);
@@ -78,6 +103,7 @@ export default function JoinModal({ setShowedModal }) {
               type="text"
               placeholder={joinForm.age}
               value={data.age}
+              disabled={disabled}
               required
               onChange={(e) => {
                 updateData(e, "age", setData);
@@ -87,6 +113,7 @@ export default function JoinModal({ setShowedModal }) {
             <textarea
               placeholder={joinForm.message}
               value={data.reasonOfjoining}
+              disabled={disabled}
               onChange={(e) => {
                 updateData(e, "reasonOfjoining", setData);
               }}
@@ -95,6 +122,7 @@ export default function JoinModal({ setShowedModal }) {
             <button
               type="submit"
               className="btn btn-primary"
+              disabled={disabled}
               style={{ justifyContent: "center" }}
             >
               {joinForm.submit}
