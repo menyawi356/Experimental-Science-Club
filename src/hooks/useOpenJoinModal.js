@@ -1,8 +1,7 @@
 import useChangeModal from "./useChangeModal";
-
 export default function useOpenJoinModal(isAuth) {
   const { setShowedModal } = useChangeModal();
   return () => {
-    setShowedModal("join");
+    setShowedModal({ modal: "joi", data: {} });
   };
 }

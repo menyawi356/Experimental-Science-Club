@@ -6,7 +6,7 @@ export default function UserButton() {
   const { setShowedModal } = useChangeModal();
 
   const handleClick = () => {
-    setShowedModal("user");
+    setShowedModal({ modal: "user", data: {} });
   };
 
   return (

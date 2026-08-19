@@ -30,17 +30,13 @@ export default function PublishModal({ setShowedModal }) {
 
   const [authorInput, setAuthorInput] = useState("");
   const [tagInput, setTagInput] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
   const authorInputRef = useRef(null);
   const tagInputRef = useRef(null);
-
   const publishForm = t.publishForm;
-
   const handleClose = () => {
     setPdfType({});
-    setShowedModal("none");
+    setShowedModal({modal:"none",data:{}});
   };
 
   const handleAddAuthor = () => {
@@ -121,7 +117,7 @@ export default function PublishModal({ setShowedModal }) {
     const response = await publish(formData);
     console.log(response);
     if (response.ok) {
-      setShowSuccess(true);
+      setShowedModal({modal:"success",data:{}});
     } else {
       setDisabled(false);
     }
@@ -139,177 +135,166 @@ export default function PublishModal({ setShowedModal }) {
         <button className="modal-close" onClick={handleClose}>
           ✕
         </button>
-        {!showSuccess ? (
-          <div>
-            <h3 className="modal-heading">📄 {publishForm.heading}</h3>
-            <p className="modal-sub">{publishForm.sub}</p>
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder={publishForm.title}
-                value={data.title}
-                disabled={disabled}
-                required
-                minLength={5}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    title: e.target.value,
-                  })
-                }
-              />
-              <div className="publish-list-input">
-                <div className="publish-input-row">
-                  <input
-                    ref={authorInputRef}
-                    type="text"
-                    placeholder={publishForm.author}
-                    value={authorInput}
-                    disabled={disabled}
-                    onChange={(e) => {
-                      setAuthorInput(e.target.value);
-                      e.target.setCustomValidity("");
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={handleAddAuthor}
-                    disabled={disabled}
-                  >
-                    {publishForm.add}
-                  </button>
-                </div>
-                {data.authors.length > 0 && (
-                  <div className="publish-items">
-                    {data.authors.map((author, index) => (
-                      <div className="publish-item" key={`${author}-${index}`}>
-                        <span>{author}</span>
-
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveAuthor(index)}
-                          disabled={disabled}
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <textarea
-                placeholder={publishForm.abstract}
-                rows="4"
-                value={data.abstract}
-                disabled={disabled}
-                required
-                minLength={50}
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    abstract: e.target.value,
-                  })
-                }
-              />
-              <div className="publish-list-input">
-                <div className="publish-input-row">
-                  <input
-                    ref={tagInputRef}
-                    type="text"
-                    placeholder={publishForm.tag}
-                    value={tagInput}
-                    disabled={disabled}
-                    onChange={(e) => {
-                      setTagInput(e.target.value);
-                      e.target.setCustomValidity("");
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={handleAddTag}
-                    disabled={disabled}
-                  >
-                    {publishForm.add}
-                  </button>
-                </div>
-                {data.tags.length > 0 && (
-                  <div className="publish-items">
-                    {data.tags.map((tag, index) => (
-                      <div className="publish-item" key={`${tag}-${index}`}>
-                        <span>{tag}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveTag(index)}
-                          disabled={disabled}
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <input
-                type="file"
-                accept=".pdf"
-                disabled={disabled}
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    pdf: e.target.files[0],
-                  })
-                }
-              />
-              <span
-                style={{
-                  fontSize: "12px",
-                  color: "var(--ink-faint)",
-                }}
-              >
-                {publishForm.fileHint}
-              </span>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  marginTop: "10px",
-                }}
-              >
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                  }}
+        <div>
+          <h3 className="modal-heading">{publishForm.heading}</h3>
+          <p className="modal-sub">{publishForm.sub}</p>
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder={publishForm.title}
+              value={data.title}
+              disabled={disabled}
+              required
+              minLength={5}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  title: e.target.value,
+                })
+              }
+            />
+            <div className="publish-list-input">
+              <div className="publish-input-row">
+                <input
+                  ref={authorInputRef}
+                  type="text"
+                  placeholder={publishForm.author}
+                  value={authorInput}
                   disabled={disabled}
-                >
-                  {publishForm.submit}
-                </button>
+                  onChange={(e) => {
+                    setAuthorInput(e.target.value);
+                    e.target.setCustomValidity("");
+                  }}
+                />
                 <button
                   type="button"
                   className="btn btn-ghost"
-                  onClick={handleClose}
+                  onClick={handleAddAuthor}
                   disabled={disabled}
                 >
-                  {publishForm.cancel}
+                  {publishForm.add}
                 </button>
               </div>
-            </form>
-          </div>
-        ) : (
-          <div className="modal-success">
-            <div className="success-icon">✓</div>
-            <h3>{publishForm.success.heading}</h3>
-            <p>{publishForm.success.sub}</p>
-            <button className="btn btn-primary" onClick={handleClose}>
-              {publishForm.success.close}
-            </button>
-          </div>
-        )}
+              {data.authors.length > 0 && (
+                <div className="publish-items">
+                  {data.authors.map((author, index) => (
+                    <div className="publish-item" key={`${author}-${index}`}>
+                      <span>{author}</span>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAuthor(index)}
+                        disabled={disabled}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <textarea
+              placeholder={publishForm.abstract}
+              rows="4"
+              value={data.abstract}
+              disabled={disabled}
+              required
+              minLength={50}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  abstract: e.target.value,
+                })
+              }
+            />
+            <div className="publish-list-input">
+              <div className="publish-input-row">
+                <input
+                  ref={tagInputRef}
+                  type="text"
+                  placeholder={publishForm.tag}
+                  value={tagInput}
+                  disabled={disabled}
+                  onChange={(e) => {
+                    setTagInput(e.target.value);
+                    e.target.setCustomValidity("");
+                  }}
+                />
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={handleAddTag}
+                  disabled={disabled}
+                >
+                  {publishForm.add}
+                </button>
+              </div>
+              {data.tags.length > 0 && (
+                <div className="publish-items">
+                  {data.tags.map((tag, index) => (
+                    <div className="publish-item" key={`${tag}-${index}`}>
+                      <span>{tag}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(index)}
+                        disabled={disabled}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <input
+              type="file"
+              accept=".pdf"
+              disabled={disabled}
+              required
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  pdf: e.target.files[0],
+                })
+              }
+            />
+            <span
+              style={{
+                fontSize: "12px",
+                color: "var(--ink-faint)",
+              }}
+            >
+              {publishForm.fileHint}
+            </span>
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                marginTop: "10px",
+              }}
+            >
+              <button
+                type="submit"
+                className="btn btn-primary"
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                }}
+                disabled={disabled}
+              >
+                {publishForm.submit}
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={handleClose}
+                disabled={disabled}
+              >
+                {publishForm.cancel}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

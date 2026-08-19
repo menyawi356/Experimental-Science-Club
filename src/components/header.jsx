@@ -21,7 +21,7 @@ const Header = () => {
   const html = useRef(document.querySelector("html"));
   const { auth } = useAuth();
   const handlePage = (page) => {
-    setShowedModal(page);
+    setShowedModal({modal:page,data:{}});
   };
   const handleIsOpned = () => {
     setIsOpned((prev) => !prev);
