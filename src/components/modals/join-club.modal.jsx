@@ -5,7 +5,7 @@ import joinUs from "../../API/join-us.js";
 import useAuth from "../../hooks/useAuth.js";
 export default function JoinModal({ setShowedModal }) {
   const handleModal = (newModal) => {
-    setShowedModal(newModal);
+    setShowedModal({ modal: newModal, data: {} });
   };
   const { setAuth } = useAuth();
   const [data, setData] = useState({

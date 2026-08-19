@@ -16,7 +16,7 @@ export default function SubmitWork() {
       return;
     }
     setPdfType({ type });
-    setShowedModal("publish");
+    setShowedModal({ modal: "publish", data: {} });
   };
   return (
     <div id="pub-tab-submit" className="pub-subtab-view active">

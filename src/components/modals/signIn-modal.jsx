@@ -6,7 +6,7 @@ import updateData from "../../utils/uppdat-data.js";
 export default function SignInModal({ setShowedModal }) {
   const [disabled, setDisabled] = useState(false);
   const handleModal = (newModal) => {
-    setShowedModal(newModal);
+    setShowedModal({ modal: newModal, data: {} });
   };
   const { setAuth } = useAuth();
   const [data, setData] = useState({
@@ -21,7 +21,7 @@ export default function SignInModal({ setShowedModal }) {
         isAuth: true,
         user: response.data,
       });
-      setShowedModal("none");
+      setShowedModal({ modal: "none", data: {} });
     } else {
       setDisabled(false);
       setData({

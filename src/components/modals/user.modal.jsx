@@ -10,7 +10,7 @@ export default function UserModal({ setShowedModal }) {
   const userModal = t.userModal;
 
   const handleModal = (newModal) => {
-    setShowedModal(newModal);
+    setShowedModal({ modal: newModal, data: {} });
   };
 
   const handleSignOut = async () => {
@@ -20,7 +20,7 @@ export default function UserModal({ setShowedModal }) {
         isAuth: false,
         user: null,
       });
-      setShowedModal("none");
+      setShowedModal({modal:"none",data:{}});
     }
   };
 
