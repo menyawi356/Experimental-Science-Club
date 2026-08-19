@@ -1,5 +1,6 @@
 import useLanguage from "../../hooks/useLanguage.js";
 import useAuth from "../../hooks/useAuth.js";
+import signOut from "../../API/sign-out.js";
 
 export default function UserModal({ setShowedModal }) {
   const { auth, setAuth } = useAuth();
@@ -12,8 +13,15 @@ export default function UserModal({ setShowedModal }) {
     setShowedModal(newModal);
   };
 
-  const handleSignOut = () => {
-    // هنضيف منطق الـ sign out هنا بعدين
+  const handleSignOut = async () => {
+    const response = await signOut();
+    if (response.ok) {
+      setAuth({
+        isAuth: false,
+        user: null,
+      });
+      setShowedModal("none");
+    }
   };
 
   return (

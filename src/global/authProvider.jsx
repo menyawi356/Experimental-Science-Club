@@ -8,11 +8,14 @@ export function Authprovider({ children }) {
     user: null,
   });
   useEffect(() => {
+    console.log(auth);
+  }, [auth]);
+  useEffect(() => {
     authMe().then((response) => {
       if (response.ok) {
         setAuth({
           isAuth: true,
-          user: { ...response },
+          user: { ...response.data },
         });
       }
     });
