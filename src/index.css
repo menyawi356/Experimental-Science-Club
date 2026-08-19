@@ -1069,6 +1069,10 @@ h2 {
   font-size: 13.5px;
   color: var(--ink-soft);
   margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-wrap: break-word;
   line-height: 1.5;
 }
 
