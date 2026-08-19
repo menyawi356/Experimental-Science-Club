@@ -1,12 +1,8 @@
-export default function SuccessModal({
-  heading,
-  message,
-  buttonText,
-  setShowedModal,
-}) {
+export default function SuccessModal({ setShowedModal, data }) {
   const handleClose = () => {
     setShowedModal({ modal: "none", data: {} });
   };
+  const { heading, message, close } = data;
   return (
     <div
       className="modal-overlay"
@@ -26,7 +22,7 @@ export default function SuccessModal({
           <h3>{heading}</h3>
           <p>{message}</p>
           <button className="btn btn-primary" onClick={handleClose}>
-            {buttonText}
+            {close}
           </button>
         </div>
       </div>

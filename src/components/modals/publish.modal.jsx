@@ -36,7 +36,7 @@ export default function PublishModal({ setShowedModal }) {
   const publishForm = t.publishForm;
   const handleClose = () => {
     setPdfType({});
-    setShowedModal({modal:"none",data:{}});
+    setShowedModal({ modal: "none", data: {} });
   };
 
   const handleAddAuthor = () => {
@@ -115,9 +115,8 @@ export default function PublishModal({ setShowedModal }) {
     formData.append("cat", cat);
     formData.append("pdf", data.pdf);
     const response = await publish(formData);
-    console.log(response);
     if (response.ok) {
-      setShowedModal({modal:"success",data:{}});
+      setShowedModal({ modal: "success", data: { ...publishForm.success } });
     } else {
       setDisabled(false);
     }

@@ -17,7 +17,9 @@ export default function ShowedModal() {
     case "publish":
       return <PublishModal setShowedModal={setShowedModal} />;
     case "success":
-      return <SuccessModal setShowedModal={setShowedModal} />;
+      return (
+        <SuccessModal setShowedModal={setShowedModal} data={showedModal.data} />
+      );
     default:
       return null;
   }
