@@ -1,5 +1,6 @@
 import useChangeModal from "../hooks/useChangeModal";
 import JoinModal from "./modals/join-club.modal";
+import PublishModal from "./modals/publish.modal";
 import SignInModal from "./modals/signIn-modal";
 import UserModal from "./modals/user.modal";
 
@@ -11,6 +12,8 @@ export default function ShowedModal() {
     <SignInModal setShowedModal={setShowedModal} />
   ) : showedModal === "user" ? (
     <UserModal setShowedModal={setShowedModal} />
+  ) : showedModal === "publish" ? (
+    <PublishModal setShowedModal={setShowedModal} />
   ) : (
     ""
   );

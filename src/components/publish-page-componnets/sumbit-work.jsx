@@ -1,17 +1,22 @@
 import useLanguage from "../../hooks/useLanguage.js";
 import useOpenJoinModal from "../../hooks/useOpenJoinModal.js";
 import useAuth from "../../hooks/useAuth.js";
-
+import useChangeModal from "../../hooks/useChangeModal.js";
+import { useSearchParams } from "react-router-dom";
 export default function SubmitWork() {
   const openJoinModal = useOpenJoinModal();
   const { auth } = useAuth();
-
+  const { setShowedModal } = useChangeModal();
   const { t } = useLanguage();
   const publishText = t.publishing;
-  const handlePublish = () => {
+  const [, setPdfType] = useSearchParams();
+  const handlePublish = (type) => {
     if (!auth.isAuth) {
       openJoinModal();
+      return;
     }
+    setPdfType({ type });
+    setShowedModal("publish");
   };
   return (
     <div id="pub-tab-submit" className="pub-subtab-view active">
@@ -26,7 +31,9 @@ export default function SubmitWork() {
           <a
             className="btn btn-primary"
             id="pub-articles-btn"
-            onClick={handlePublish}
+            onClick={() => {
+              handlePublish("article");
+            }}
           >
             {publishText.publish}
           </a>
@@ -42,7 +49,9 @@ export default function SubmitWork() {
           <a
             className="btn btn-primary"
             id="pub-pdfs-btn"
-            onClick={handlePublish}
+            onClick={() => {
+              handlePublish("pdf");
+            }}
           >
             {publishText.publish}
           </a>
@@ -58,7 +67,9 @@ export default function SubmitWork() {
           <a
             className="btn btn-primary"
             id="pub-papers-btn"
-            onClick={handlePublish}
+            onClick={() => {
+              handlePublish("paper");
+            }}
           >
             {publishText.publish}
           </a>

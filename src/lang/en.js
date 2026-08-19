@@ -274,5 +274,22 @@ const en = {
     age: "Age",
     signOut: "Sign Out",
   },
+  publishForm: {
+    heading: "📄 Publish a New Paper",
+    sub: "Fill in the details below to submit your paper for review",
+    title: "Paper Title",
+    author: "Author Name",
+    tag: "Tag",
+    add: "Add",
+    abstract: "Abstract",
+    fileHint: "PDF file only",
+    submit: "Submit for Publication",
+    cancel: "Cancel",
+    success: {
+      heading: "Submitted Successfully!",
+      sub: "Your paper is now waiting for approval from the administration team.",
+      close: "Got it",
+    },
+  },
 };
 export default en;

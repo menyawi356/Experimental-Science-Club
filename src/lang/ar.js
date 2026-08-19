@@ -274,5 +274,22 @@ const ar = {
     age: "العمر",
     signOut: "تسجيل الخروج",
   },
+  publishForm: {
+    heading: "📄 نشر بحث جديد",
+    sub: "املأ البيانات أدناه لإرسال بحثك للمراجعة",
+    title: "عنوان البحث",
+    author: "اسم المؤلف",
+    tag: "الوسم",
+    add: "إضافة",
+    abstract: "الملخص",
+    fileHint: "ملف PDF فقط",
+    submit: "إرسال للنشر",
+    cancel: "إلغاء",
+    success: {
+      heading: "تم الإرسال بنجاح!",
+      sub: "بحثك الآن في انتظار الموافقة من فريق الإدارة.",
+      close: "حسنًا",
+    },
+  },
 };
 export default ar;
