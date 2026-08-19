@@ -1,4 +1,5 @@
 import useChangeModal from "../hooks/useChangeModal";
+import ErrorModal from "./modals/error.modal";
 import JoinModal from "./modals/join-club.modal";
 import PublishModal from "./modals/publish.modal";
 import SignInModal from "./modals/signIn-modal";
@@ -21,6 +22,9 @@ export default function ShowedModal() {
         <SuccessModal setShowedModal={setShowedModal} data={showedModal.data} />
       );
     default:
-      return null;
+      return (
+        ""
+        // <ErrorModal setShowedModal={setShowedModal} data={showedModal.data} />
+      );
   }
 }
