@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import useLanguage from "../../hooks/useLanguage.js";
 import { useSearchParams } from "react-router-dom";
+import publish from "../../API/publish.js";
 
 export default function PublishModal({ setShowedModal }) {
   const [pdfType, setPdfType] = useSearchParams();
@@ -117,7 +118,12 @@ export default function PublishModal({ setShowedModal }) {
     formData.append("type", type);
     formData.append("cat", cat);
     formData.append("pdf", data.pdf);
-    setDisabled(false);
+    const response = await publish(formData);
+    if (response.ok) {
+      setShowSuccess(true);
+    } else {
+      setDisabled(false);
+    }
   };
   return (
     <div
