@@ -1,12 +1,17 @@
+import useLanguage from "../../hooks/useLanguage";
+
 export default function PublicationCard({ p }) {
   const authors = p.authors.join(", ");
+  const date = p.date.split("T")[0].replaceAll("-", "/");
+  const { t } = useLanguage();
+  const cardText = t.PublicationCard;
   return (
     <div className="pub-archive-card">
       <div className="pub-meta-top">
         <span className="opp-cat">{p.cat || "بحث علمي"}</span>
 
         <span className="pub-date">
-          {p.date || new Date().toLocaleDateString("ar-EG")}
+          {date || new Date().toLocaleDateString("ar-EG")}
         </span>
       </div>
       <h3>{p.title}</h3>
@@ -21,14 +26,13 @@ export default function PublicationCard({ p }) {
       </div>
       <div className="opp-actions" style={{ marginTop: "14px" }}>
         <a
-          href="#"
           className="btn btn-ghost"
           style={{
             padding: "8px 14px",
             fontSize: "12.5px",
           }}
         >
-          قراءة البحث
+          {cardText.read}
         </a>
       </div>
     </div>

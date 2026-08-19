@@ -291,5 +291,8 @@ const en = {
       close: "Got it",
     },
   },
+  PublicationCard: {
+    read: "Read the research",
+  },
 };
 export default en;

@@ -291,5 +291,8 @@ const ar = {
       close: "حسنًا",
     },
   },
+  PublicationCard:{
+    read:"قراءة البحث"
+  }
 };
 export default ar;

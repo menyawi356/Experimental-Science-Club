@@ -119,6 +119,7 @@ export default function PublishModal({ setShowedModal }) {
     formData.append("cat", cat);
     formData.append("pdf", data.pdf);
     const response = await publish(formData);
+    console.log(response);
     if (response.ok) {
       setShowSuccess(true);
     } else {
