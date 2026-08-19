@@ -294,5 +294,78 @@ const en = {
   PublicationCard: {
     read: "Read the research",
   },
+  errors: {
+    INVALID_CREDENTIALS: {
+      heading: "Sign in failed",
+      sub: "The email or password you entered is incorrect.",
+      button: "Try again",
+    },
+
+    TOKEN_REQUIRED: {
+      heading: "Sign in required",
+      sub: "Please sign in to continue.",
+      button: "Sign in",
+    },
+
+    INVALID_TOKEN: {
+      heading: "Session error",
+      sub: "Your session is invalid. Please sign in again.",
+      button: "Sign in again",
+    },
+
+    TOKEN_EXPIRED: {
+      heading: "Session expired",
+      sub: "Your session has expired. Please sign in again.",
+      button: "Sign in again",
+    },
+
+    USER_NOT_FOUND: {
+      heading: "User not found",
+      sub: "We couldn't find your account.",
+      button: "Close",
+    },
+
+    VALIDATION_ERROR: {
+      heading: "Invalid information",
+      sub: "Some of the information you entered is invalid. Please check it and try again.",
+      button: "Try again",
+    },
+
+    DATA_ALREADY_EXISTS: {
+      heading: "Already exists",
+      sub: "This data already exists.",
+      button: "Try again",
+    },
+
+    DATA_NOT_FOUND: {
+      heading: "Not found",
+      sub: "The requested data could not be found.",
+      button: "Close",
+    },
+
+    INVALID_DATA_FORMAT: {
+      heading: "Invalid data",
+      sub: "Some of the provided data has an invalid format.",
+      button: "Try again",
+    },
+
+    FILE_REQUIRED: {
+      heading: "No file selected",
+      sub: "Please select a PDF file and try again.",
+      button: "Try again",
+    },
+
+    INVALID_FILE_TYPE: {
+      heading: "Invalid file",
+      sub: "Only PDF files are allowed.",
+      button: "Try again",
+    },
+
+    SERVER_ERROR: {
+      heading: "Something went wrong",
+      sub: "An unexpected error occurred. Please try again later.",
+      button: "Close",
+    },
+  },
 };
 export default en;
