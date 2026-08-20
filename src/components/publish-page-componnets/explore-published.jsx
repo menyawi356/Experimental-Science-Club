@@ -112,7 +112,7 @@ export default function ExplorePublished() {
       );
     });
   const publishedPapersList = filteredPublications.map((p) => {
-    return <PublicationCard p={p} key={p.id} />;
+    return <PublicationCard p={p} key={p._id} />;
   });
 
   const publishText = t.publishing;
