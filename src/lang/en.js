@@ -366,6 +366,11 @@ const en = {
       sub: "An unexpected error occurred. Please try again later.",
       button: "Close",
     },
+    NETWORK_ERROR: {
+      heading: "Connection Error",
+      sub: "Unable to connect to the server. Please check your internet connection and try again.",
+      button: "Try Again",
+    },
   },
 };
 export default en;

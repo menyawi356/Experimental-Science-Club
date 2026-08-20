@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import useLanguage from "../../hooks/useLanguage.js";
 import { useSearchParams } from "react-router-dom";
 import publish from "../../API/publish.js";
+import useLoader from "../../hooks/useLoader.js";
 
 export default function PublishModal({ setShowedModal }) {
   const [pdfType, setPdfType] = useSearchParams();
@@ -34,6 +35,7 @@ export default function PublishModal({ setShowedModal }) {
   const authorInputRef = useRef(null);
   const tagInputRef = useRef(null);
   const publishForm = t.publishForm;
+  const { startLoader, stopLoader } = useLoader();
   const handleClose = () => {
     setPdfType({});
     setShowedModal({ modal: "none", data: {} });
@@ -105,6 +107,7 @@ export default function PublishModal({ setShowedModal }) {
       e.currentTarget.reportValidity();
       return;
     }
+    startLoader();
     setDisabled(true);
     const formData = new FormData();
     formData.append("title", data.title);
@@ -114,18 +117,30 @@ export default function PublishModal({ setShowedModal }) {
     formData.append("type", type);
     formData.append("cat", cat);
     formData.append("pdf", data.pdf);
-    const response = await publish(formData);
-    if (response.ok) {
-      setShowedModal({ modal: "success", data: { ...publishForm.success } });
-    } else {
-      const errorCode = response.error;
+    try {
+      const response = await publish(formData);
+      if (response.ok) {
+        setShowedModal({ modal: "success", data: { ...publishForm.success } });
+      } else {
+        const errorCode = response.error;
+        setShowedModal({
+          modal: "error",
+          data: {
+            errorCode,
+            to: "publish",
+          },
+        });
+      }
+    } catch {
       setShowedModal({
         modal: "error",
         data: {
-          errorCode,
-          to: "publish",
+          errorCode: "NETWORK_ERROR",
+          to: "none",
         },
       });
+    } finally {
+      stopLoader();
     }
   };
   return (

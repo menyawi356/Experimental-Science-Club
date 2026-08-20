@@ -3,6 +3,8 @@ import useLanguage from "../../hooks/useLanguage.js";
 import { useEffect, useState } from "react";
 import PublicationCard from "./published-paper.jsx";
 import getPublishedPapers from "../../API/getPublishedPapers.js";
+import useChangeModal from "../../hooks/useChangeModal.js";
+import useLoader from "../../hooks/useLoader.js";
 export default function ExplorePublished() {
   // const publications = [
   //   {
@@ -86,14 +88,29 @@ export default function ExplorePublished() {
   const [filter, setFilter] = useSearchParams();
   const choosedFilter = filter.get("filter") || "all";
   const [search, setSearch] = useState("");
+  const { setShowedModal } = useChangeModal();
+  const { startLoader, stopLoader } = useLoader();
   useEffect(() => {
     if (!filter.has("filter")) {
       setFilter({ filter: "all" });
     }
-    getPublishedPapers().then((response) => {
-      console.log(response.list);
-      setPublictions(response.list);
-    });
+    startLoader();
+    getPublishedPapers()
+      .then((response) => {
+        setPublictions(response.list);
+      })
+      .catch(() => {
+        setShowedModal({
+          modal: "error",
+          data: {
+            errorCode: "NETWORK_ERROR",
+            to: "none",
+          },
+        });
+      })
+      .finally(() => {
+        stopLoader();
+      });
   }, []);
   const handleChangeFilter = (filter) => {
     setFilter({ filter });

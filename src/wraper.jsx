@@ -10,16 +10,16 @@ import { LoaderContextProvider } from "./global/loaderProvider.jsx";
 export default function Wraper() {
   return (
     <LoaderContextProvider>
-      <Authprovider>
-        <ModalProvider>
+      <ModalProvider>
+        <Authprovider>
           <LanguageProvider>
             <Header />
             <Outlet />
             <ShowedModal />
             <Footer />
           </LanguageProvider>
-        </ModalProvider>
-      </Authprovider>
+        </Authprovider>
+      </ModalProvider>
     </LoaderContextProvider>
   );
 }
