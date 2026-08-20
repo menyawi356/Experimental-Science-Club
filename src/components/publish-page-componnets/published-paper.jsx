@@ -14,7 +14,7 @@ export default function PublicationCard({ p }) {
       const response = await getPaperLink(p._id);
       if (response.ok) {
         console.log(response.url);
-        window.open(response.url, "_blanck");
+        window.open(response.url, "_blank");
       } else {
         const errorCode = response.error;
         setShowedModal({
