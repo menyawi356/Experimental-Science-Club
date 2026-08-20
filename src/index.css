@@ -637,23 +637,350 @@ button {
   }
 }
 
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  width: 100%;
+
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+
+  border-bottom: 1px solid var(--line);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* =========================================================
+   HEADER WRAPPER
+========================================================= */
+
+nav.wrap {
+  width: min(100% - 32px, 1200px);
+
+  min-height: 72px;
+
+  margin: 0 auto;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 24px;
+
+  position: relative;
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex: 0 1 auto;
+  flex-shrink: 1;
+
+  min-width: 0;
+
+  color: var(--ink);
+
+  text-decoration: none;
+
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+
+  white-space: nowrap;
+}
+
+/*
+   Keep the SVG visually important.
+
+   It is allowed to shrink slightly,
+   but never collapses to a tiny icon.
+*/
+
+.logo svg,
+.logo-svg {
+  width: clamp(48px, 5vw, 68px);
+  height: clamp(48px, 5vw, 68px);
+
+  min-width: 48px;
+  min-height: 48px;
+
+  flex: 0 0 auto;
+
+  display: block;
+}
+#central-gear {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: special-spin 5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes special-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  12% {
+    transform: rotate(35deg);
+  }
+
+  20% {
+    transform: rotate(90deg);
+  }
+
+  28% {
+    transform: rotate(90deg);
+  }
+
+  45% {
+    transform: rotate(180deg);
+  }
+
+  58% {
+    transform: rotate(215deg);
+  }
+
+  65% {
+    transform: rotate(270deg);
+  }
+
+  72% {
+    transform: rotate(270deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* Brand text */
+
+#brand-text {
+  flex-shrink: 1;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   DESKTOP NAVIGATION
+========================================================= */
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+
+  justify-content: center;
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  gap: clamp(10px, 1.5vw, 20px);
+}
+
+/* Navigation links */
+
+.navlinks a,
+.nav-link {
+  text-decoration: none;
+
+  padding: 6px 0;
+
+  border-bottom: 2px solid transparent;
+
+  color: var(--ink-soft);
+
+  font-size: 14px;
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.navlinks a:hover,
+.navlinks a.active,
+.nav-link:hover,
+.nav-link.active {
+  color: var(--ink);
+
+  border-color: var(--indigo);
+}
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.desktop-navright {
+  display: flex;
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  flex: 0 0 auto;
+}
+
+/* =========================================================
+   LANGUAGE BUTTON
+========================================================= */
+
+.lang-btn {
+  height: 38px;
+
+  padding: 0 13px;
+
+  border: 1px solid var(--line);
+  border-radius: 10px;
+
+  background: var(--card);
+
+  display: grid;
+  place-items: center;
+
+  color: var(--ink);
+
+  font-family: var(--mono);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.lang-btn:hover {
+  background: var(--paper);
+
+  border-color: var(--ink-soft);
+}
+
+.lang-btn:active {
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
+
+.theme-btn {
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  border: 1px solid var(--line);
+  border-radius: 10px;
+
+  background: var(--card);
+
+  display: grid;
+  place-items: center;
+
+  color: var(--ink);
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.theme-btn:hover {
+  background: var(--paper);
+
+  border-color: var(--ink-soft);
+}
+
+.theme-btn:active {
+  transform: translateY(1px);
+}
+
+.theme-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* =========================================================
+   AUTH BUTTONS
+========================================================= */
+
+.desktop-navright > .btn {
+  white-space: nowrap;
+
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   USER BUTTON
+========================================================= */
+
 .user-button {
   height: 38px;
+
   max-width: 180px;
+
   padding: 0 11px 0 14px;
-  border-radius: 10px;
+
   border: 1px solid var(--line);
+  border-radius: 10px;
+
   background: var(--card);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 9px;
-  cursor: pointer;
+
   color: var(--ink);
+
   font-family: var(--sans);
+
   font-size: 13.5px;
   font-weight: 600;
+
   white-space: nowrap;
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
@@ -663,7 +990,9 @@ button {
 
 .user-button:hover {
   background: var(--paper);
+
   border-color: var(--ink-soft);
+
   box-shadow: 0 6px 16px -12px var(--ink);
 }
 
@@ -673,15 +1002,22 @@ button {
 
 .user-button__name {
   max-width: 110px;
+
+  min-width: 0;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
 }
 
 .user-button__icon {
   width: 18px;
   height: 18px;
-  flex-shrink: 0;
+
+  flex: 0 0 18px;
+
   transition: transform 0.2s ease;
 }
 
@@ -689,215 +1025,451 @@ button {
   transform: scale(1.05);
 }
 
-@media (max-width: 868px) {
-  .user-button {
-    height: 38px;
-    max-width: 145px;
-    padding: 0 10px;
-    font-size: 12.5px;
+/* =========================================================
+   HAMBURGER
+========================================================= */
+
+.hamburger {
+  display: none;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 7px;
+
+  border: 1px solid var(--line);
+  border-radius: 10px;
+
+  background: var(--card);
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--ink);
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.hamburger:hover {
+  background: var(--paper);
+
+  border-color: var(--ink-soft);
+}
+
+.hamburger:active {
+  transform: translateY(1px);
+}
+
+.hamburger svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* =========================================================
+   MOBILE MENU
+   IMPORTANT: HIDDEN BY DEFAULT
+========================================================= */
+
+.mobile-menu {
+  display: none;
+
+  position: absolute;
+
+  top: calc(100% + 8px);
+
+  left: 0;
+  right: 0;
+
+  z-index: 100;
+
+  padding: 12px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 14px;
+
+  background: var(--card);
+
+  box-shadow: 0 18px 40px -20px var(--ink);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Open state */
+
+.mobile-menu.open {
+  display: block;
+}
+
+/* =========================================================
+   MOBILE NAV LINKS
+========================================================= */
+
+.mobile-navlinks {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  width: 100%;
+}
+
+.mobile-navlinks a {
+  width: 100%;
+
+  padding: 11px 12px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  color: var(--ink-soft);
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.mobile-navlinks a:hover,
+.mobile-navlinks a.active {
+  background: var(--paper-alt);
+
+  color: var(--ink);
+
+  border: none;
+}
+
+/* =========================================================
+   MOBILE CONTROLS
+========================================================= */
+
+.mobile-controls {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  width: 100%;
+
+  margin-top: 10px;
+
+  padding-top: 10px;
+
+  border-top: 1px solid var(--line);
+}
+
+/* =========================================================
+   MOBILE AUTH
+========================================================= */
+
+.mobile-auth {
+  display: flex;
+
+  flex: 1;
+
+  gap: 8px;
+
+  min-width: 0;
+}
+
+.mobile-auth .btn {
+  flex: 1;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   MOBILE USER
+========================================================= */
+
+.mobile-user {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.mobile-user .user-button {
+  width: 100%;
+
+  max-width: none;
+
+  height: 38px;
+
+  padding: 0 12px;
+
+  justify-content: space-between;
+}
+
+.mobile-user .user-button__name {
+  max-width: none;
+
+  flex: 1;
+
+  text-align: start;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  nav.wrap {
+    width: min(100% - 28px, 1000px);
+
+    gap: 16px;
+  }
+
+  .logo {
+    font-size: 17px;
+
+    gap: 8px;
+  }
+
+  .logo svg,
+  .logo-svg {
+    width: 58px;
+    height: 58px;
+
+    min-width: 58px;
+    min-height: 58px;
+  }
+
+  .desktop-nav {
+    gap: 11px;
+  }
+
+  .navlinks a,
+  .nav-link {
+    font-size: 13px;
+  }
+
+  .desktop-navright {
     gap: 7px;
   }
 
-  .user-button__name {
-    max-width: 85px;
+  .lang-btn {
+    padding: 0 10px;
   }
 
-  .user-button__icon {
-    width: 17px;
-    height: 17px;
-  }
-}
-
-@media (max-width: 580px) {
   .user-button {
-    width: 38px;
-    padding: 0;
-    border-radius: 10px;
+    max-width: 155px;
+
+    padding: 0 10px 0 12px;
+
+    font-size: 13px;
   }
 
   .user-button__name {
-    display: none;
-  }
-
-  .user-button__icon {
-    width: 18px;
-    height: 18px;
-  }
-}
-header {
-  position: sticky;
-  top: 0;
-  display: flex;
-  z-index: 50;
-  width: 100%;
-  backdrop-filter: blur(12px);
-  background: color-mix(in srgb, var(--paper) 82%, transparent);
-  border-bottom: 1px solid var(--line);
-}
-nav.wrap {
-  display: flex;
-  flex: 1;
-  position: relative;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-  height: 150px;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--mono);
-  font-weight: 600;
-  font-size: 18px;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  white-space: nowrap;
-  border: none;
-  background: none;
-  padding: 0;
-  color: var(--ink);
-}
-
-.logo-svg {
-  width: 150px;
-  height: 150px;
-  justify-self: self-start;
-  height: 100%;
-  flex-shrink: 0;
-  display: block;
-}
-#central-gear {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-#gear-left {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: gear-left 4s ease-in-out infinite;
-}
-
-#gear-right {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: gear-right 4s ease-in-out infinite;
-}
-
-@keyframes gear-left {
-  0%,
-  100% {
-    transform: translateX(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateX(-1px) rotate(-5deg);
+    max-width: 90px;
   }
 }
 
-@keyframes gear-right {
-  0%,
-  100% {
-    transform: translateX(0) rotate(0deg);
-  }
+/* =========================================================
+   COLLAPSED / MOBILE NAV
+========================================================= */
 
-  50% {
-    transform: translateX(1px) rotate(5deg);
-  }
-}
-.logo .mark {
-  width: 22px;
-  height: 22px;
-  border: 1.6px solid var(--ink);
-  border-radius: 5px;
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-}
-.navlinks {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  font-size: 14.5px;
-  color: var(--ink-soft);
-  font-weight: 500;
-}
-.navlinks a {
-  text-decoration: none;
-  padding: 6px 0;
-  border-bottom: 2px solid transparent;
-  transition:
-    color 0.2s,
-    border-color 0.2s;
-  cursor: pointer;
-}
-.navlinks a:hover,
-.navlinks a.active {
-  color: var(--ink);
-  border-color: var(--indigo);
-}
-.navright {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-@media (min-width: 869px) {
-  .logo-svg {
-    width: 100px;
-    height: 100px;
-  }
+@media (max-width: 868px) {
   nav.wrap {
-    height: 100px;
+    width: calc(100% - 24px);
+
+    min-height: 68px;
+
+    gap: 12px;
   }
 
-  .join-btn-mobile {
+  /*
+    Keep logo large on mobile.
+    It does NOT depend on the other elements.
+  */
+
+  .logo {
+    gap: 8px;
+
+    font-size: 17px;
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+  }
+
+  .logo svg,
+  .logo-svg {
+    width: 60px;
+    height: 60px;
+
+    min-width: 60px;
+    min-height: 60px;
+  }
+
+  /* Hide desktop navigation */
+
+  .desktop-nav {
     display: none;
   }
-}
-.hamburger {
-  display: none;
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 6px;
-  cursor: pointer;
-  color: var(--ink);
-  align-items: center;
-  justify-content: center;
-}
-.hamburger svg {
-  width: 22px;
-  height: 22px;
-}
-.theme-btn,
-.lang-btn {
-  height: 38px;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-  background: var(--card);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  color: var(--ink);
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: bold;
-}
-.theme-btn {
-  width: 38px;
-}
-.lang-btn {
-  padding: 0 14px;
-  white-space: nowrap;
-}
-.theme-btn svg {
-  width: 17px;
-  height: 17px;
+
+  /* Hide desktop auth / controls */
+
+  .desktop-navright > .lang-btn,
+  .desktop-navright > .theme-btn,
+  .desktop-navright > .btn,
+  .desktop-navright > .user-button {
+    display: none;
+  }
+
+  /* Show hamburger */
+
+  .hamburger {
+    display: flex;
+  }
+
+  /* Right side now only contains hamburger */
+
+  .desktop-navright {
+    flex: 0 0 auto;
+
+    gap: 7px;
+  }
+
+  /* Mobile menu */
+
+  .mobile-menu {
+    left: 0;
+    right: 0;
+
+    max-height: calc(100vh - 84px);
+
+    overflow-y: auto;
+  }
 }
 
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 546px) {
+  nav.wrap {
+    width: calc(100% - 18px);
+
+    min-height: 64px;
+
+    gap: 8px;
+  }
+
+  .logo {
+    gap: 7px;
+
+    font-size: 16px;
+  }
+
+  /*
+    Still keep the logo clearly visible.
+  */
+
+  .logo svg,
+  .logo-svg {
+    width: 56px;
+    height: 56px;
+
+    min-width: 56px;
+    min-height: 56px;
+  }
+
+  .hamburger,
+  .theme-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hamburger svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .theme-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mobile-menu {
+    top: calc(100% + 6px);
+
+    padding: 10px;
+  }
+
+  .mobile-controls {
+    gap: 7px;
+  }
+
+  .mobile-user .user-button {
+    height: 36px;
+
+    padding: 0 10px;
+
+    font-size: 12.5px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+  nav.wrap {
+    width: calc(100% - 14px);
+
+    min-height: 60px;
+  }
+
+  .logo {
+    font-size: 15px;
+
+    gap: 5px;
+  }
+
+  /*
+    Do NOT hide the logo.
+    Keep it visible even on very small screens.
+  */
+
+  .logo svg,
+  .logo-svg {
+    width: 52px;
+    height: 52px;
+
+    min-width: 52px;
+    min-height: 52px;
+  }
+
+  .hamburger {
+    width: 34px;
+    height: 34px;
+  }
+
+  .mobile-menu {
+    top: calc(100% + 5px);
+  }
+
+  .mobile-navlinks a {
+    padding: 10px;
+  }
+}
 .btn {
   font-family: var(--sans);
   font-size: 14px;

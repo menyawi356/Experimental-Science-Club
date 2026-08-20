@@ -45,10 +45,6 @@ export default function Publishing() {
           <Outlet />
         </div>
       </div>
-
-      <div className="bg-symbol-stage" data-symbol="publishing">
-        <div className="symbol-3d-container">{<PublishingSVG />}</div>
-      </div>
       <SVG page="publishing">
         <PublishingSVG/>
       </SVG>
