@@ -20,7 +20,16 @@ export default function UserModal({ setShowedModal }) {
         isAuth: false,
         user: null,
       });
-      setShowedModal({modal:"none",data:{}});
+      setShowedModal({ modal: "none", data: {} });
+    } else {
+      const errorCode = response.error;
+      setShowedModal({
+        modal: "error",
+        data: {
+          errorCode,
+          to: "none",
+        },
+      });
     }
   };
 

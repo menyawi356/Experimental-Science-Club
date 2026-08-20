@@ -29,13 +29,13 @@ export default function JoinModal({ setShowedModal }) {
       });
       setShowedModal("none");
     } else {
-      setDisabled(false);
-      setData({
-        name: "",
-        email: "",
-        password: "",
-        age: "",
-        reasonOfjoining: "",
+      const errorCode = response.error;
+      setShowedModal({
+        modal: "error",
+        data: {
+          errorCode,
+          to: "join",
+        },
       });
     }
     console.log(response);

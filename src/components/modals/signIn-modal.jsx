@@ -23,10 +23,13 @@ export default function SignInModal({ setShowedModal }) {
       });
       setShowedModal({ modal: "none", data: {} });
     } else {
-      setDisabled(false);
-      setData({
-        email: "",
-        password: "",
+      const errorCode = response.error;
+      setShowedModal({
+        modal: "error",
+        data: {
+          errorCode,
+          to: "sign",
+        },
       });
     }
 

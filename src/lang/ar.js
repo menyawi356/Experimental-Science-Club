@@ -322,7 +322,7 @@ const ar = {
     USER_NOT_FOUND: {
       heading: "المستخدم غير موجود",
       sub: "لم نتمكن من العثور على حسابك.",
-      button: "إغلاق",
+      button: "حاول مرة اخري",
     },
 
     VALIDATION_ERROR: {
@@ -340,7 +340,7 @@ const ar = {
     DATA_NOT_FOUND: {
       heading: "لم يتم العثور على البيانات",
       sub: "تعذر العثور على البيانات المطلوبة.",
-      button: "إغلاق",
+      button: "حاول مرة أخرى",
     },
 
     INVALID_DATA_FORMAT: {

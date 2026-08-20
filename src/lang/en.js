@@ -322,7 +322,7 @@ const en = {
     USER_NOT_FOUND: {
       heading: "User not found",
       sub: "We couldn't find your account.",
-      button: "Close",
+      button: "Try again",
     },
 
     VALIDATION_ERROR: {
@@ -340,7 +340,7 @@ const en = {
     DATA_NOT_FOUND: {
       heading: "Not found",
       sub: "The requested data could not be found.",
-      button: "Close",
+      button: "Try again",
     },
 
     INVALID_DATA_FORMAT: {

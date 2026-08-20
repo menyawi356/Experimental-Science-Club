@@ -21,10 +21,11 @@ export default function ShowedModal() {
       return (
         <SuccessModal setShowedModal={setShowedModal} data={showedModal.data} />
       );
-    default:
+    case "error":
       return (
-        ""
-        // <ErrorModal setShowedModal={setShowedModal} data={showedModal.data} />
+        <ErrorModal setShowedModal={setShowedModal} data={showedModal.data} />
       );
+    default:
+      return null;
   }
 }

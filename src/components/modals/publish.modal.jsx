@@ -118,7 +118,14 @@ export default function PublishModal({ setShowedModal }) {
     if (response.ok) {
       setShowedModal({ modal: "success", data: { ...publishForm.success } });
     } else {
-      setDisabled(false);
+      const errorCode = response.error;
+      setShowedModal({
+        modal: "error",
+        data: {
+          errorCode,
+          to: "publish",
+        },
+      });
     }
   };
   return (
