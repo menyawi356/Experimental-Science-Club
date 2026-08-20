@@ -4,6 +4,7 @@ import useLanguage from "../hooks/useLanguage.js";
 import useAuth from "../hooks/useAuth.js";
 import useChangeModal from "../hooks/useChangeModal.js";
 import UserButton from "./user-profiel-btn.jsx";
+import Logo from "../Svgs/Logo.svg.jsx";
 const Header = () => {
   const { language, changeLanguage, t } = useLanguage();
   const Pages = [
@@ -21,7 +22,7 @@ const Header = () => {
   const html = useRef(document.querySelector("html"));
   const { auth } = useAuth();
   const handlePage = (page) => {
-    setShowedModal({modal:page,data:{}});
+    setShowedModal({ modal: page, data: {} });
   };
   const handleIsOpned = () => {
     setIsOpned((prev) => !prev);
@@ -63,6 +64,7 @@ const Header = () => {
   return (
     <header>
       <nav className="wrap">
+        <Logo />
         <NavLink className="logo" to={"/Home"}>
           <span className="mark">S</span>
           <span id="brand-text">{t.brand}</span>

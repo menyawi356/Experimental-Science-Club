@@ -425,7 +425,6 @@ button {
   color: var(--paper);
 }
 .wrap {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
   width: 100%;
@@ -728,18 +727,24 @@ button {
 header {
   position: sticky;
   top: 0;
+  display: flex;
   z-index: 50;
+  width: 100%;
   backdrop-filter: blur(12px);
   background: color-mix(in srgb, var(--paper) 82%, transparent);
   border-bottom: 1px solid var(--line);
 }
 nav.wrap {
   display: flex;
+  flex: 1;
+  position: relative;
   align-items: center;
-  justify-content: space-between;
-  height: 72px;
+  justify-content: space-around;
+  width: 100%;
+  height: 150px;
   gap: 16px;
-  max-width: 1200px;
+  margin: 0;
+  padding: 0;
 }
 .logo {
   display: flex;
@@ -755,6 +760,53 @@ nav.wrap {
   background: none;
   padding: 0;
   color: var(--ink);
+}
+
+.logo-svg {
+  width: 150px;
+  height: 150px;
+  justify-self: self-start;
+  height: 100%;
+  flex-shrink: 0;
+  display: block;
+}
+#central-gear {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#gear-left {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gear-left 4s ease-in-out infinite;
+}
+
+#gear-right {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gear-right 4s ease-in-out infinite;
+}
+
+@keyframes gear-left {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateX(-1px) rotate(-5deg);
+  }
+}
+
+@keyframes gear-right {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateX(1px) rotate(5deg);
+  }
 }
 .logo .mark {
   width: 22px;
@@ -793,6 +845,14 @@ nav.wrap {
   gap: 10px;
 }
 @media (min-width: 869px) {
+  .logo-svg {
+    width: 100px;
+    height: 100px;
+  }
+  nav.wrap {
+    height: 100px;
+  }
+
   .join-btn-mobile {
     display: none;
   }
@@ -837,6 +897,7 @@ nav.wrap {
   width: 17px;
   height: 17px;
 }
+
 .btn {
   font-family: var(--sans);
   font-size: 14px;

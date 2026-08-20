@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" width="636" viewBox="0 0 636 613" enable-background="new 0 0 636 613" xml:space="preserve" height="613"><style type="text/css">
+<svg xmlns="http://www.w3.org/2000/svg" 
+className="logo-svg"
+version="1.1" id="Layer_1" x="0px" y="0px" width="636" viewBox="0 0 636 613" enable-background="new 0 0 636 613" xml:space="preserve" height="613"><style type="text/css">
   /* Uses the application's existing theme variables. */
   #gear-left,
   #gear-right {
