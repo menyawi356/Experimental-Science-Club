@@ -67,6 +67,109 @@ html[dir="rtl"] .contact-form textarea,
 html[dir="rtl"] .contact-form select {
   font-family: var(--arabic);
 }
+
+/* =========================================
+   GEAR LOADER
+========================================= */
+
+#gear-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* SVG itself */
+#gear-loader > svg {
+  width: clamp(180px, 22vw, 300px);
+  height: clamp(180px, 22vw, 300px);
+
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1100px) {
+  #gear-loader > svg {
+    width: clamp(220px, 28vw, 280px);
+    height: clamp(220px, 28vw, 280px);
+  }
+} 
+/* Animation */
+#loader-gear {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gear-cycle 4s ease-in-out infinite;
+}
+
+#loader-gear-left,
+#loader-gear-right {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* دوران الترس بالكامل */
+@keyframes gear-cycle {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  35% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+#loader-gear-left {
+  animation: gear-left-break 4s ease-in-out infinite;
+}
+
+#loader-gear-right {
+  animation: gear-right-break 4s ease-in-out infinite;
+}
+@keyframes gear-left-break {
+  0%,
+  35% {
+    transform: translate(0, 0);
+  }
+
+  45%,
+  55% {
+    transform: translate(-15px, 15px);
+  }
+
+  65%,
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes gear-right-break {
+  0%,
+  35% {
+    transform: translate(0, 0);
+  }
+
+  45%,
+  55% {
+    transform: translate(15px, -15px);
+  }
+
+  65%,
+  100% {
+    transform: translate(0, 0);
+  }
+} 
 .modal-error {
   display: flex;
   flex-direction: column;

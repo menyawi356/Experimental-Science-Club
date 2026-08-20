@@ -6,17 +6,20 @@ import { LanguageProvider } from "./global/languageProvider.jsx";
 import ShowedModal from "./components/showed-modal.jsx";
 import { Authprovider } from "./global/authProvider.jsx";
 import { ModalProvider } from "./global/modalProvider.jsx";
+import { LoaderContextProvider } from "./global/loaderProvider.jsx";
 export default function Wraper() {
   return (
-    <Authprovider>
-      <ModalProvider>
-        <LanguageProvider>
-          <Header  />
-          <Outlet />
-          <ShowedModal />
-          <Footer />
-        </LanguageProvider>
-      </ModalProvider>
-    </Authprovider>
+    <LoaderContextProvider>
+      <Authprovider>
+        <ModalProvider>
+          <LanguageProvider>
+            <Header />
+            <Outlet />
+            <ShowedModal />
+            <Footer />
+          </LanguageProvider>
+        </ModalProvider>
+      </Authprovider>
+    </LoaderContextProvider>
   );
 }
