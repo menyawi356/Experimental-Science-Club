@@ -25,7 +25,7 @@ export default function CompetitionsList() {
 
     {
       name: "Physics League",
-      link: false,
+      link: "https://pharaohleague.org/",
       text: {
         ar: {
           cat: "دوري الفيزياء",

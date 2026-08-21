@@ -1,19 +1,19 @@
 import CompetitionsList from "../components/competitionsList";
 import SVG from "../components/sentence-popu-svg";
-import useAuth from "../hooks/useAuth.js";
+// import useAuth from "../hooks/useAuth.js";
 import useLanguage from "../hooks/useLanguage.js";
-import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
+// import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
 import CompetitionsSVG from "../Svgs/competitions.svg";
 export default function Competitions() {
   const { t } = useLanguage();
   const competitionsText = t.competitions;
-  const openJoinModal = useOpenJoinModal();
-  const { auth } = useAuth();
-  const handleSuggest = () => {
-    if (!auth.isAuth) {
-      openJoinModal();
-    }
-  };
+  // const openJoinModal = useOpenJoinModal();
+  // const { auth } = useAuth();
+  // const handleSuggest = () => {
+  //   if (!auth.isAuth) {
+  //     openJoinModal();
+  //   }
+  // };
   return (
     <main id="page-competitions" className="page-view active">
       <div className="wrap">
@@ -29,7 +29,7 @@ export default function Competitions() {
           <div className="opp-grid">
             {<CompetitionsList />}
             {/* Idea Card */}
-            <div className="opp-card idea-card">
+            {/* <div className="opp-card idea-card">
               <div className="opp-top">
                 <span className="opp-cat" id="idea-cat">
                   {competitionsText.ideaCat}
@@ -58,7 +58,7 @@ export default function Competitions() {
                   {competitionsText.ideaCta}
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
