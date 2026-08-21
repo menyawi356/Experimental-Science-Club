@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import Loader from "../components/loader";
+import { AnimatePresence } from "framer-motion";
 const loaderContext = createContext();
 export default loaderContext;
 export function LoaderContextProvider({ children }) {
@@ -7,7 +8,7 @@ export function LoaderContextProvider({ children }) {
   return (
     <loaderContext.Provider value={{ setIsloading }}>
       {children}
-      {isLoading && <Loader />}
+      <AnimatePresence>{isLoading && <Loader />}</AnimatePresence>
     </loaderContext.Provider>
   );
 }
