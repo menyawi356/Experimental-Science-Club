@@ -72,6 +72,10 @@ export default function UserModal({ setShowedModal }) {
               <span>{userModal.age}</span>
               <p>{user?.age}</p>
             </div>
+            <div className="user-info__item">
+              <span>{userModal.publishedPapers}</span>
+              <p>{user?.publisedPapers.count}</p>
+            </div>
           </div>
 
           <button

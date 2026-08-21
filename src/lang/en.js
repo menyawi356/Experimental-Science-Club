@@ -272,6 +272,7 @@ const en = {
     name: "Name",
     email: "Email",
     age: "Age",
+    publishedPapers: "Published Papers",
     signOut: "Sign Out",
   },
   publishForm: {
