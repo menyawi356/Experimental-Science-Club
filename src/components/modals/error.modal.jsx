@@ -11,8 +11,6 @@ export default function ErrorModal({ setShowedModal, data }) {
   const error = t.errors[finalErrorCode];
   const { heading, sub, button } = error;
   let targetModal;
-  console.log(errorCode)
-  console.log(finalErrorCode)
   switch (finalErrorCode) {
     case "SERVER_ERROR":
       targetModal = "none";

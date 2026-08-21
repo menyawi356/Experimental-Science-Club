@@ -33,7 +33,6 @@ export default function SignInModal({ setShowedModal }) {
       });
     }
 
-    console.log(response);
   };
   const { t } = useLanguage();
   const signInForm = t.signInForm;

@@ -38,7 +38,6 @@ export default function JoinModal({ setShowedModal }) {
         },
       });
     }
-    console.log(response);
   };
   const { t } = useLanguage();
   const joinForm = t.joinForm;

@@ -22,7 +22,6 @@ export default function SVG({ children, page }) {
         onMouseEnter={handleInceaseIndex}
         onClick={handleInceaseIndex}
         onMouseLeave={() => {
-          console.log();
           setIsVisable(false);
         }}
       >

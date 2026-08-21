@@ -12,9 +12,6 @@ export function Authprovider({ children }) {
   const { setShowedModal } = useChangeModal();
   const { startLoader, stopLoader } = useLoader();
   useEffect(() => {
-    console.log(auth);
-  }, [auth]);
-  useEffect(() => {
     startLoader();
     authMe()
       .then((response) => {
