@@ -1,23 +1,27 @@
 import useLanguage from "../hooks/useLanguage.js";
 import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import SVG from "../components/sentence-popu-svg";
 import useAuth from "../hooks/useAuth.js";
 import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
-import { SOCKET_URL } from "../config/env.js";
+import createSocket from "../socket/socketClient.js";
+import sendMessage from "../socket/sendMessage.js";
 export default function Chat() {
   const { t } = useLanguage();
   const chatText = t.chat;
   const [slectedChat, setChat] = useSearchParams();
-  const chatLable = chatText.channelTitles[slectedChat.get("chat")];
-  const { auht } = useAuth();
+  const chat = slectedChat.get("chat");
+  const chatLable = chatText.channelTitles[chat];
   const openJoinModal = useOpenJoinModal();
   const { auth } = useAuth();
-  const handleSend = () => {
+  const socketRef = useRef(null);
+  const handleSend = (chat) => {
     if (!auth.isAuth) {
       openJoinModal();
+      return;
     }
+    sendMessage(socketRef.current, "انا مازن يا عمنا", chat);
   };
   useEffect(() => {
     setChat({ chat: "physics" });
@@ -27,11 +31,8 @@ export default function Chat() {
   };
   useEffect(() => {
     if (auth.isAuth) {
-      const socket = new WebSocket(SOCKET_URL);
-      socket.addEventListener("message", (ev) => {
-        const data = JSON.parse(ev.data);
-        console.log(data);
-      });
+      const socket = createSocket();
+      if (socket) socketRef.current = socket;
     }
   }, [auth]);
   const rooms = Object.keys(chatText.rooms).map((key, i) => {
@@ -88,7 +89,9 @@ export default function Chat() {
                 className="btn btn-primary"
                 style={{ padding: "8px 18px" }}
                 id="chat-send-btn"
-                onClick={handleSend}
+                onClick={() => {
+                  handleSend(chat);
+                }}
               >
                 {chatText.send}
               </button>
