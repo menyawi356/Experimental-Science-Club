@@ -1,2 +1,2 @@
-const API_URL = import.meta.env.VITE_API_URL;
-export default API_URL;
+const { VITE_API_URL: API_URL, VITE_SOCKET_URL: SOCKET_URL } = import.meta.env;
+export { API_URL, SOCKET_URL };

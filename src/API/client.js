@@ -1,5 +1,6 @@
-import API_URL from "../config/env";
+import { API_URL } from "../config/env";
 export default async function client(endpoint, options = {}) {
+  console.log(API_URL);
   const isFormData = options.body instanceof FormData;
   const response = await fetch(`${API_URL}/${endpoint}`, {
     ...options,

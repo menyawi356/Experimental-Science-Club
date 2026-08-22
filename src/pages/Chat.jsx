@@ -5,12 +5,13 @@ import { useEffect } from "react";
 import SVG from "../components/sentence-popu-svg";
 import useAuth from "../hooks/useAuth.js";
 import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
+import { SOCKET_URL } from "../config/env.js";
 export default function Chat() {
   const { t } = useLanguage();
   const chatText = t.chat;
   const [slectedChat, setChat] = useSearchParams();
   const chatLable = chatText.channelTitles[slectedChat.get("chat")];
-  const contactText = t.contact;
+  const { auht } = useAuth();
   const openJoinModal = useOpenJoinModal();
   const { auth } = useAuth();
   const handleSend = () => {
@@ -24,6 +25,15 @@ export default function Chat() {
   const handleChangeChat = (chat) => {
     setChat({ chat });
   };
+  useEffect(() => {
+    if (auth.isAuth) {
+      const socket = new WebSocket(SOCKET_URL);
+      socket.addEventListener("message", (ev) => {
+        const data = JSON.parse(ev.data);
+        console.log(data);
+      });
+    }
+  }, [auth]);
   const rooms = Object.keys(chatText.rooms).map((key, i) => {
     return (
       <button
