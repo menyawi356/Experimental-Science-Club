@@ -7,7 +7,11 @@ import useAuth from "../hooks/useAuth.js";
 import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
 import createSocket from "../socket/socketClient.js";
 import sendMessage from "../socket/sendMessage.js";
+import socketListner from "../socket/socketListner.js";
+import formatDateTime from "../utils/formteDate.js";
 export default function Chat() {
+  const [chatMessages, setChatMessagges] = useState([]);
+  console.log(chatMessages);
   const { t } = useLanguage();
   const chatText = t.chat;
   const [slectedChat, setChat] = useSearchParams();
@@ -32,13 +36,31 @@ export default function Chat() {
   useEffect(() => {
     setChat({ chat: "physics" });
   }, []);
+  const massegesList = chatMessages.map((message) => {
+    console.log(message);
+    console.log(auth.user._id === message.sender.id);
+    return (
+      <div
+        className={`chat-message ${auth.user._id === message.sender.id ? "chat-message--sent" : "chat-message--received"}`}
+        key={message._id}
+      >
+        <div className="chat-message__author">
+          {message.sender.name} • {formatDateTime(message.createdAt)}
+        </div>
+        <div className="chat-message__bubble">{message.content}</div>
+      </div>
+    );
+  });
   const handleChangeChat = (chat) => {
     setChat({ chat });
   };
   useEffect(() => {
     if (auth.isAuth) {
       const socket = createSocket();
-      if (socket) socketRef.current = socket;
+      if (socket) {
+        socketRef.current = socket;
+        socketListner(socket, setChatMessagges);
+      }
     }
   }, [auth]);
   const rooms = Object.keys(chatText.rooms).map((key, i) => {
@@ -79,7 +101,10 @@ export default function Chat() {
                 <span id="activeUserCount">18 {chatText.online}</span>
               </div>
             </div>
-            <div className="chat-messages" id="chatMessages"></div>
+            {/* MSGS */}
+            <div className="chat-messages" id="chatMessages">
+              {massegesList}
+            </div>
             <div className="chat-input-row">
               <input
                 type="text"
