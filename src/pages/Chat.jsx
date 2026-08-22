@@ -10,17 +10,19 @@ import sendMessage from "../socket/sendMessage.js";
 import socketListner from "../socket/socketListner.js";
 import formatDateTime from "../utils/formteDate.js";
 import changeRoom from "../socket/changeRoom.js";
+import useLoader from "../hooks/useLoader.js";
 export default function Chat() {
   const [chatMessages, setChatMessagges] = useState([]);
   const { t } = useLanguage();
   const chatText = t.chat;
-  const [slectedChat, setChat] = useSearchParams();
+  const [slectedChat, setChat] = useSearchParams({});
   const chat = slectedChat.get("chat");
   const chatLable = chatText.channelTitles[chat];
   const [message, setMessage] = useState("");
   const openJoinModal = useOpenJoinModal();
   const { auth } = useAuth();
   const socketRef = useRef(null);
+  const { startLoader, stopLoader } = useLoader();
   const handleSend = (chat, message) => {
     if (!auth.isAuth) {
       openJoinModal();
@@ -34,38 +36,37 @@ export default function Chat() {
     setMessage(message);
   };
   useEffect(() => {
-    setChat({ chat: "physics" });
+    setChat();
   }, []);
-  const massegesList = chatMessages.map((message) => {
-    return (
-      <div
-        className={`chat-message ${auth.user._id === message.sender.id ? "chat-message--sent" : "chat-message--received"}`}
-        key={message._id}
-      >
-        <div className="chat-message__author">
-          {message.sender.name} • {formatDateTime(message.createdAt)}
+  const createMasseageList = () => {
+    const list = chatMessages.map((message) => {
+      return (
+        <div
+          className={`chat-message ${auth.user._id === message.sender.id ? "chat-message--sent" : "chat-message--received"}`}
+          key={message._id}
+        >
+          <div className="chat-message__author">
+            {message.sender.name} • {formatDateTime(message.createdAt)}
+          </div>
+          <div className="chat-message__bubble">{message.content}</div>
         </div>
-        <div className="chat-message__bubble">{message.content}</div>
-      </div>
-    );
-  });
+      );
+    });
+    stopLoader();
+    return list;
+  };
+  const massegesList = createMasseageList();
   const handleChangeChat = (chat) => {
     setChat({ chat });
   };
   useEffect(() => {
-    if (slectedChat) {
-      const room = slectedChat.get("chat");
-      changeRoom(room, socketRef.current);
-    }
-  }, [slectedChat]);
-  useEffect(() => {
     if (!auth.isAuth) return;
+    startLoader();
     const socket = createSocket();
     if (!socket) return;
     socketRef.current = socket;
     socketListner(socket, setChatMessagges);
-    const currentRoom = slectedChat.get("chat");
-    changeRoom(currentRoom, socket);
+    stopLoader();
     return () => {
       socket.close();
       socketRef.current = null;
@@ -76,6 +77,10 @@ export default function Chat() {
       <button
         onClick={() => {
           handleChangeChat(key);
+          if (socketRef.current && auth.isAuth) {
+            startLoader();
+            changeRoom(key, socketRef.current);
+          }
         }}
         className={`tab-btn ${slectedChat.get("chat") == key && "active"}`}
         data-room={key}
@@ -111,7 +116,9 @@ export default function Chat() {
             </div>
             {/* MSGS */}
             <div className="chat-messages" id="chatMessages">
-              {massegesList}
+              {massegesList.length
+                ? massegesList
+                : " Click on chat room to join"}
             </div>
             <div className="chat-input-row">
               <input
