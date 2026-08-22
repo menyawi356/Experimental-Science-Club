@@ -55,14 +55,16 @@ export default function Chat() {
     setChat({ chat });
   };
   useEffect(() => {
-    if (auth.isAuth) {
-      const socket = createSocket();
-      if (socket) {
-        socketRef.current = socket;
-        socketListner(socket, setChatMessagges);
-      }
-    }
-  }, [auth]);
+    if (!auth.isAuth) return;
+    const socket = createSocket();
+    if (!socket) return;
+    socketRef.current = socket;
+    socketListner(socket, setChatMessagges);
+    return () => {
+      socket.close();
+      socketRef.current = null;
+    };
+  }, [auth.isAuth]);
   const rooms = Object.keys(chatText.rooms).map((key, i) => {
     return (
       <button
