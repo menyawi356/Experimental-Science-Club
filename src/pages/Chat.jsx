@@ -1,7 +1,7 @@
 import useLanguage from "../hooks/useLanguage.js";
 import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import SVG from "../components/sentence-popu-svg";
 import useAuth from "../hooks/useAuth.js";
 import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
@@ -20,13 +20,13 @@ export default function Chat() {
   const [message, setMessage] = useState("");
   const openJoinModal = useOpenJoinModal();
   const { auth } = useAuth();
-  const [socket, setSocket] = useState(null);
+  const socketRef = useRef(null);
   const handleSend = (chat, message) => {
     if (!auth.isAuth) {
       openJoinModal();
       return;
     }
-    sendMessage(socket, message, chat);
+    sendMessage(socketRef.current, message, chat);
     setMessage("");
   };
   const handleChangeMessage = (e) => {
@@ -52,23 +52,25 @@ export default function Chat() {
   const handleChangeChat = (chat) => {
     setChat({ chat });
   };
-
+  useEffect(() => {
+    if (slectedChat) {
+      const room = slectedChat.get("chat");
+      changeRoom(room, socketRef.current);
+    }
+  }, [slectedChat]);
   useEffect(() => {
     if (!auth.isAuth) return;
     const socket = createSocket();
     if (!socket) return;
+    socketRef.current = socket;
     socketListner(socket, setChatMessagges);
-    setSocket(socket);
+    const currentRoom = slectedChat.get("chat");
+    changeRoom(currentRoom, socket);
     return () => {
       socket.close();
-      setSocket(null);
+      socketRef.current = null;
     };
   }, [auth.isAuth]);
-  useEffect(() => {
-    const chat = slectedChat.get("chat");
-    if (!chat || !socket) return;
-    changeRoom(chat, socket);
-  }, [slectedChat, socket]);
   const rooms = Object.keys(chatText.rooms).map((key, i) => {
     return (
       <button
