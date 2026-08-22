@@ -22,7 +22,7 @@ export default function Chat() {
       openJoinModal();
       return;
     }
-    sendMessage(socketRef.current, message.trim(), chat);
+    sendMessage(socketRef.current, message, chat);
     setMessage("");
   };
   const handleChangeMessage = (e) => {
