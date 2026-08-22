@@ -1,7 +1,7 @@
 import useLanguage from "../hooks/useLanguage.js";
 import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import SVG from "../components/sentence-popu-svg";
 import useAuth from "../hooks/useAuth.js";
 import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
@@ -13,15 +13,21 @@ export default function Chat() {
   const [slectedChat, setChat] = useSearchParams();
   const chat = slectedChat.get("chat");
   const chatLable = chatText.channelTitles[chat];
+  const [message, setMessage] = useState("");
   const openJoinModal = useOpenJoinModal();
   const { auth } = useAuth();
   const socketRef = useRef(null);
-  const handleSend = (chat) => {
+  const handleSend = (chat, message) => {
     if (!auth.isAuth) {
       openJoinModal();
       return;
     }
-    sendMessage(socketRef.current, "انا مازن يا عمنا", chat);
+    sendMessage(socketRef.current, message.trim(), chat);
+    setMessage("");
+  };
+  const handleChangeMessage = (e) => {
+    const message = e.target.value;
+    setMessage(message);
   };
   useEffect(() => {
     setChat({ chat: "physics" });
@@ -60,11 +66,9 @@ export default function Chat() {
               {chatText.lede}
             </p>
           </div>
-
           <div className="sub-tabs" id="chatRoomTabs">
             {rooms}
           </div>
-
           <div className="chat-box-container">
             <div className="chat-header">
               <div className="chat-title" id="chatChannelTitle">
@@ -75,22 +79,23 @@ export default function Chat() {
                 <span id="activeUserCount">18 {chatText.online}</span>
               </div>
             </div>
-
             <div className="chat-messages" id="chatMessages"></div>
-
             <div className="chat-input-row">
               <input
                 type="text"
                 id="chatInput"
+                value={message}
+                onChange={handleChangeMessage}
                 placeholder={chatText.placeholder}
               />
-
               <button
                 className="btn btn-primary"
                 style={{ padding: "8px 18px" }}
                 id="chat-send-btn"
                 onClick={() => {
-                  handleSend(chat);
+                  if (message) {
+                    handleSend(chat, message);
+                  }
                 }}
               >
                 {chatText.send}
