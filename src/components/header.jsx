@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import useLanguage from "../hooks/useLanguage.js";
 import useAuth from "../hooks/useAuth.js";
 import useChangeModal from "../hooks/useChangeModal.js";
@@ -16,6 +16,7 @@ const Header = () => {
     { name: t.nav.partners, path: "/Partners" },
     { name: t.nav.contact, path: "/Contact-Us" },
   ];
+  const location = useLocation();
   const { setShowedModal } = useChangeModal();
   const [isOpened, setIsOpned] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -48,7 +49,13 @@ const Header = () => {
         key={i}
         className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
         to={pageName.path}
-        onClick={() => setIsOpned(false)}
+        onClick={(e) => {
+          if (location.pathname === pageName.path) {
+            e.preventDefault();
+          }
+
+          setIsOpned(false);
+        }}
       >
         {pageName.name}
       </NavLink>
