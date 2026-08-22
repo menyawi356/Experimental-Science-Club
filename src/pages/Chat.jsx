@@ -1,7 +1,7 @@
 import useLanguage from "../hooks/useLanguage.js";
 import { useSearchParams } from "react-router-dom";
 import ChatSVG from "../Svgs/chat.svg";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import SVG from "../components/sentence-popu-svg";
 import useAuth from "../hooks/useAuth.js";
 import useOpenJoinModal from "../hooks/useOpenJoinModal.js";
@@ -9,9 +9,9 @@ import createSocket from "../socket/socketClient.js";
 import sendMessage from "../socket/sendMessage.js";
 import socketListner from "../socket/socketListner.js";
 import formatDateTime from "../utils/formteDate.js";
+import changeRoom from "../socket/changeRoom.js";
 export default function Chat() {
   const [chatMessages, setChatMessagges] = useState([]);
-  console.log(chatMessages);
   const { t } = useLanguage();
   const chatText = t.chat;
   const [slectedChat, setChat] = useSearchParams();
@@ -20,13 +20,13 @@ export default function Chat() {
   const [message, setMessage] = useState("");
   const openJoinModal = useOpenJoinModal();
   const { auth } = useAuth();
-  const socketRef = useRef(null);
+  const [socket, setSocket] = useState(null);
   const handleSend = (chat, message) => {
     if (!auth.isAuth) {
       openJoinModal();
       return;
     }
-    sendMessage(socketRef.current, message, chat);
+    sendMessage(socket, message, chat);
     setMessage("");
   };
   const handleChangeMessage = (e) => {
@@ -37,8 +37,6 @@ export default function Chat() {
     setChat({ chat: "physics" });
   }, []);
   const massegesList = chatMessages.map((message) => {
-    console.log(message);
-    console.log(auth.user._id === message.sender.id);
     return (
       <div
         className={`chat-message ${auth.user._id === message.sender.id ? "chat-message--sent" : "chat-message--received"}`}
@@ -54,17 +52,23 @@ export default function Chat() {
   const handleChangeChat = (chat) => {
     setChat({ chat });
   };
+
   useEffect(() => {
     if (!auth.isAuth) return;
     const socket = createSocket();
     if (!socket) return;
-    socketRef.current = socket;
     socketListner(socket, setChatMessagges);
+    setSocket(socket);
     return () => {
       socket.close();
-      socketRef.current = null;
+      setSocket(null);
     };
   }, [auth.isAuth]);
+  useEffect(() => {
+    const chat = slectedChat.get("chat");
+    if (!chat || !socket) return;
+    changeRoom(chat, socket);
+  }, [slectedChat, socket]);
   const rooms = Object.keys(chatText.rooms).map((key, i) => {
     return (
       <button
