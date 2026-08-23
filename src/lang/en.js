@@ -141,6 +141,7 @@ const en = {
     placeholder: "Ask a question or share a discovery...",
     send: "Send",
     online: "Online",
+    connecting: "Connecting....",
     you: "You (ScienoAtlas Researcher)",
     bot: "ScienoAtlas Science Bot",
     insight: "Insight regarding",

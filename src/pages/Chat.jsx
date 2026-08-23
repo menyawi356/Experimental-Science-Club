@@ -23,6 +23,10 @@ export default function Chat() {
   const { auth } = useAuth();
   const socketRef = useRef(null);
   const { startLoader, stopLoader } = useLoader();
+  const [onlineMembers, setOnlineMembers] = useState({
+    chat: slectedChat.get("chat"),
+    number: 0,
+  });
   const handleSend = (chat, message) => {
     if (!auth.isAuth) {
       openJoinModal();
@@ -62,6 +66,10 @@ export default function Chat() {
     </div>
   ));
   const handleChangeChat = (chat) => {
+    setOnlineMembers((prev) => ({
+      chat,
+      number: prev.number,
+    }));
     setChat({ chat });
   };
   useEffect(() => {
@@ -70,7 +78,7 @@ export default function Chat() {
     const socket = createSocket();
     if (!socket) return;
     socketRef.current = socket;
-    socketListner(socket, setChatMessagges);
+    socketListner(socket, setChatMessagges, setOnlineMembers);
     stopLoader();
     return () => {
       socket.close();
@@ -114,8 +122,11 @@ export default function Chat() {
                 {chatLable}
               </div>
 
-              <div className="chat-status">
-                <span id="activeUserCount">18 {chatText.online}</span>
+              <div className={`chat-status ${onlineMembers.number || "connecting"}`}>
+                <span id="activeUserCount">
+                  {onlineMembers.number}{" "}
+                  {onlineMembers.number ? chatText.online : chatText.connecting}
+                </span>
               </div>
             </div>
             {/* MSGS */}

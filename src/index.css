@@ -1923,6 +1923,9 @@ h2 {
   font-weight: bold;
   white-space: nowrap;
 }
+.chat-status.connecting {
+  color: var(--red);
+}
 .chat-status::before {
   content: "";
   width: 7px;
@@ -1930,6 +1933,9 @@ h2 {
   background: var(--teal);
   border-radius: 50%;
   display: inline-block;
+}
+.chat-status.connecting::before {
+  background: var(--red);
 }
 .chat-messages {
   flex: 1;
