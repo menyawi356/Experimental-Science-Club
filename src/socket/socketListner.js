@@ -2,6 +2,7 @@ export default function socketListner(
   socket,
   setChatMessagges,
   setOnlineMembers,
+  setShowedModal,
 ) {
   socket.addEventListener("message", (ev) => {
     const data = JSON.parse(ev.data);
@@ -41,6 +42,25 @@ export default function socketListner(
           }
           return prev;
         });
+        break;
+      case "ERROR":
+        setShowedModal({
+          modal: "error",
+          data: {
+            errorCode: payLoad.error,
+            to: "none",
+          },
+        });
+        break;
     }
+  });
+  socket.addEventListener("error", () => {
+    setShowedModal({
+      modal: "error",
+      data: {
+        errorCode: "CONNECTION_ERROR",
+        to: "none",
+      },
+    });
   });
 }

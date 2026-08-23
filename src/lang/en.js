@@ -383,6 +383,70 @@ const en = {
       sub: "Unable to connect to the server. Please check your internet connection and try again.",
       button: "Try Again",
     },
+    // Message / Payload
+
+    MESSAGE_PARSE_ERROR: {
+      heading: "Invalid message",
+      sub: "We couldn't process the message you sent. Please try again.",
+      button: "Try again",
+    },
+    MESSAGE_EMPTY: {
+      heading: "Empty message",
+      sub: "Please enter a message before sending it.",
+      button: "Try again",
+    },
+    MESSAGE_TOO_LONG: {
+      heading: "Message too long",
+      sub: "Your message is too long. Please shorten it and try again.",
+      button: "Try again",
+    },
+    SEND_MESSAGE_FAILED: {
+      heading: "Message not sent",
+      sub: "We couldn't send your message. Please try again.",
+      button: "Try again",
+    },
+    // Room
+    ROOM_NOT_FOUND: {
+      heading: "Chat room not found",
+      sub: "The chat room you're trying to join could not be found.",
+      button: "Try again",
+    },
+    NOT_IN_ROOM: {
+      heading: "Not in a chat room",
+      sub: "You need to join a chat room before sending messages.",
+      button: "Try again",
+    },
+    ALREADY_IN_ROOM: {
+      heading: "Already in chat room",
+      sub: "You are already in this chat room.",
+      button: "Close",
+    },
+    ROOM_JOIN_FAILED: {
+      heading: "Couldn't join chat room",
+      sub: "We couldn't join the chat room. Please try again.",
+      button: "Try again",
+    },
+    ROOM_LEAVE_FAILED: {
+      heading: "Couldn't leave chat room",
+      sub: "We couldn't leave the chat room. Please try again.",
+      button: "Try again",
+    },
+    // Connection / WebSocket
+    CONNECTION_ERROR: {
+      heading: "Connection error",
+      sub: "We couldn't connect to the chat server. Please try again.",
+      button: "Try again",
+    },
+    CONNECTION_CLOSED: {
+      heading: "Connection closed",
+      sub: "Your connection to the chat server was closed.",
+      button: "Try again",
+    },
+    INVALID_WEBSOCKET_MESSAGE: {
+      heading: "Invalid request",
+      sub: "The chat received an invalid request. Please try again.",
+      button: "Try again",
+    },
   },
 };
 export default en;
