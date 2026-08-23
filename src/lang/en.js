@@ -148,6 +148,12 @@ const en = {
     message: "Your Message...",
     send: "Send Message",
     sentAlert: "Message sent!",
+    success: {
+      heading: "Message sent successfully",
+      message:
+        "Your message has been sent successfully. We will get back to you as soon as possible.",
+      close: "Close",
+    },
   },
   joinForm: {
     heading: "Join ScienoAtlas",
