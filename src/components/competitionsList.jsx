@@ -94,7 +94,7 @@ export default function CompetitionsList() {
 
           {/* <a className="btn btn-ghost" id="chemx-save">
             {t.competitions.save}
-          </a> */}cl
+          </a> */}
         </div>
       </div>
     );
