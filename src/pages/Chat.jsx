@@ -10,23 +10,55 @@ import sendMessage from "../socket/sendMessage.js";
 import socketListner from "../socket/socketListner.js";
 import formatDateTime from "../utils/formteDate.js";
 import changeRoom from "../socket/changeRoom.js";
-import useLoader from "../hooks/useLoader.js";
+import Loader from "../components/loader.jsx";
 export default function Chat() {
-  const [chatMessages, setChatMessagges] = useState([]);
   const { t } = useLanguage();
   const chatText = t.chat;
+
+  const { auth } = useAuth();
+  const openJoinModal = useOpenJoinModal();
+
   const [slectedChat, setChat] = useSearchParams({});
   const chat = slectedChat.get("chat");
   const chatLable = chatText.channelTitles[chat];
-  const [message, setMessage] = useState("");
-  const openJoinModal = useOpenJoinModal();
-  const { auth } = useAuth();
+
   const socketRef = useRef(null);
-  const { startLoader, stopLoader } = useLoader();
+
+  const [chatMessages, setChatMessagges] = useState([]);
+  const [message, setMessage] = useState("");
   const [onlineMembers, setOnlineMembers] = useState({
     chat: slectedChat.get("chat"),
     number: 0,
   });
+  // may be updated later
+  const [loaclLoader, setLocalLoader] = useState(true);
+  const startLocalLoader = () => {
+    setLocalLoader(true);
+  };
+  const stopLocalLoader = () => {
+    setLocalLoader(false);
+  };
+  useEffect(() => {
+    setChat();
+  }, []);
+  useEffect(() => {
+    if (!messagesRef.current) return;
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  }, [chatMessages]);
+  useEffect(() => {
+    if (!auth.isAuth) return;
+    startLocalLoader();
+    const socket = createSocket();
+    stopLocalLoader();
+    if (!socket) return;
+    socketRef.current = socket;
+    socketListner(socket, setChatMessagges, setOnlineMembers);
+    return () => {
+      socket.close();
+      socketRef.current = null;
+    };
+  }, [auth.isAuth]);
+
   const handleSend = (chat, message) => {
     if (!auth.isAuth) {
       openJoinModal();
@@ -40,15 +72,14 @@ export default function Chat() {
     setMessage(message);
   };
   const messagesRef = useRef(null);
+  const handleChangeChat = (chat) => {
+    setOnlineMembers((prev) => ({
+      chat,
+      number: prev.number,
+    }));
+    setChat({ chat });
+  };
 
-  useEffect(() => {
-    if (!messagesRef.current) return;
-
-    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  }, [chatMessages]);
-  useEffect(() => {
-    setChat();
-  }, []);
   const massegesList = chatMessages?.messages?.map((message, i) => {
     return (
       <div
@@ -67,26 +98,6 @@ export default function Chat() {
       </div>
     );
   });
-  const handleChangeChat = (chat) => {
-    setOnlineMembers((prev) => ({
-      chat,
-      number: prev.number,
-    }));
-    setChat({ chat });
-  };
-  useEffect(() => {
-    if (!auth.isAuth) return;
-    startLoader();
-    const socket = createSocket();
-    if (!socket) return;
-    socketRef.current = socket;
-    socketListner(socket, setChatMessagges, setOnlineMembers);
-    stopLoader();
-    return () => {
-      socket.close();
-      socketRef.current = null;
-    };
-  }, [auth.isAuth]);
   const rooms = Object.keys(chatText.rooms).map((key, i) => {
     return (
       <button
@@ -148,6 +159,7 @@ export default function Chat() {
             </div>
             {/* MSGS */}
             <div className="chat-messages" id="chatMessages" ref={messagesRef}>
+              {loaclLoader && <Loader />}
               {!auth.isAuth ? (
                 <div className="chat-empty-state">
                   <div className="chat-empty-state__content">
