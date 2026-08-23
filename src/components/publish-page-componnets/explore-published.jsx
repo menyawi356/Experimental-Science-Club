@@ -186,7 +186,19 @@ export default function ExplorePublished() {
       </div>
 
       <div className="archive-list" id="archiveList">
-        {publishedPapersList}
+        {publications.length === 0 ? (
+          <div className="archive-empty-state">
+            <h3>{publishText.emptyTitle}</h3>
+            <p>{publishText.emptyMessage}</p>
+          </div>
+        ) : filteredPublications.length === 0 ? (
+          <div className="archive-empty-state">
+            <h3>{publishText.noResultsTitle}</h3>
+            <p>{publishText.noResultsMessage}</p>
+          </div>
+        ) : (
+          publishedPapersList
+        )}
       </div>
     </div>
   );

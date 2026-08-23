@@ -90,36 +90,11 @@ const en = {
     download: "Download PDF",
     readArticle: "Read Article",
     viewPdf: "View PDF",
-    items: {
-      paper1: {
-        cat: "Research Paper",
-        date: "MAR 2026",
-        title:
-          "Quantum Field Interactions in Low-Temperature Synthetic Polymers",
-        author: "By Dr. A. Vance & E. Rahimi • ScienoAtlas Vol. 14",
-        abstract:
-          "An empirical analysis of spin wave excitations and anomalous conduction states in organized polymer lattices near absolute zero.",
-        tags: ["Quantum Physics", "Polymers"],
-      },
-      article1: {
-        cat: "Article",
-        date: "FEB 2026",
-        title: "Thermodynamic Efficiency in Multi-Junction Photovoltaic Cells",
-        author: "By Sarah M. Hassan",
-        abstract:
-          "Observation on passive heat dissolution techniques aimed at preventing power degradation during peak solar irradiance.",
-        tags: ["Solar Energy", "Thermodynamics"],
-      },
-      pdf1: {
-        cat: "PDF / Lab Notes",
-        date: "JAN 2026",
-        title: "ChemX Experimental Protocols & Reaction Kinetics Guide",
-        author: "By ScienoAtlas Research Division",
-        abstract:
-          "Full documentation package including lab procedures, titration formulas, error margin tables, and safety guidelines.",
-        tags: ["Chemistry", "Lab Guide"],
-      },
-    },
+    emptyTitle: "No published papers yet",
+    emptyMessage: "There are no accepted papers available at the moment.",
+    noResultsTitle: "No papers found",
+    noResultsMessage:
+      "No published papers match your current search or filter.",
   },
   chat: {
     title: "Scientific Chat Hub",
@@ -298,9 +273,9 @@ const en = {
     submit: "Submit for Publication",
     cancel: "Cancel",
     success: {
-      heading: "Submitted Successfully!",
-      sub: "Your paper is now waiting for approval from the administration team.",
-      close: "Got it",
+      heading: "Submission received",
+      sub: "Your paper has been submitted successfully. Our team will review your submission, and you will receive a response by email.",
+      close: "Close",
     },
   },
   PublicationCard: {

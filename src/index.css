@@ -326,7 +326,45 @@ html[dir="rtl"] .contact-form select {
   cursor: not-allowed;
   opacity: 0.5;
 }
+.archive-empty-state {
+  width: 100%;
+  min-height: 260px;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 24px;
+
+  text-align: center;
+
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+
+  box-shadow: var(--card-shadow);
+}
+
+.archive-empty-state h3 {
+  margin: 0 0 10px;
+
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.archive-empty-state p {
+  max-width: 480px;
+
+  margin: 0;
+
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.7;
+}
 /* Mobile */
 @media (max-width: 580px) {
   .publish-input-row {
