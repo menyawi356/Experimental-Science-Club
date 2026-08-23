@@ -4,7 +4,24 @@ export default function socketListner(socket, setChatMessagges) {
     const { type, payLoad } = data;
     switch (type) {
       case "GET-CHAT":
-        setChatMessagges(payLoad.data.messages);
+        setChatMessagges(payLoad.data);
+        break;
+      case "SEND-MESSAGE":
+        setChatMessagges((prev) => {
+          const data = payLoad.data;
+          const inCommingChat = data.chat;
+          const inCommingMessage = data.message;
+          console.log(inCommingMessage);
+          const { chat, messages } = prev;
+          if (chat !== inCommingChat) {
+            return prev;
+          }
+
+          return {
+            chat,
+            messages: [...messages, inCommingMessage],
+          };
+        });
     }
   });
 }

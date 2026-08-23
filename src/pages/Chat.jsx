@@ -35,27 +35,32 @@ export default function Chat() {
     const message = e.target.value;
     setMessage(message);
   };
+  const messagesRef = useRef(null);
+
+  useEffect(() => {
+    if (!messagesRef.current) return;
+
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  }, [chatMessages]);
   useEffect(() => {
     setChat();
   }, []);
-  const createMasseageList = () => {
-    const list = chatMessages.map((message) => {
-      return (
-        <div
-          className={`chat-message ${auth.user._id === message.sender.id ? "chat-message--sent" : "chat-message--received"}`}
-          key={message._id}
-        >
-          <div className="chat-message__author">
-            {message.sender.name} • {formatDateTime(message.createdAt)}
-          </div>
-          <div className="chat-message__bubble">{message.content}</div>
-        </div>
-      );
-    });
-    stopLoader();
-    return list;
-  };
-  const massegesList = createMasseageList();
+  const massegesList = chatMessages?.messages?.map((message, i) => (
+    <div
+      className={`chat-message ${
+        auth.user._id === message.sender.id
+          ? "chat-message--sent"
+          : "chat-message--received"
+      }`}
+      key={message._id || i}
+    >
+      <div className="chat-message__author">
+        {message.sender.name} • {formatDateTime(message.createdAt)}
+      </div>
+
+      <div className="chat-message__bubble">{message.content}</div>
+    </div>
+  ));
   const handleChangeChat = (chat) => {
     setChat({ chat });
   };
@@ -78,7 +83,6 @@ export default function Chat() {
         onClick={() => {
           handleChangeChat(key);
           if (socketRef.current && auth.isAuth) {
-            startLoader();
             changeRoom(key, socketRef.current);
           }
         }}
@@ -115,8 +119,8 @@ export default function Chat() {
               </div>
             </div>
             {/* MSGS */}
-            <div className="chat-messages" id="chatMessages">
-              {massegesList.length
+            <div className="chat-messages" id="chatMessages" ref={messagesRef}>
+              {massegesList?.length
                 ? massegesList
                 : " Click on chat room to join"}
             </div>
@@ -143,10 +147,6 @@ export default function Chat() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="bg-symbol-stage" data-symbol="chat">
-        <div className="symbol-3d-container">{<ChatSVG />}</div>
       </div>
       <SVG page="chat">
         <ChatSVG />
