@@ -125,19 +125,53 @@ export default function Chat() {
               </div>
 
               <div
-                className={`chat-status ${onlineMembers.number || "connecting"}`}
+                className={`chat-status ${
+                  !auth.isAuth
+                    ? "login-required"
+                    : !chat
+                      ? "select-room"
+                      : !massegesList?.length
+                        ? "ready"
+                        : "online"
+                }`}
               >
                 <span id="activeUserCount">
-                  {onlineMembers.number}{" "}
-                  {onlineMembers.number ? chatText.online : chatText.connecting}
+                  {!auth.isAuth
+                    ? chatText.loginRequired
+                    : !chat
+                      ? chatText.selectRoom
+                      : !massegesList?.length
+                        ? chatText.ready
+                        : `${onlineMembers.number} ${chatText.online}`}
                 </span>
               </div>
             </div>
             {/* MSGS */}
             <div className="chat-messages" id="chatMessages" ref={messagesRef}>
-              {massegesList?.length
-                ? massegesList
-                : " Click on chat room to join"}
+              {!auth.isAuth ? (
+                <div className="chat-empty-state">
+                  <div className="chat-empty-state__content">
+                    <h3>{chatText.loginTitle}</h3>
+                    <p>{chatText.loginMessage}</p>
+                  </div>
+                </div>
+              ) : !chat ? (
+                <div className="chat-empty-state">
+                  <div className="chat-empty-state__content">
+                    <h3>{chatText.selectRoomTitle}</h3>
+                    <p>{chatText.selectRoomMessage}</p>
+                  </div>
+                </div>
+              ) : !massegesList?.length ? (
+                <div className="chat-empty-state">
+                  <div className="chat-empty-state__content">
+                    <h3>{chatText.emptyTitle}</h3>
+                    <p>{chatText.emptyMessage}</p>
+                  </div>
+                </div>
+              ) : (
+                massegesList
+              )}
             </div>
             <div className="chat-input-row">
               <input
