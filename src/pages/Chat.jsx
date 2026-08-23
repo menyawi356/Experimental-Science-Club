@@ -49,22 +49,24 @@ export default function Chat() {
   useEffect(() => {
     setChat();
   }, []);
-  const massegesList = chatMessages?.messages?.map((message, i) => (
-    <div
-      className={`chat-message ${
-        auth.user._id === message.sender.id
-          ? "chat-message--sent"
-          : "chat-message--received"
-      }`}
-      key={message._id || i}
-    >
-      <div className="chat-message__author">
-        {message.sender.name} • {formatDateTime(message.createdAt)}
-      </div>
+  const massegesList = chatMessages?.messages?.map((message, i) => {
+    return (
+      <div
+        className={`chat-message ${
+          auth?.user?._id === message?.sender?.id
+            ? "chat-message--sent"
+            : "chat-message--received"
+        }`}
+        key={message._id || i}
+      >
+        <div className="chat-message__author">
+          {message.sender.name} • {formatDateTime(message.createdAt)}
+        </div>
 
-      <div className="chat-message__bubble">{message.content}</div>
-    </div>
-  ));
+        <div className="chat-message__bubble">{message.content}</div>
+      </div>
+    );
+  });
   const handleChangeChat = (chat) => {
     setOnlineMembers((prev) => ({
       chat,
@@ -122,7 +124,9 @@ export default function Chat() {
                 {chatLable}
               </div>
 
-              <div className={`chat-status ${onlineMembers.number || "connecting"}`}>
+              <div
+                className={`chat-status ${onlineMembers.number || "connecting"}`}
+              >
                 <span id="activeUserCount">
                   {onlineMembers.number}{" "}
                   {onlineMembers.number ? chatText.online : chatText.connecting}
