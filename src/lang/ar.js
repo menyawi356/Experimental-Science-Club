@@ -446,12 +446,12 @@ const ar = {
       sub: "ليس لديك صلاحية للوصول إلى هذا المحتوى. يُرجى المحاولة مرة أخرى.",
       button: "حاول مرة أخرى",
     },
-    admin: {
-      nav: {
-        statistics: "الإحصائيات",
-        reviewPublishedPapers: "مراجعة الأبحاث المنشورة",
-        receivedContacts: "الرسائل المستلمة",
-      },
+  },
+  admin: {
+    nav: {
+      statistics: "الإحصائيات",
+      reviewPublishedPapers: "مراجعة الأبحاث المنشورة",
+      receivedContacts: "الرسائل المستلمة",
     },
   },
 };

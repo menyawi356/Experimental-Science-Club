@@ -1,8 +1,14 @@
+import "../styles/admin.css";
+import { useState } from "react";
+import { motion } from "motion/react";
 import { NavLink, Outlet } from "react-router-dom";
 import useLanguage from "../hooks/useLanguage.js";
+import Logo from "../Svgs/Logo.svg.jsx";
 export default function AdminDashboard() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const adminText = t.admin;
+  const isRTL = language === "ar";
+  const [isNavigationOpen, setIsNavigationOpen] = useState(true);
   const AdminPages = [
     {
       name: adminText.nav.statistics,
@@ -19,28 +25,65 @@ export default function AdminDashboard() {
   ];
   return (
     <main className="admin-dashboard">
-      <nav className="admin-navigation">
-        <div className="admin-navigation__header">
-          <h2 className="admin-navigation__title">{adminText.title}</h2>
+      <motion.nav
+        className="admin-navigation"
+        initial={false}
+        animate={{
+          x: isNavigationOpen ? 0 : isRTL ? "100%" : "-100%",
+        }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut",
+        }}
+      >
+        <div className="admin-navigation__content">
+          <div className="admin-navigation__header logo">
+            <Logo />
+            <span id="brand-text">{t.brand}</span>
+          </div>
+          <div className="admin-navigation__links">
+            {AdminPages.map((page) => (
+              <NavLink
+                key={page.path}
+                to={page.path}
+                className={({ isActive }) =>
+                  `admin-navigation__link ${
+                    isActive ? "admin-navigation__link--active" : ""
+                  }`
+                }
+              >
+                <span className="admin-navigation__link-text">{page.name}</span>
+              </NavLink>
+            ))}
+          </div>
         </div>
-        <div className="admin-navigation__links">
-          {AdminPages.map((page) => (
-            <NavLink
-              key={page.path}
-              to={page.path}
-              className={({ isActive }) =>
-                `admin-navigation__link ${
-                  isActive ? "admin-navigation__link--active" : ""
-                }`
-              }
-            >
-              <span className="admin-navigation__link-text">
-                {page.name}
-              </span>
-            </NavLink>
-          ))}
-        </div>
-      </nav>
+        <motion.button
+          type="button"
+          className="admin-navigation__toggle"
+          animate={{
+            x: 0,
+            scaleX: isRTL ? -1 : 1,
+          }}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+          }}
+          onClick={() => setIsNavigationOpen((prev) => !prev)}
+          aria-label={isNavigationOpen ? "Close navigation" : "Open navigation"}
+        >
+          <motion.span
+            animate={{
+              rotate: isNavigationOpen ? 0 : 180,
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+            }}
+          >
+            ‹
+          </motion.span>
+        </motion.button>
+      </motion.nav>
       <Outlet />
     </main>
   );
