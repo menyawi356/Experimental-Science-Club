@@ -11,6 +11,7 @@ import SubmitWork from "./components/publish-page-componnets/sumbit-work";
 import ExplorePublished from "./components/publish-page-componnets/explore-published";
 import AdminDashboard from "./pages/adminDashboard";
 import AdminRoute from "./components/adminRoute";
+import Statistics from "./components/admin/statistics";
 
 export default function App() {
   return (
@@ -38,7 +39,7 @@ export default function App() {
             }
           >
             <Route index element={<Navigate to={"statistics"} replace />} />
-            <Route path="statistics" />
+            <Route path="statistics" element={<Statistics />} />
             <Route path="review-published-papers" />
             <Route path="received-contacts" />
           </Route>

@@ -1,6 +1,6 @@
 import "../styles/admin.css";
 import { useState } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { NavLink, Outlet } from "react-router-dom";
 import useLanguage from "../hooks/useLanguage.js";
 import Logo from "../Svgs/Logo.svg.jsx";
@@ -25,65 +25,70 @@ export default function AdminDashboard() {
   ];
   return (
     <main className="admin-dashboard">
-      <motion.nav
-        className="admin-navigation"
-        initial={false}
-        animate={{
-          x: isNavigationOpen ? 0 : isRTL ? "100%" : "-100%",
+      <button
+        type="button"
+        className="admin-navigation__toggle"
+        style={{
+          transform: isRTL ? "scaleX(-1)" : "scaleX(1)",
         }}
-        transition={{
-          duration: 0.3,
-          ease: "easeInOut",
-        }}
+        onClick={() => setIsNavigationOpen((prev) => !prev)}
       >
-        <div className="admin-navigation__content">
-          <div className="admin-navigation__header logo">
-            <Logo />
-            <span id="brand-text">{t.brand}</span>
-          </div>
-          <div className="admin-navigation__links">
-            {AdminPages.map((page) => (
-              <NavLink
-                key={page.path}
-                to={page.path}
-                className={({ isActive }) =>
-                  `admin-navigation__link ${
-                    isActive ? "admin-navigation__link--active" : ""
-                  }`
-                }
-              >
-                <span className="admin-navigation__link-text">{page.name}</span>
-              </NavLink>
-            ))}
-          </div>
-        </div>
-        <motion.button
-          type="button"
-          className="admin-navigation__toggle"
+        <motion.span
           animate={{
-            x: 0,
-            scaleX: isRTL ? -1 : 1,
+            rotate: isNavigationOpen ? 0 : 180,
           }}
           transition={{
             duration: 0.3,
             ease: "easeInOut",
           }}
-          onClick={() => setIsNavigationOpen((prev) => !prev)}
-          aria-label={isNavigationOpen ? "Close navigation" : "Open navigation"}
         >
-          <motion.span
+          ‹
+        </motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+        {isNavigationOpen && (
+          <motion.nav
+            className="admin-navigation"
+            initial={{
+              x: isRTL ? "100%" : "-100%",
+            }}
             animate={{
-              rotate: isNavigationOpen ? 0 : 180,
+              x: 0,
+            }}
+            exit={{
+              x: isRTL ? "100%" : "-100%",
             }}
             transition={{
               duration: 0.3,
               ease: "easeInOut",
             }}
           >
-            ‹
-          </motion.span>
-        </motion.button>
-      </motion.nav>
+            <div className="admin-navigation__content">
+              <div className="admin-navigation__header logo">
+                <Logo />
+                <span id="brand-text">{t.brand}</span>
+              </div>
+              <div className="admin-navigation__links">
+                {AdminPages.map((page) => (
+                  <NavLink
+                    key={page.path}
+                    to={page.path}
+                    className={({ isActive }) =>
+                      `admin-navigation__link ${
+                        isActive ? "admin-navigation__link--active" : ""
+                      }`
+                    }
+                  >
+                    <span className="admin-navigation__link-text">
+                      {page.name}
+                    </span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
       <Outlet />
     </main>
   );
