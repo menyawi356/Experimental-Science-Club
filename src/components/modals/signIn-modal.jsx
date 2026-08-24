@@ -18,6 +18,7 @@ export default function SignInModal({ setShowedModal }) {
     const response = await signIn(data.email, data.password);
     if (response.ok) {
       setAuth({
+        isResponded:true,
         isAuth: true,
         user: response.data,
       });

@@ -24,6 +24,7 @@ export default function JoinModal({ setShowedModal }) {
 
     if (response.ok) {
       setAuth({
+        isResponded: true,
         isAuth: true,
         user: response.data,
       });
