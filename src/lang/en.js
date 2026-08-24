@@ -435,5 +435,12 @@ const en = {
       button: "Try Again",
     },
   },
+  admin: {
+    nav: {
+      statistics: "Statistics",
+      reviewPublishedPapers: "Review Published Papers",
+      receivedContacts: "Received Contacts",
+    },
+  },
 };
 export default en;
