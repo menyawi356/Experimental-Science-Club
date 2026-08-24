@@ -5,7 +5,6 @@ import useAuth from "../hooks/useAuth.js";
 import useChangeModal from "../hooks/useChangeModal.js";
 import UserButton from "./user-profiel-btn.jsx";
 import Logo from "../Svgs/Logo.svg.jsx";
-import { path } from "framer-motion/client";
 const Header = () => {
   const { language, changeLanguage, t } = useLanguage();
   const { auth } = useAuth();
