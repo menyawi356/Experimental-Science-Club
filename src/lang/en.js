@@ -11,6 +11,7 @@ const en = {
     contact: "Contact Us",
     join: "Join Club",
     sign: "Sign In",
+    admin: "Admin",
   },
   home: {
     eyebrow: "Operating system for scientific talent",

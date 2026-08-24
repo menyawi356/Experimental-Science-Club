@@ -5,8 +5,11 @@ import useAuth from "../hooks/useAuth.js";
 import useChangeModal from "../hooks/useChangeModal.js";
 import UserButton from "./user-profiel-btn.jsx";
 import Logo from "../Svgs/Logo.svg.jsx";
+import { path } from "framer-motion/client";
 const Header = () => {
   const { language, changeLanguage, t } = useLanguage();
+  const { auth } = useAuth();
+  const { isAuth, user } = auth;
   const Pages = [
     { name: t.nav.home, path: "/Home" },
     { name: t.nav.about, path: "/About-Us" },
@@ -15,13 +18,14 @@ const Header = () => {
     { name: t.nav.chat, path: "/Chat-Hub" },
     { name: t.nav.partners, path: "/Partners" },
     { name: t.nav.contact, path: "/Contact-Us" },
+    isAuth &&
+      user.role === "admin" && { name: t.nav.admin, path: "/Admin-dashboard" },
   ];
   const location = useLocation();
   const { setShowedModal } = useChangeModal();
   const [isOpened, setIsOpned] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const html = useRef(document.querySelector("html"));
-  const { auth } = useAuth();
   const handlePage = (page) => {
     setShowedModal({ modal: page, data: {} });
   };
