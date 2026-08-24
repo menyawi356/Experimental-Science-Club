@@ -1,6 +1,12 @@
 import "../../styles/statistics.css";
 
+import useLanguage from "../../hooks/useLanguage.js";
+
 export default function Statistics() {
+  const { t } = useLanguage();
+
+  const statisticsText = t.admin.statistics;
+
   const users = {
     total: 1250,
     admins: 12,
@@ -14,11 +20,11 @@ export default function Statistics() {
   };
 
   const chatRooms = [
-    { name: "General", messages: 1842 },
-    { name: "Research", messages: 1264 },
-    { name: "Help & Support", messages: 873 },
-    { name: "Community", messages: 642 },
-    { name: "Announcements", messages: 318 },
+    { name: statisticsText.chat.rooms.general, messages: 1842 },
+    { name: statisticsText.chat.rooms.research, messages: 1264 },
+    { name: statisticsText.chat.rooms.helpSupport, messages: 873 },
+    { name: statisticsText.chat.rooms.community, messages: 642 },
+    { name: statisticsText.chat.rooms.announcements, messages: 318 },
   ];
 
   const contacts = {
@@ -29,6 +35,11 @@ export default function Statistics() {
 
   const totalPapers = papers.pending + papers.approved + papers.rejected;
 
+  const totalMessages = chatRooms.reduce(
+    (total, room) => total + room.messages,
+    0,
+  );
+
   return (
     <section className="admin-statistics">
       {/* ========================================
@@ -37,15 +48,21 @@ export default function Statistics() {
 
       <section className="statistics-section statistics-section--users">
         <div className="statistics-section__header">
-          <span className="statistics-section__eyebrow">Overview</span>
+          <span className="statistics-section__eyebrow">
+            {statisticsText.users.eyebrow}
+          </span>
 
-          <h2 className="statistics-section__title">Users</h2>
+          <h2 className="statistics-section__title">
+            {statisticsText.users.title}
+          </h2>
         </div>
 
         <div className="statistics-users">
           <article className="statistics-card statistics-card--total">
             <div className="statistics-card__top">
-              <span className="statistics-card__label">Total Users</span>
+              <span className="statistics-card__label">
+                {statisticsText.users.total}
+              </span>
 
               <span className="statistics-card__index">01</span>
             </div>
@@ -55,29 +72,35 @@ export default function Statistics() {
             </strong>
 
             <span className="statistics-card__caption">
-              Registered accounts
+              {statisticsText.users.registeredAccounts}
             </span>
           </article>
 
           <div className="statistics-users__breakdown">
             <article className="statistics-card statistics-card--admins">
-              <span className="statistics-card__label">Admins</span>
+              <span className="statistics-card__label">
+                {statisticsText.users.admins}
+              </span>
 
               <strong className="statistics-card__value">{users.admins}</strong>
 
               <span className="statistics-card__caption">
-                Administrative accounts
+                {statisticsText.users.administrativeAccounts}
               </span>
             </article>
 
             <article className="statistics-card statistics-card--normal-users">
-              <span className="statistics-card__label">Normal Users</span>
+              <span className="statistics-card__label">
+                {statisticsText.users.normalUsers}
+              </span>
 
               <strong className="statistics-card__value">
                 {users.normalUsers.toLocaleString()}
               </strong>
 
-              <span className="statistics-card__caption">Regular accounts</span>
+              <span className="statistics-card__caption">
+                {statisticsText.users.regularAccounts}
+              </span>
             </article>
           </div>
         </div>
@@ -89,19 +112,25 @@ export default function Statistics() {
 
       <section className="statistics-section statistics-section--papers">
         <div className="statistics-section__header">
-          <span className="statistics-section__eyebrow">Publications</span>
+          <span className="statistics-section__eyebrow">
+            {statisticsText.papers.eyebrow}
+          </span>
 
-          <h2 className="statistics-section__title">Papers</h2>
+          <h2 className="statistics-section__title">
+            {statisticsText.papers.title}
+          </h2>
         </div>
 
         <div className="statistics-papers">
           <div className="statistics-papers__summary">
-            <span className="statistics-card__label">Total Papers</span>
+            <span className="statistics-card__label">
+              {statisticsText.papers.total}
+            </span>
 
             <strong className="statistics-papers__total">{totalPapers}</strong>
 
             <span className="statistics-card__caption">
-              Across all review states
+              {statisticsText.papers.allReviewStates}
             </span>
           </div>
 
@@ -110,7 +139,9 @@ export default function Statistics() {
               <span className="statistics-paper-state__dot" />
 
               <div>
-                <span className="statistics-paper-state__label">Pending</span>
+                <span className="statistics-paper-state__label">
+                  {statisticsText.papers.pending}
+                </span>
 
                 <strong>{papers.pending}</strong>
               </div>
@@ -120,7 +151,9 @@ export default function Statistics() {
               <span className="statistics-paper-state__dot" />
 
               <div>
-                <span className="statistics-paper-state__label">Approved</span>
+                <span className="statistics-paper-state__label">
+                  {statisticsText.papers.approved}
+                </span>
 
                 <strong>{papers.approved}</strong>
               </div>
@@ -130,7 +163,9 @@ export default function Statistics() {
               <span className="statistics-paper-state__dot" />
 
               <div>
-                <span className="statistics-paper-state__label">Rejected</span>
+                <span className="statistics-paper-state__label">
+                  {statisticsText.papers.rejected}
+                </span>
 
                 <strong>{papers.rejected}</strong>
               </div>
@@ -168,19 +203,23 @@ export default function Statistics() {
 
       <section className="statistics-section statistics-section--chat">
         <div className="statistics-section__header">
-          <span className="statistics-section__eyebrow">Activity</span>
+          <span className="statistics-section__eyebrow">
+            {statisticsText.chat.eyebrow}
+          </span>
 
-          <h2 className="statistics-section__title">Chat Rooms</h2>
+          <h2 className="statistics-section__title">
+            {statisticsText.chat.title}
+          </h2>
         </div>
 
         <div className="statistics-chat">
           <div className="statistics-chat__intro">
-            <span className="statistics-card__label">Total Messages</span>
+            <span className="statistics-card__label">
+              {statisticsText.chat.totalMessages}
+            </span>
 
             <strong className="statistics-chat__total">
-              {chatRooms
-                .reduce((total, room) => total + room.messages, 0)
-                .toLocaleString()}
+              {totalMessages.toLocaleString()}
             </strong>
           </div>
 
@@ -210,21 +249,27 @@ export default function Statistics() {
 
       <section className="statistics-section statistics-section--contacts">
         <div className="statistics-section__header">
-          <span className="statistics-section__eyebrow">Support</span>
+          <span className="statistics-section__eyebrow">
+            {statisticsText.contacts.eyebrow}
+          </span>
 
-          <h2 className="statistics-section__title">Contacts</h2>
+          <h2 className="statistics-section__title">
+            {statisticsText.contacts.title}
+          </h2>
         </div>
 
         <div className="statistics-contacts">
           <div className="statistics-contacts__main">
-            <span className="statistics-card__label">Total Received</span>
+            <span className="statistics-card__label">
+              {statisticsText.contacts.totalReceived}
+            </span>
 
             <strong className="statistics-contacts__total">
               {contacts.received}
             </strong>
 
             <span className="statistics-card__caption">
-              Contact requests received
+              {statisticsText.contacts.receivedDescription}
             </span>
           </div>
 
@@ -233,7 +278,7 @@ export default function Statistics() {
               <div className="statistics-contact-status__indicator" />
 
               <div className="statistics-contact-status__content">
-                <span>Resolved</span>
+                <span>{statisticsText.contacts.resolved}</span>
                 <strong>{contacts.resolved}</strong>
               </div>
             </article>
@@ -242,7 +287,7 @@ export default function Statistics() {
               <div className="statistics-contact-status__indicator" />
 
               <div className="statistics-contact-status__content">
-                <span>Waiting</span>
+                <span>{statisticsText.contacts.waiting}</span>
                 <strong>{contacts.waiting}</strong>
               </div>
             </article>

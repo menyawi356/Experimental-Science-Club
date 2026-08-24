@@ -453,6 +453,60 @@ const ar = {
       reviewPublishedPapers: "مراجعة الأبحاث المنشورة",
       receivedContacts: "الرسائل المستلمة",
     },
+
+    statistics: {
+      users: {
+        eyebrow: "نظرة عامة",
+        title: "المستخدمون",
+
+        total: "إجمالي المستخدمين",
+        totalCaption: "الحسابات المسجلة",
+
+        admins: "المشرفون",
+        adminsCaption: "الحسابات الإدارية",
+
+        normalUsers: "المستخدمون العاديون",
+        normalUsersCaption: "الحسابات العادية",
+      },
+
+      papers: {
+        eyebrow: "المنشورات",
+        title: "الأبحاث",
+
+        total: "إجمالي الأبحاث",
+        totalCaption: "بجميع حالات المراجعة",
+
+        pending: "قيد المراجعة",
+        approved: "تمت الموافقة",
+        rejected: "مرفوضة",
+      },
+
+      chat: {
+        eyebrow: "النشاط",
+        title: "غرف الدردشة",
+
+        totalMessages: "إجمالي الرسائل",
+
+        rooms: {
+          general: "عام",
+          research: "الأبحاث",
+          helpSupport: "المساعدة والدعم",
+          community: "المجتمع",
+          announcements: "الإعلانات",
+        },
+      },
+
+      contacts: {
+        eyebrow: "الدعم",
+        title: "الرسائل",
+
+        totalReceived: "إجمالي المستلمة",
+        totalCaption: "طلبات التواصل المستلمة",
+
+        resolved: "تم الحل",
+        waiting: "قيد الانتظار",
+      },
+    },
   },
 };
 export default ar;
