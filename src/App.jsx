@@ -36,7 +36,12 @@ export default function App() {
                 <AdminDashboard />
               </AdminRoute>
             }
-          ></Route>
+          >
+            <Route index element={<Navigate to={"statistics"} replace />} />
+            <Route path="statistics" />
+            <Route path="review-published-papers" />
+            <Route path="received-contacts" />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
