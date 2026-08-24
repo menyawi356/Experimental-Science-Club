@@ -9,6 +9,8 @@ import Partners from "./pages/partners";
 import Contact from "./pages/contactUs";
 import SubmitWork from "./components/publish-page-componnets/sumbit-work";
 import ExplorePublished from "./components/publish-page-componnets/explore-published";
+import AdminDashboard from "./pages/adminDashboard";
+import AdminRoute from "./components/adminRoute";
 
 export default function App() {
   return (
@@ -27,6 +29,14 @@ export default function App() {
           <Route path="Chat-Hub" element={<Chat />} />
           <Route path="Partners" element={<Partners />} />
           <Route path="Contact-Us" element={<Contact />} />
+          <Route
+            path="Admin-dashboard"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>

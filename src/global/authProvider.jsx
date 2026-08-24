@@ -7,6 +7,7 @@ import useChangeModal from "../hooks/useChangeModal.js";
 export function Authprovider({ children }) {
   const [auth, setAuth] = useState({
     isAuth: false,
+    isResponded: false,
     user: null,
   });
   const { setShowedModal } = useChangeModal();
@@ -18,7 +19,14 @@ export function Authprovider({ children }) {
         if (response.ok) {
           setAuth({
             isAuth: true,
+            isResponded: true,
             user: { ...response.data },
+          });
+        } else {
+          setAuth({
+            isAuth: false,
+            isResponded: false,
+            user: null,
           });
         }
       })

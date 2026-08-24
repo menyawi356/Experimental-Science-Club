@@ -428,6 +428,11 @@ const en = {
       sub: "The chat received an invalid request. Please try again.",
       button: "Try again",
     },
+    UNAUTHORIZED: {
+      heading: "Unauthorized",
+      sub: "You are not authorized to access this content. Please try again.",
+      button: "Try Again",
+    },
   },
 };
 export default en;
