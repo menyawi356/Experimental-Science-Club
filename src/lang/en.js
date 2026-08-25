@@ -498,6 +498,35 @@ const en = {
         },
       },
     },
+    contacts: {
+      eyebrow: "Support",
+      title: "Messages",
+      totalReceived: "Total Received",
+      totalCaption: "Contact requests received",
+      resolved: "Resolved",
+      waiting: "Waiting",
+
+      filters: {
+        all: "All",
+        waiting: "Waiting",
+        resolved: "Resolved",
+      },
+
+      card: {
+        contact: "Contact Message",
+
+        status: {
+          waiting: "Waiting",
+          resolved: "Resolved",
+        },
+
+        actions: {
+          view: "View",
+          resolve: "Resolve",
+          reopen: "Reopen",
+        },
+      },
+    },
   },
 };
 export default en;

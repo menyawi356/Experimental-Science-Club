@@ -523,6 +523,35 @@ const ar = {
         },
       },
     },
+    contacts: {
+      eyebrow: "الدعم",
+      title: "الرسائل",
+      totalReceived: "إجمالي الرسائل المستلمة",
+      totalCaption: "طلبات التواصل المستلمة",
+      resolved: "تم الحل",
+      waiting: "قيد الانتظار",
+
+      filters: {
+        all: "الكل",
+        waiting: "قيد الانتظار",
+        resolved: "تم الحل",
+      },
+
+      card: {
+        contact: "رسالة تواصل",
+
+        status: {
+          waiting: "قيد الانتظار",
+          resolved: "تم الحل",
+        },
+
+        actions: {
+          view: "عرض",
+          resolve: "حل الرسالة",
+          reopen: "إعادة فتح",
+        },
+      },
+    },
   },
 };
 export default ar;

@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/adminDashboard";
 import AdminRoute from "./components/adminRoute";
 import Statistics from "./components/admin/statistics";
 import ExplorePublishedForAdmins from "./components/admin/explorePabers.Admin";
+import ReceivedContacts from "./components/admin/ReceivedContacts";
 
 export default function App() {
   return (
@@ -45,7 +46,7 @@ export default function App() {
               path="review-published-papers"
               element={<ExplorePublishedForAdmins />}
             />
-            <Route path="received-contacts" />
+            <Route path="received-contacts" element={<ReceivedContacts />} />
           </Route>
         </Route>
       </Routes>
