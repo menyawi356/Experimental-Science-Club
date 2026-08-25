@@ -12,6 +12,7 @@ import ExplorePublished from "./components/publish-page-componnets/explore-publi
 import AdminDashboard from "./pages/adminDashboard";
 import AdminRoute from "./components/adminRoute";
 import Statistics from "./components/admin/statistics";
+import ExplorePublishedForAdmins from "./components/admin/explorePabers.Admin";
 
 export default function App() {
   return (
@@ -40,7 +41,10 @@ export default function App() {
           >
             <Route index element={<Navigate to={"statistics"} replace />} />
             <Route path="statistics" element={<Statistics />} />
-            <Route path="review-published-papers" />
+            <Route
+              path="review-published-papers"
+              element={<ExplorePublishedForAdmins />}
+            />
             <Route path="received-contacts" />
           </Route>
         </Route>

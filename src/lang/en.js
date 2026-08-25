@@ -482,6 +482,22 @@ const en = {
         waiting: "Waiting",
       },
     },
+    paperReview: {
+      card: {
+        uploadedBy: "Uploaded By",
+        id: "ID",
+        states: {
+          pending: "Pending",
+          approved: "Approved",
+          rejected: "Rejected",
+        },
+        actions: {
+          view: "View",
+          approve: "Approve",
+          reject: "Reject",
+        },
+      },
+    },
   },
 };
 export default en;

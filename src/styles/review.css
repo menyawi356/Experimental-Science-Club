@@ -1,0 +1,497 @@
+/* ========================================
+   Admin Paper Card
+   ======================================== */
+
+.admin-paper-card {
+  position: relative;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--card);
+  color: var(--ink);
+
+  border: 1px solid var(--line);
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 1px 0 rgba(22, 27, 34, 0.03),
+    0 18px 45px -34px var(--indigo-glow);
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.admin-paper-card:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--indigo) 24%,
+    var(--line)
+  );
+
+  box-shadow:
+    0 1px 0 rgba(22, 27, 34, 0.03),
+    0 24px 55px -34px var(--indigo-glow);
+}
+
+
+/* ========================================
+   State Rail
+   ======================================== */
+
+.admin-paper-card::before {
+  content: "";
+
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+
+  width: 3px;
+
+  background: var(--line);
+}
+
+.admin-paper-card:has(
+  .admin-paper-card__state--pending
+)::before {
+  background: var(--gold);
+}
+
+.admin-paper-card:has(
+  .admin-paper-card__state--approved
+)::before {
+  background: #4f8a68;
+}
+
+.admin-paper-card:has(
+  .admin-paper-card__state--rejected
+)::before {
+  background: #a65a5a;
+}
+
+
+/* ========================================
+   Header
+   ======================================== */
+
+.admin-paper-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 18px 22px;
+
+  border-bottom: 1px solid var(--line);
+  background: color-mix(
+    in srgb,
+    var(--paper-alt) 42%,
+    var(--card)
+  );
+}
+
+.admin-paper-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.admin-paper-card__category {
+  color: var(--indigo);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-paper-card__date {
+  color: var(--ink-faint);
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.admin-paper-card__state {
+  flex: none;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 6px 10px;
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.admin-paper-card__state::before {
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+  background: currentColor;
+}
+
+
+/* ========================================
+   State Colors
+   ======================================== */
+
+.admin-paper-card__state--pending {
+  color: var(--gold);
+  background: color-mix(
+    in srgb,
+    var(--gold) 8%,
+    var(--card)
+  );
+}
+
+.admin-paper-card__state--approved {
+  color: #4f8a68;
+  background: color-mix(
+    in srgb,
+    #4f8a68 8%,
+    var(--card)
+  );
+}
+
+.admin-paper-card__state--rejected {
+  color: #a65a5a;
+  background: color-mix(
+    in srgb,
+    #a65a5a 8%,
+    var(--card)
+  );
+}
+
+
+/* ========================================
+   Paper Body
+   ======================================== */
+
+.admin-paper-card__body {
+  padding: 26px 28px 24px;
+}
+
+.admin-paper-card__title {
+  margin: 0;
+
+  color: var(--indigo-strong);
+
+  font-size: clamp(
+    1.15rem,
+    1.6vw,
+    1.45rem
+  );
+
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
+.admin-paper-card__authors {
+  margin-top: 9px;
+
+  color: var(--ink-soft);
+
+  font-size: 0.84rem;
+  font-weight: 500;
+}
+
+.admin-paper-card__abstract {
+  max-width: 850px;
+
+  margin: 18px 0 0;
+
+  color: var(--ink-soft);
+
+  font-size: 0.9rem;
+  line-height: 1.75;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/* ========================================
+   Tags
+   ======================================== */
+
+.admin-paper-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-top: 18px;
+}
+
+.admin-paper-card__tag {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 9px;
+
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  background: var(--paper-alt);
+
+  color: var(--ink-soft);
+
+  font-size: 0.7rem;
+  font-weight: 550;
+
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.admin-paper-card__tag:hover {
+  color: var(--indigo);
+  border-color: color-mix(
+    in srgb,
+    var(--indigo) 25%,
+    var(--line)
+  );
+}
+
+
+/* ========================================
+   Uploader
+   ======================================== */
+
+.admin-paper-card__uploader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin: 0 28px;
+  padding: 18px 0;
+
+  border-top: 1px solid var(--line);
+}
+
+.admin-paper-card__uploader-info {
+  display: grid;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.admin-paper-card__uploader-label {
+  margin-bottom: 3px;
+
+  color: var(--ink-faint);
+
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.admin-paper-card__uploader-name {
+  color: var(--indigo-strong);
+
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.admin-paper-card__uploader-email {
+  color: var(--ink-soft);
+
+  font-size: 0.76rem;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-paper-card__uploader-id {
+  flex: none;
+
+  color: var(--ink-faint);
+
+  font-family: var(--mono, monospace);
+  font-size: 0.66rem;
+}
+
+
+/* ========================================
+   Actions
+   ======================================== */
+
+.admin-paper-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+
+  padding: 14px 28px;
+
+  border-top: 1px solid var(--line);
+  background: color-mix(
+    in srgb,
+    var(--paper-alt) 32%,
+    var(--card)
+  );
+}
+
+.admin-paper-card__action {
+  min-width: 88px;
+
+  padding: 8px 13px;
+
+  border: 1px solid var(--line);
+  border-radius: 8px;
+
+  background: var(--card);
+  color: var(--ink-soft);
+
+  font-family: var(--sans);
+  font-size: 0.76rem;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.admin-paper-card__action:hover {
+  transform: translateY(-1px);
+}
+
+
+/* View */
+
+.admin-paper-card__action--view:hover {
+  color: var(--indigo);
+  border-color: var(--indigo);
+  box-shadow: 0 8px 18px -15px var(--indigo-glow);
+}
+
+
+/* Approve */
+
+.admin-paper-card__action--approve {
+  color: #4f8a68;
+}
+
+.admin-paper-card__action--approve:hover {
+  border-color: #4f8a68;
+  background: color-mix(
+    in srgb,
+    #4f8a68 7%,
+    var(--card)
+  );
+}
+
+
+/* Reject */
+
+.admin-paper-card__action--reject {
+  color: #a65a5a;
+}
+
+.admin-paper-card__action--reject:hover {
+  border-color: #a65a5a;
+  background: color-mix(
+    in srgb,
+    #a65a5a 7%,
+    var(--card)
+  );
+}
+
+
+/* ========================================
+   Tablet
+   ======================================== */
+
+@media (max-width: 700px) {
+  .admin-paper-card__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .admin-paper-card__body {
+    padding: 22px 20px;
+  }
+
+  .admin-paper-card__uploader {
+    margin-inline: 20px;
+  }
+
+  .admin-paper-card__actions {
+    padding-inline: 20px;
+  }
+}
+
+
+/* ========================================
+   Mobile
+   ======================================== */
+
+@media (max-width: 480px) {
+  .admin-paper-card {
+    border-radius: 14px;
+  }
+
+  .admin-paper-card__header {
+    padding: 15px 17px;
+  }
+
+  .admin-paper-card__meta {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  .admin-paper-card__body {
+    padding: 20px 17px;
+  }
+
+  .admin-paper-card__title {
+    font-size: 1.08rem;
+  }
+
+  .admin-paper-card__uploader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+
+    margin-inline: 17px;
+  }
+
+  .admin-paper-card__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    padding: 13px 17px;
+  }
+
+  .admin-paper-card__action {
+    width: 100%;
+  }
+}

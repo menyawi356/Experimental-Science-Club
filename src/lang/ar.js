@@ -507,6 +507,22 @@ const ar = {
         waiting: "قيد الانتظار",
       },
     },
+    paperReview: {
+      card: {
+        uploadedBy: "تم الرفع بواسطة",
+        id: "المعرّف",
+        states: {
+          pending: "قيد المراجعة",
+          approved: "مقبولة",
+          rejected: "مرفوضة",
+        },
+        actions: {
+          view: "عرض",
+          approve: "قبول",
+          reject: "رفض",
+        },
+      },
+    },
   },
 };
 export default ar;
