@@ -1,3 +1,4 @@
+import getPaperLink from "../../API/paperLink.js";
 import useLanguage from "../../hooks/useLanguage.js";
 export default function AdminPublicationCard({ publication }) {
   const { t } = useLanguage();
@@ -6,6 +7,10 @@ export default function AdminPublicationCard({ publication }) {
   const authors = paper.authors.join(", ");
   const date = paper.date.split("T")[0].replaceAll("-", "/");
   const stateText = cardText.states[paper.state];
+  const handleView = async () => {
+    const { url } = await getPaperLink(publication.paper._id);
+    window.open(url, "_blank");
+  };
   return (
     <article className="admin-paper-card">
       {/* ========================================
@@ -61,7 +66,7 @@ export default function AdminPublicationCard({ publication }) {
         </div>
 
         <span className="admin-paper-card__uploader-id">
-          {cardText.id}: {user._id}
+          {cardText.id}: {user.id}
         </span>
       </div>
 
@@ -72,6 +77,7 @@ export default function AdminPublicationCard({ publication }) {
         <button
           type="button"
           className="admin-paper-card__action admin-paper-card__action--view"
+          onClick={handleView}
         >
           {cardText.actions.view}
         </button>

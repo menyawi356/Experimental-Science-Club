@@ -1,7 +1,7 @@
 import "../../styles/statistics.css";
 import useLanguage from "../../hooks/useLanguage.js";
 import { useEffect, useState } from "react";
-import getStatistics from "../../API/getStatistics.js";
+import getStatistics from "../../API/admin/getStatistics.js";
 import useChangeModal from "../../hooks/useChangeModal.js";
 import useLoader from "../../hooks/useLoader.js";
 export default function Statistics() {
