@@ -1,51 +1,77 @@
 import "../../styles/statistics.css";
-
 import useLanguage from "../../hooks/useLanguage.js";
-
+import { useEffect, useState } from "react";
+import getStatistics from "../../API/getStatistics.js";
+import useChangeModal from "../../hooks/useChangeModal.js";
+import useLoader from "../../hooks/useLoader.js";
 export default function Statistics() {
   const { t } = useLanguage();
-
   const statisticsText = t.admin.statistics;
-
-  const users = {
-    total: 1250,
-    admins: 12,
-    normalUsers: 1238,
-  };
-
-  const papers = {
-    pending: 47,
-    approved: 326,
-    rejected: 28,
-  };
-
-  const chatRooms = [
-    { name: statisticsText.chat.rooms.general, messages: 1842 },
-    { name: statisticsText.chat.rooms.research, messages: 1264 },
-    { name: statisticsText.chat.rooms.helpSupport, messages: 873 },
-    { name: statisticsText.chat.rooms.community, messages: 642 },
-    { name: statisticsText.chat.rooms.announcements, messages: 318 },
-  ];
-
-  const contacts = {
-    received: 186,
-    resolved: 142,
-    waiting: 44,
-  };
-
+  const [data, setData] = useState({
+    users: {
+      total: 0,
+      admins: 0,
+      normalUsers: 0,
+    },
+    papers: {
+      pending: 0,
+      approved: 0,
+      rejected: 0,
+    },
+    contacts: {
+      received: 0,
+      resolved: 0,
+      waiting: 0,
+    },
+  });
+  const { startLoader, stopLoader } = useLoader();
+  const { setShowedModal } = useChangeModal();
+  const { users, contacts, papers } = data;
+  useEffect(() => {
+    startLoader();
+    getStatistics()
+      .then((response) => {
+        console.log(response);
+        if (response.ok) {
+          setData(response);
+        } else {
+          setShowedModal({
+            modal: "error",
+            data: {
+              errorCode: response.errorCode,
+              to: "none",
+            },
+          });
+        }
+      })
+      .catch((response) => {
+        setShowedModal({
+          modal: "error",
+          data: {
+            errorCode: response.errorCode,
+            to: "none",
+          },
+        });
+      })
+      .finally(() => {
+        stopLoader();
+      });
+  }, []);
   const totalPapers = papers.pending + papers.approved + papers.rejected;
 
-  const totalMessages = chatRooms.reduce(
-    (total, room) => total + room.messages,
-    0,
-  );
+  const pendingPercentage =
+    totalPapers > 0 ? (papers.pending / totalPapers) * 100 : 0;
 
+  const approvedPercentage =
+    totalPapers > 0 ? (papers.approved / totalPapers) * 100 : 0;
+
+  const rejectedPercentage =
+    totalPapers > 0 ? (papers.rejected / totalPapers) * 100 : 0;
   return (
     <section className="admin-statistics">
       {/* ========================================
           Users
           ======================================== */}
-
       <section className="statistics-section statistics-section--users">
         <div className="statistics-section__header">
           <span className="statistics-section__eyebrow">
@@ -176,69 +202,23 @@ export default function Statistics() {
             <span
               className="statistics-papers__bar-segment statistics-papers__bar-segment--pending"
               style={{
-                width: `${(papers.pending / totalPapers) * 100}%`,
+                width: `${pendingPercentage}%`,
               }}
             />
 
             <span
               className="statistics-papers__bar-segment statistics-papers__bar-segment--approved"
               style={{
-                width: `${(papers.approved / totalPapers) * 100}%`,
+                width: `${approvedPercentage}%`,
               }}
             />
 
             <span
               className="statistics-papers__bar-segment statistics-papers__bar-segment--rejected"
               style={{
-                width: `${(papers.rejected / totalPapers) * 100}%`,
+                width: `${rejectedPercentage}%`,
               }}
             />
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================
-          Chat
-          ======================================== */}
-
-      <section className="statistics-section statistics-section--chat">
-        <div className="statistics-section__header">
-          <span className="statistics-section__eyebrow">
-            {statisticsText.chat.eyebrow}
-          </span>
-
-          <h2 className="statistics-section__title">
-            {statisticsText.chat.title}
-          </h2>
-        </div>
-
-        <div className="statistics-chat">
-          <div className="statistics-chat__intro">
-            <span className="statistics-card__label">
-              {statisticsText.chat.totalMessages}
-            </span>
-
-            <strong className="statistics-chat__total">
-              {totalMessages.toLocaleString()}
-            </strong>
-          </div>
-
-          <div className="statistics-chat__rooms">
-            {chatRooms.map((room, index) => (
-              <article className="statistics-chat-room" key={room.name}>
-                <span className="statistics-chat-room__number">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-
-                <span className="statistics-chat-room__name">{room.name}</span>
-
-                <strong className="statistics-chat-room__messages">
-                  {room.messages.toLocaleString()}
-                </strong>
-
-                <span className="statistics-chat-room__arrow">→</span>
-              </article>
-            ))}
           </div>
         </div>
       </section>
