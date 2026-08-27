@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import useLanguage from "../../hooks/useLanguage.js";
 import { useEffect, useState } from "react";
+import useChangeModal from "../../hooks/useChangeModal.js";
 import AdminPublicationCard from "./adminPaperCard.jsx";
 import "../../styles/review.css";
 import getPublications from "../../API/admin/getPublications.js";
@@ -11,13 +12,33 @@ export default function ExplorePublishedForAdmins() {
   const stateFilter = filter.get("state") || "all";
   const typeFilter = filter.get("type") || "all";
   const [search, setSearch] = useState("");
+  const { setShowedModal } = useChangeModal();
+
   useEffect(() => {
-    getPublications().then((response) => {
-      if (response.ok) {
-        setPublications(response.publications);
-      }
-    });
-  });
+    getPublications()
+      .then((response) => {
+        if (response.ok) {
+          setPublications(response.publications);
+        } else {
+          setShowedModal({
+            modal: "error",
+            data: {
+              errorCode: response.errorCode,
+              to: "none",
+            },
+          });
+        }
+      })
+      .catch((response) => {
+        setShowedModal({
+          modal: "error",
+          data: {
+            errorCode: response.errorCode,
+            to: "none",
+          },
+        });
+      });
+  }, []);
   const handleChangeStateFilter = (state) => {
     const newParams = new URLSearchParams(filter);
     if (state === "all") {
@@ -63,8 +84,13 @@ export default function ExplorePublishedForAdmins() {
         user.email.toLowerCase().includes(query)
       );
     });
-  const publishedPapersList = filteredPublications.map((publication) => (
-    <AdminPublicationCard publication={publication} />
+  const publishedPapersList = filteredPublications.map((publication, i) => (
+    <AdminPublicationCard
+      publication={publication}
+      index={i}
+      setPublications={setPublications}
+      key={i}
+    />
   ));
   const publishText = t.publishing;
   return (

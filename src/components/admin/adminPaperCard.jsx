@@ -1,15 +1,72 @@
+import updatePaperState from "../../API/admin/updatePaperState.js";
 import getPaperLink from "../../API/paperLink.js";
 import useLanguage from "../../hooks/useLanguage.js";
-export default function AdminPublicationCard({ publication }) {
+import useChangeModal from "../../hooks/useChangeModal.js";
+
+export default function AdminPublicationCard({
+  publication,
+  index,
+  setPublications,
+}) {
   const { t } = useLanguage();
   const { paper, user } = publication;
   const cardText = t.admin.paperReview.card;
   const authors = paper.authors.join(", ");
   const date = paper.date.split("T")[0].replaceAll("-", "/");
   const stateText = cardText.states[paper.state];
+  const { setShowedModal } = useChangeModal();
+
   const handleView = async () => {
-    const { url } = await getPaperLink(publication.paper._id);
-    window.open(url, "_blank");
+    try {
+      const response = await getPaperLink(publication.paper._id);
+      if (response.ok) {
+        window.open(response.url, "_blank");
+      } else {
+        setShowedModal({
+          modal: "error",
+          data: {
+            errorCode: response.errorCode,
+            to: "none",
+          },
+        });
+      }
+    } catch (err) {
+      setShowedModal({
+        modal: "error",
+        data: {
+          errorCode: err.errorCode,
+          to: "none",
+        },
+      });
+    }
+  };
+  const handleUpdatePaperState = async (state) => {
+    try {
+      const response = await updatePaperState(paper._id, state);
+      if (response.ok) {
+        setPublications((prev) => {
+          const newPulications = [...prev];
+          newPulications[index].paper = response.paper;
+          return newPulications;
+        });
+      } else {
+        setShowedModal({
+          modal: "error",
+          data: {
+            errorCode: response.errorCode,
+            to: "none",
+          },
+        });
+      }
+    } catch (err) {
+      setShowedModal({
+        modal: "error",
+        data: {
+          errorCode: err.errorCode,
+          to: "none",
+        },
+      });
+    }
   };
   return (
     <article className="admin-paper-card">
@@ -85,6 +142,9 @@ export default function AdminPublicationCard({ publication }) {
         <button
           type="button"
           className="admin-paper-card__action admin-paper-card__action--approve"
+          onClick={() => {
+            handleUpdatePaperState("approved");
+          }}
         >
           {cardText.actions.approve}
         </button>
@@ -92,6 +152,9 @@ export default function AdminPublicationCard({ publication }) {
         <button
           type="button"
           className="admin-paper-card__action admin-paper-card__action--reject"
+          onClick={() => {
+            handleUpdatePaperState("rejected");
+          }}
         >
           {cardText.actions.reject}
         </button>
