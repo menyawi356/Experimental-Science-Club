@@ -46,7 +46,7 @@ export default function App() {
               path="review-published-papers"
               element={<ExplorePublishedForAdmins />}
             />
-            <Route path="received-contacts" element={<ReceivedContacts />} />
+            {/* <Route path="received-contacts" element={<ReceivedContacts />} /> */}
           </Route>
         </Route>
       </Routes>

@@ -18,10 +18,10 @@ export default function AdminDashboard() {
       name: adminText.nav.reviewPublishedPapers,
       path: "/Admin-dashboard/review-published-papers",
     },
-    {
-      name: adminText.nav.receivedContacts,
-      path: "/Admin-dashboard/received-contacts",
-    },
+    // {
+    //   name: adminText.nav.receivedContacts,
+    //   path: "/Admin-dashboard/received-contacts",
+    // },
   ];
   return (
     <main className="admin-dashboard">
